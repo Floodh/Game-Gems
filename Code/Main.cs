@@ -1,8 +1,6 @@
 ﻿
 using System;
 
-namespace TDDD23_MonogameProject;
-
 class MainClass
 {
     static int Main(string[] args)

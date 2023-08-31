@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace TDDD23_MonogameProject;
-
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
@@ -45,7 +43,7 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         // TODO: Add your drawing code here
-
+        Building.DrawAll();
         base.Draw(gameTime);
     }
 }
