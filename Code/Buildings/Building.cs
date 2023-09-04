@@ -9,6 +9,7 @@ abstract class Building : Targetable
 {
 
     public static List<Building> allBuildings = new List<Building>();
+    private static Grid grid = new Grid();
 
     public static void DrawAll()
     {
@@ -22,6 +23,8 @@ abstract class Building : Targetable
     protected Size gridSize;
     protected int hp;
 
+    public Rectangle gridArea;
+
     public void Draw()
     {
 
@@ -29,9 +32,20 @@ abstract class Building : Targetable
 
     public abstract void Update();
 
-    public void Die()
+    private bool Place()
+    {
+        if (grid.PlaceIfPossible(this))
+        {
+            allBuildings.Add(this);
+            return true;
+        }
+        return false;
+    }
+
+    private void Die()
     {
         allBuildings.Remove(this);
+        grid.RemoveBuilding(this);
     }
 }
 

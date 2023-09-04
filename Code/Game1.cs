@@ -1,11 +1,18 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using Size = System.Drawing.Size;
+
 public class Game1 : Game
 {
-    private GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
+    private static GraphicsDeviceManager _graphics;
+    public static SpriteBatch spriteBatch;
+    public static GraphicsDevice graphicsDevice;
+
+    private Map bgMap;
+
 
     public Game1()
     {
@@ -17,14 +24,16 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-
+        Console.WriteLine("Initlizing...");
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+        Console.WriteLine("Loading content");
+        spriteBatch = new SpriteBatch(GraphicsDevice);
+        graphicsDevice = base.GraphicsDevice;
+        this.bgMap = new Map(new Size(100, 100), "Data/Texture/Test.png");
         // TODO: use this.Content to load your game content here
     }
 
@@ -43,7 +52,11 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         // TODO: Add your drawing code here
+        Console.WriteLine("Drawing...");
+        this.bgMap.Draw();
         Building.DrawAll();
+        //Unit.DrawAll();
+
         base.Draw(gameTime);
     }
 }
