@@ -33,7 +33,7 @@ public class Game1 : Game
         Console.WriteLine("Loading content");
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
-        this.bgMap = new Map(new Size(100, 100), "Data/Texture/Test.png");
+        this.bgMap = new Map(new Size(300, 300), "Data/Texture/Test.png");
         // TODO: use this.Content to load your game content here
     }
 
@@ -53,8 +53,10 @@ public class Game1 : Game
 
         // TODO: Add your drawing code here
         Console.WriteLine("Drawing...");
+        spriteBatch.Begin();
         this.bgMap.Draw();
         Building.DrawAll();
+        spriteBatch.End();
         //Unit.DrawAll();
 
         base.Draw(gameTime);
