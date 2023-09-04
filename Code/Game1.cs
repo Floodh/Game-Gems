@@ -7,7 +7,7 @@ using Size = System.Drawing.Size;
 
 public class Game1 : Game
 {
-    private static GraphicsDeviceManager _graphics;
+    public static GraphicsDeviceManager graphics;
     public static SpriteBatch spriteBatch;
     public static GraphicsDevice graphicsDevice;
 
@@ -16,7 +16,11 @@ public class Game1 : Game
 
     public Game1()
     {
-        _graphics = new GraphicsDeviceManager(this);
+        graphics = new GraphicsDeviceManager(this)
+        {
+            PreferredBackBufferWidth = 1280,
+            PreferredBackBufferHeight = 720
+        };
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
@@ -33,7 +37,7 @@ public class Game1 : Game
         Console.WriteLine("Loading content");
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
-        this.bgMap = new Map(new Size(300, 300), "Data/Texture/Test.png");
+        this.bgMap = new Map("Data/Texture/Test.png");
         // TODO: use this.Content to load your game content here
     }
 
