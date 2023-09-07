@@ -19,7 +19,7 @@ public class Game1 : Game
         graphics = new GraphicsDeviceManager(this)
         {
             PreferredBackBufferWidth = 1280,
-            PreferredBackBufferHeight = 720
+            PreferredBackBufferHeight = 1040
         };
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
@@ -37,7 +37,7 @@ public class Game1 : Game
         Console.WriteLine("Loading content");
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
-        this.bgMap = new Map("Data/Texture/Test.png");
+        this.bgMap = new Map("Data/MapData/OG.png");
         // TODO: use this.Content to load your game content here
     }
 
@@ -56,7 +56,7 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         // TODO: Add your drawing code here
-        Console.WriteLine("Drawing...");
+        //Console.WriteLine("Drawing...");
         spriteBatch.Begin();
         this.bgMap.Draw();
         Building.DrawAll();
