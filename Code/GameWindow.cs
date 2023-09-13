@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 using Size = System.Drawing.Size;
 
-public class Game1 : Game
+public class GameWindow : Game
 {
     public static GraphicsDeviceManager graphics;
     public static SpriteBatch spriteBatch;
@@ -14,7 +14,7 @@ public class Game1 : Game
     private Map bgMap;
 
 
-    public Game1()
+    public GameWindow()
     {
         graphics = new GraphicsDeviceManager(this)
         {
@@ -38,6 +38,7 @@ public class Game1 : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
         this.bgMap = new Map("Data/MapData/OG.png");
+        Camera.Init(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         // TODO: use this.Content to load your game content here
     }
 
@@ -47,6 +48,8 @@ public class Game1 : Game
             Exit();
 
         // TODO: Add your update logic here
+        Camera.UpdateByMouse(Mouse.GetState());
+        Camera.UpdateByKeyboard(Keyboard.GetState());
 
         base.Update(gameTime);
     }
@@ -58,7 +61,9 @@ public class Game1 : Game
         // TODO: Add your drawing code here
         //Console.WriteLine("Drawing...");
         spriteBatch.Begin();
+        
         this.bgMap.Draw();
+
         Building.DrawAll();
         spriteBatch.End();
         //Unit.DrawAll();

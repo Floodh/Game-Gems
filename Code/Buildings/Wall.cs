@@ -20,4 +20,10 @@ class Wall : Building
         throw new System.NotImplementedException();
     }
 
+    public void Draw()
+    {
+        //Rectangle drawArea = new Rectangle(this.position.X - camera.position.X, this.position.Y - camera.position.Y, 20, 20);
+
+    }
+
 }

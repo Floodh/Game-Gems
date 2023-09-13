@@ -6,7 +6,7 @@ class MainClass
     static int Main(string[] args)
     {
         Console.WriteLine("Start");
-        using Game1 game = new Game1();
+        using GameWindow game = new GameWindow();
         game.Run();
         Console.WriteLine("End");
         return 0;

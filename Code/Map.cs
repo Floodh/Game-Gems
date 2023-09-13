@@ -23,8 +23,8 @@ class Map
     private const string GRASS_TEXTURE_PATH = "Data/Texture/Grass.png";
     private const string WATER_TEXTURE_PATH = "Data/Texture/Water.png";
 
-    private const int mapPixelToTile_Multiplier = 2;  //  1 pixel = 2x2 tiles
-    private const int mapPixelToTexturePixel_Multiplier = 16;
+    public const int mapPixelToGridTile_Multiplier = 2;  //  1 pixel = 2x2 tiles
+    public const int mapPixelToTexturePixel_Multiplier = 16;
 
     private Bitmap mapImage;
 
@@ -42,15 +42,15 @@ class Map
     {
         //this.drawOffset = new Point(-150, -200);
 
-        
+
         //  load the map
         this.mapImage = new Bitmap(path);
         this.drawTextureSize = new Size(mapImage.Width * mapPixelToTexturePixel_Multiplier, mapImage.Height * mapPixelToTexturePixel_Multiplier);
 
         //  graphic libary stuff
-        GraphicsDevice graphicsDevice = Game1.graphicsDevice;
+        GraphicsDevice graphicsDevice = GameWindow.graphicsDevice;
         RenderTarget2D renderTargetIsAOffScreenBuffer = new RenderTarget2D(graphicsDevice, drawTextureSize.Width, drawTextureSize.Height, false, SurfaceFormat.Color, DepthFormat.None);
-        SpriteBatch spriteBatch = Game1.spriteBatch;
+        SpriteBatch spriteBatch = GameWindow.spriteBatch;
 
         //  load the textures
         //this.drawTexture = new Texture2D(Game1.graphicsDevice, size.Width, size.Height);
@@ -100,6 +100,9 @@ class Map
 
     public void Draw()
     {
-        Game1.spriteBatch.Draw(drawTexture, new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height), Color.White);
+        Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height);
+        //drawArea = Camera.Offset(drawArea);
+        GameWindow.spriteBatch.Draw(drawTexture, drawArea, Color.White);
+        Console.WriteLine($"texture size : {this.drawTexture.Width}, {this.drawTexture.Height}");
     }
 }
