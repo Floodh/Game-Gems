@@ -38,6 +38,10 @@ class Map
 
     public Point drawOffset = Point.Zero;
 
+    
+
+
+
     public Map(string path)
     {
         //this.drawOffset = new Point(-150, -200);
@@ -93,15 +97,15 @@ class Map
         renderTargetIsAOffScreenBuffer.SaveAsPng(stream, drawTextureSize.Width, drawTextureSize.Height);
         this.drawTexture = Texture2D.FromStream(graphicsDevice, stream);
         graphicsDevice.SetRenderTarget(null);   //  give back the rendering target
-
-        
+        Console.WriteLine("innan camera init");
+        Camera.Init(this.drawTextureSize);
 
     }
 
     public void Draw()
     {
-        Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height);
-        //drawArea = Camera.Offset(drawArea);
+        Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height); 
+        drawArea = Camera.rectOffset(drawArea);
         GameWindow.spriteBatch.Draw(drawTexture, drawArea, Color.White);
         Console.WriteLine($"texture size : {this.drawTexture.Width}, {this.drawTexture.Height}");
     }
