@@ -34,11 +34,14 @@ public class GameWindow : Game
 
     protected override void LoadContent()
     {
-        Console.WriteLine("Loading content");
+        Console.WriteLine("Loading content...");
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
         this.bgMap = new Map("Data/MapData/OG.png");
         Camera.Init(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+        
+        Boulder boulder = new Boulder();
+        boulder.Place(new Point(1, 0));
         // TODO: use this.Content to load your game content here
     }
 

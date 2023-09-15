@@ -10,8 +10,6 @@ class Wall : Building
     public Wall(Point position)
     {
         this.position = position;
-        this.gridSize = new Size(2, 2);
-
         Building.allBuildings.Add(this);
     }
 
@@ -22,6 +20,8 @@ class Wall : Building
 
     public void Draw()
     {
+        // if (Camera.IsVisable(this.drawArea))
+        //     //  draw me
         //Rectangle drawArea = new Rectangle(this.position.X - camera.position.X, this.position.Y - camera.position.Y, 20, 20);
 
     }
