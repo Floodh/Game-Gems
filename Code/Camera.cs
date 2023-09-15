@@ -1,50 +1,93 @@
+using System;
+using System.Drawing;
 using System.Globalization;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
 using Size = System.Drawing.Size;
 
 static class Camera
 {
-
     private static Point offset = Point.Zero;
     private static int zoomDivider = 2;
-    private static Size windowSize;
+    private static Size cameraWindowSize;
 
 
-    public static void Init(int windowWidth, int windowHeight)
+
+    public static void Init(Size drawTextureSize)
     {
-        windowSize = new Size(windowWidth, windowHeight);
+        Console.WriteLine("inuti camera init");
+        cameraWindowSize = new Size(drawTextureSize.Width*5, drawTextureSize.Height*5);
+        Console.WriteLine("inuti camera init2");
     }
 
     //  return a modified  Point
-    public static Point Offset(Point position)
+    public static Point PointOffset(Point position)
     {
-        return Point.Zero;
+        position = offset;
+        return offset;
     }
 
-    public static Size Offset(Size size)
-    {
-        return new Size(size.Width / zoomDivider, size.Height / zoomDivider);
+    public static Size SizeOffset(Size size)
+    { 
+        return  new Size(size.Width / zoomDivider, size.Height / zoomDivider);    
     }
 
     //  return a rectangle modified 
-    public static Rectangle Offset(Rectangle rectangle)
+    public static Rectangle rectOffset(Rectangle rectangle)
     {
-        return Rectangle.Empty;
-    }
+         Console.WriteLine("inuti rectoffset");
+         rectangle = new Rectangle(offset.X,offset.Y,
+         cameraWindowSize.Width, cameraWindowSize.Height);
+         return rectangle;
+    }   
 
     //
-    public static bool IsVisable(Rectangle area)
+    public static bool IsVisible(Rectangle area)
     {
         return true;
     }
 
     public static void UpdateByMouse(MouseState mouseState)
     {
+       Rectangle temprect = new Rectangle(offset.X, offset.Y, cameraWindowSize.Width, cameraWindowSize.Height);
+        // if (mouseState.Position.X ==  )
+        // {
+        //     offset.X -= 10;
+        // }
+        if (mouseState.Position.X == temprect.Left )
+        {
+            offset.X += 10;
+        }
+        if (mouseState.Position.Y == temprect.Top)
+        {
+            offset.Y += 10;
+        }
+        if (mouseState.Position.Y == temprect.Bottom)
+        {
+            offset.Y -= 10;
+        }
     }
 
     public static void UpdateByKeyboard(KeyboardState keyboardState)
     {
+        if(keyboardState.IsKeyDown(Keys.Right))
+        {
+            offset.X -= 10;
+        }
+        if(keyboardState.IsKeyDown(Keys.Left))
+        {
+            offset.X += 10;
+        }
+        if(keyboardState.IsKeyDown(Keys.Down))
+        {
+            offset.Y -= 10;
+        }
+        if(keyboardState.IsKeyDown(Keys.Up))
+        {
+            offset.Y += 10;
+        }
     }
     
 }
