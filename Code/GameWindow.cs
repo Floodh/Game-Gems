@@ -38,7 +38,6 @@ public class GameWindow : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
         this.bgMap = new Map("Data/MapData/OG.png");
-        Camera.Init(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         // TODO: use this.Content to load your game content here
     }
 
