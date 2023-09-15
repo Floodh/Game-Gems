@@ -45,23 +45,28 @@ static class Camera
 
     public static void UpdateByMouse(MouseState mouseState, GraphicsDeviceManager graphics)
     {
-      
-        if (mouseState.Position.X >= graphics.PreferredBackBufferWidth)
-        {
-            offset.X -= 10;
-        }
-        if (mouseState.Position.X <= graphics.PreferredBackBufferWidth)
-        {
-            offset.X += 10;
-        }
-        if (mouseState.Position.Y >= )
-        {
-            offset.Y += 10;
-        }
-        if (mouseState.Position.Y = )
-        {
-            offset.Y -= 10;
-        }
+      int margin = 20; //define the margin in pixels from the edge of the screen
+      int leftMargin = margin;
+      int rightMargin = graphics.PreferredBackBufferWidth - margin;
+      int topMargin = margin;
+      int bottomMargin = graphics.PreferredBackBufferHeight - margin;
+
+      if(mouseState.Position.X < leftMargin)
+      {
+        offset.X += 10;
+      }
+      if(mouseState.Position.X > rightMargin)
+      {
+        offset.X -= 10;
+      }
+      if(mouseState.Position.Y < topMargin)
+      {
+        offset.Y += 10;
+      }
+      if(mouseState.Position.Y > bottomMargin)
+      {
+        offset.Y -= 10;
+      }
     }
 
     public static void UpdateByKeyboard(KeyboardState keyboardState)
