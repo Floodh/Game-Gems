@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 
 using Size = System.Drawing.Size;
@@ -26,21 +28,24 @@ class Grid
 
     public bool PlaceIfPossible(Building building, Rectangle area)
     {
+        //Console.WriteLine();
 
-        for (int x = area.Left; x <= area.Right; x++)
+        for (int x = area.Left; x < area.Right; x++)
         {
-            for (int y = area.Top; y <= area.Bottom; y++)
+            for (int y = area.Top; y < area.Bottom; y++)
             {
+                //Console.WriteLine($"x : {x}, y : {y}");
                 if (this.IsTileTaken(x,y))
                 {
+                    Console.WriteLine("Could not place building!");
                     return false;
                 }
             }
         }
         //  mark as taken
-        for (int x = area.Left; x <= area.Right; x++)
+        for (int x = area.Left; x < area.Right; x++)
         {
-            for (int y = area.Top; y <= area.Bottom; y++)
+            for (int y = area.Top; y < area.Bottom; y++)
             {
                 isTaken[y][x] = true;
             }
@@ -53,9 +58,9 @@ class Grid
         Rectangle area = building.GridArea;
 
         //  mark as taken
-        for (int x = area.Left; x <= area.Right; x++)
+        for (int x = area.Left; x < area.Right; x++)
         {
-            for (int y = area.Top; y <= area.Bottom; y++)
+            for (int y = area.Top; y < area.Bottom; y++)
             {
                 isTaken[y][x] = false;
             }

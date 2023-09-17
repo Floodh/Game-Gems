@@ -24,9 +24,9 @@ class Boulder : Building
         base.Draw();
     }
 
-    public override void Update()
+    public override void Tick()
     {
-        throw new System.NotImplementedException();
+        base.Tick();
     }
 
 }

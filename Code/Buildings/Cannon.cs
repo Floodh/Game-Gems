@@ -2,14 +2,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 
-class Healer : Building
+class Cannon : Building
 {
 
-    private const string Path_BaseTexture = "Data/Texture/Healer.png";
+    private const string Path_BaseTexture = "Data/Texture/Cannon.png";
 
     Texture2D baseTexture;
 
-    public Healer()
+    public Cannon()
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
     }

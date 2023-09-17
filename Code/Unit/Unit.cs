@@ -18,9 +18,8 @@ abstract class Unit : Targetable
 
     public abstract void Update();
 
-    public void Die()
+    protected override void Die()
     {
-        allUnits.Remove(this);
     }
 
 }

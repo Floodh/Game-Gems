@@ -40,8 +40,18 @@ public class GameWindow : Game
         this.bgMap = new Map("Data/MapData/OG.png");
         Camera.Init(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         
+        //  test
         Boulder boulder = new Boulder();
         boulder.Place(new Point(1, 0));
+        Wall wall = new Wall();
+        wall.Place(new Point(5,3));
+        Cannon cannon = new Cannon();
+        cannon.Place(new Point(3,3));
+        Healer healer = new Healer();
+        healer.Place(3,1);
+        Generator generator = new();
+        generator.Place(1,5);
+
         // TODO: use this.Content to load your game content here
     }
 

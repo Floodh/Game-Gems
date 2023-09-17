@@ -26,8 +26,19 @@ abstract class Targetable
     protected int dmgReduction_Sheild = baseDmgReduction_Sheild;
 
     protected Point position;
-    
 
+    public virtual void Tick()
+    {
+
+        this.hp += regen_Health;
+        this.sheild += regen_Sheild;
+
+        this.hp = Math.Min(this.hp, maxHp);
+        this.sheild = Math.Min(this.sheild, maxSheild);
+        if (this.hp <= 0)
+            this.Die();
+
+    }
     
     public abstract bool Hit(Projectile projectile);
 
@@ -66,6 +77,8 @@ abstract class Targetable
         dmg = Math.Max(dmg, 1);
         this.hp -= dmg;     
     }
+
+    protected abstract void Die();
 
 
     

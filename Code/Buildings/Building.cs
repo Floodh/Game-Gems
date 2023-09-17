@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -48,11 +49,17 @@ abstract class Building : Targetable
     public virtual void Draw()
     {
         //  if isSelected draw green outline
-
-
     }
 
-    public abstract void Update();
+    public override void Tick()
+    {
+        base.Tick();
+    }
+
+    public bool Place(int x, int y)
+    {
+        return Place(new Point(x, y));
+    }
 
     public bool Place(Point position)
     {
@@ -64,6 +71,7 @@ abstract class Building : Targetable
 
     private bool Place(Rectangle area)
     {
+        //Console.WriteLine(area);
 
         if (grid.PlaceIfPossible(this, area))
         {
@@ -75,22 +83,14 @@ abstract class Building : Targetable
 
     }
 
-    //  returns true if it died
+    //  returns true if health is negative
     public override bool Hit(Projectile projectile)
     {
-        this.TakeDmg(projectile);
-        
-        if (this.hp <= 0)
-        {
-            this.Die();
-            return true;
-        }
-
-        return false;
-
+        this.TakeDmg(projectile); 
+        return this.hp <= 0;
     }
 
-    private void Die()
+    protected override void Die()
     {
         this.IsDead = true;
         allBuildings.Remove(this);  //  consider delaying the removal of this object from the list for potential death animation
