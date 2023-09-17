@@ -24,7 +24,7 @@ class Map
     private const string GRASS_TEXTURE_PATH = "Data/Texture/Grass.png";
     private const string WATER_TEXTURE_PATH = "Data/Texture/Water.png";
 
-    public const int mapPixelToGridTile_Multiplier = 2;  //  1 pixel = 2x2 tiles
+    public const int mapPixelToGridTile_Multiplier = 1;  //  1 pixel = 2x2 tiles
     public const int mapPixelToTexturePixel_Multiplier = 16;
 
     private Bitmap mapImage;
@@ -51,6 +51,7 @@ class Map
         //  load the map
         this.mapImage = new Bitmap(path);
         this.drawTextureSize = new Size(mapImage.Width * mapPixelToTexturePixel_Multiplier, mapImage.Height * mapPixelToTexturePixel_Multiplier);
+        Building.SetGridSize(new Size(mapImage.Width * mapPixelToGridTile_Multiplier, mapImage.Height * mapPixelToGridTile_Multiplier));
 
         //  graphic libary stuff
         GraphicsDevice graphicsDevice = GameWindow.graphicsDevice;
@@ -108,6 +109,6 @@ class Map
         Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height); 
         drawArea = Camera.rectOffset(drawArea);
         GameWindow.spriteBatch.Draw(drawTexture, drawArea, Color.White);
-        Console.WriteLine($"texture size : {this.drawTexture.Width}, {this.drawTexture.Height}");
+        //Console.WriteLine($"texture size : {this.drawTexture.Width}, {this.drawTexture.Height}");
     }
 }

@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Collections.Generic;
 using System.Data;
 using System.Numerics;
@@ -17,7 +18,7 @@ class Projectile
     }
 
     Vector2 vector2;
-    int damage;
+    public int damage;
     int speed;
     Targetable target;
     Targetable sender;

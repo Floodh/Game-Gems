@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,7 +10,12 @@ abstract class Building : Targetable
 {
 
     public static List<Building> allBuildings = new List<Building>();
-    private static Grid grid = new Grid();
+    private static Grid grid;
+
+    public static void SetGridSize(Size size)
+    {
+        grid = new Grid(size);
+    }
 
     public static void DrawAll()
     {
@@ -19,32 +25,75 @@ abstract class Building : Targetable
         }
     }
 
+    public bool IsDead{get; private set;} = false;
+    public Rectangle GridArea {get; protected set;} = Rectangle.Empty;
+    
+    //  can overide this
+    public Size GridSize{
+        get {return new Size(2,2);}
+    }
+    public Rectangle DrawArea
+    {   get
+        {   return
+            new Rectangle(
+                GridArea.X * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier,
+                GridArea.Y * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier,
+                GridArea.Width * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier,
+                GridArea.Height * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier
+            );  
+        }      
+    }
 
-    protected Size gridSize;
-    protected int hp;
+    public bool isSelected = false;
 
-    public Rectangle gridArea;
-
-    public void Draw()
+    public virtual void Draw()
     {
+        //  if isSelected draw green outline
+    }
+
+    public override void Tick()
+    {
+        base.Tick();
+    }
+
+    public bool Place(int x, int y)
+    {
+        return Place(new Point(x, y));
+    }
+
+    public bool Place(Point position)
+    {
+
+        Rectangle area = new Rectangle(position.X, position.Y, this.GridSize.Width, this.GridSize.Height);
+        return Place(area);
 
     }
 
-    public abstract void Update();
-
-    private bool Place()
+    private bool Place(Rectangle area)
     {
-        if (grid.PlaceIfPossible(this))
+        //Console.WriteLine(area);
+
+        if (grid.PlaceIfPossible(this, area))
         {
             allBuildings.Add(this);
+            this.GridArea = area;
             return true;
         }
         return false;
+
     }
 
-    private void Die()
+    //  returns true if health is negative
+    public override bool Hit(Projectile projectile)
     {
-        allBuildings.Remove(this);
+        this.TakeDmg(projectile); 
+        return this.hp <= 0;
+    }
+
+    protected override void Die()
+    {
+        this.IsDead = true;
+        allBuildings.Remove(this);  //  consider delaying the removal of this object from the list for potential death animation
         grid.RemoveBuilding(this);
     }
 }

@@ -1,29 +1,32 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
-using Size = System.Drawing.Size;
 
 class Wall : Building
 {
 
-    public Wall(Point position)
-    {
-        this.position = position;
-        this.gridSize = new Size(2, 2);
+    private const string Path_BaseTexture = "Data/Texture/Wall.png";
 
-        Building.allBuildings.Add(this);
+    Texture2D baseTexture;
+
+    public Wall()
+    {
+        this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
     }
 
-    public override void Update()
+    public override void Draw()
     {
-        throw new System.NotImplementedException();
+        Rectangle gridArea = this.GridArea;
+        if (gridArea != Rectangle.Empty)
+        {
+            GameWindow.spriteBatch.Draw(baseTexture, DrawArea, Color.White);
+        }
+        base.Draw();
     }
 
-    public void Draw()
+    public override void Tick()
     {
-        //Rectangle drawArea = new Rectangle(this.position.X - camera.position.X, this.position.Y - camera.position.Y, 20, 20);
-
+        base.Tick();
     }
 
 }
