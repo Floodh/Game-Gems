@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using Size = System.Drawing.Size;
+using Bitmap = System.Drawing.Bitmap;
 
 abstract class Building : Targetable
 {
@@ -12,9 +13,9 @@ abstract class Building : Targetable
     public static List<Building> allBuildings = new List<Building>();
     private static Grid grid;
 
-    public static void SetGridSize(Size size)
+    public static void SetGrid(Bitmap sourceImage)
     {
-        grid = new Grid(size);
+        grid = new Grid(sourceImage);
     }
 
     public static void DrawAll()

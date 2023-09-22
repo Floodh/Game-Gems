@@ -13,7 +13,6 @@ public class GameWindow : Game
 
     private Map bgMap;
 
-
     public GameWindow()
     {
         graphics = new GraphicsDeviceManager(this)
@@ -37,20 +36,22 @@ public class GameWindow : Game
         Console.WriteLine("Loading content...");
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
+
         this.bgMap = new Map("Data/MapData/OG.png");
+        Building.SetGrid(this.bgMap.SourceImage);
         Camera.Init(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         
         //  test
         Boulder boulder = new Boulder();
         boulder.Place(new Point(1, 0));
         Wall wall = new Wall();
-        wall.Place(new Point(5,3));
+        wall.Place(new Point(15,13));
         Cannon cannon = new Cannon();
-        cannon.Place(new Point(3,3));
+        cannon.Place(new Point(13,13));
         Healer healer = new Healer();
-        healer.Place(3,1);
+        healer.Place(13,11);
         Generator generator = new();
-        generator.Place(1,5);
+        generator.Place(11,15);
 
         // TODO: use this.Content to load your game content here
     }
