@@ -30,7 +30,10 @@ abstract class Building : Targetable
     {
         for (int i = 0; i < allBuildings.Count; i++)
         {
-            allBuildings[i].Tick();
+            Building building = allBuildings[i];
+            building.Tick();
+            if (building.IsDead)
+                i--;
         }
     }
 
