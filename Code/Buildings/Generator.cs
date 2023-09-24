@@ -10,6 +10,7 @@ class Generator : Building
     Texture2D baseTexture;
 
     public Generator()
+        : base(Faction.Player)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
     }

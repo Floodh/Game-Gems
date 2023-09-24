@@ -13,6 +13,7 @@ abstract class Building : Targetable
     public static List<Building> allBuildings = new List<Building>();
     private static Grid grid;
 
+
     public static void SetGrid(Bitmap sourceImage)
     {
         grid = new Grid(sourceImage);
@@ -41,8 +42,18 @@ abstract class Building : Targetable
     public bool IsDead{get; private set;} = false;
     public Rectangle GridArea {get; protected set;} = Rectangle.Empty;
 
-    public Building()
-        : base()
+    public override Point TargetPosition {
+        get 
+        {
+            return new Point(
+                DrawArea.X - DrawArea.Width / 2,
+                DrawArea.Y - DrawArea.Height / 2               
+            );
+        }
+    }
+
+    public Building(Faction faction)
+        : base(faction)
     {}
     
     //  can overide this

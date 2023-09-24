@@ -30,7 +30,6 @@ class Projectile
 
     public static void DrawAll()
     {
-
     }
 
     //Vector2 vector2;

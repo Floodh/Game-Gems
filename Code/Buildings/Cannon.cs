@@ -10,6 +10,7 @@ class Cannon : Building
     Texture2D baseTexture;
 
     public Cannon()
+        : base(Faction.Player)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
     }

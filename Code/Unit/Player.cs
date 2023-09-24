@@ -9,7 +9,7 @@ class Player : Unit
     Texture2D baseTexture;
 
     public Player(Vector2 spawnPosition) 
-        : base()
+        : base(Faction.Player)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
         this.exactPosition = spawnPosition;

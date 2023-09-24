@@ -22,10 +22,13 @@ abstract class Targetable
     protected int hp;
     protected int sheild;
 
-    protected Point position;
+    public abstract Point TargetPosition {get;}
 
-    public Targetable()
+    public readonly Faction faction;
+
+    public Targetable(Faction faction)
     {
+        this.faction = faction;
         this.hp = StartHp;
         this.sheild = StartSheild;
     }

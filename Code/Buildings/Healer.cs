@@ -10,6 +10,7 @@ class Healer : Building
     Texture2D baseTexture;
 
     public Healer()
+         : base(Faction.Player)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
     }
