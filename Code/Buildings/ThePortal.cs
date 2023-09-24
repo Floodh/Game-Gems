@@ -18,7 +18,7 @@ class ThePortal : Building
         Rectangle gridArea = this.GridArea;
         if (gridArea != Rectangle.Empty)
         {
-            GameWindow.spriteBatch.Draw(baseTexture, DrawArea, Color.White);
+            GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Color.White);
         }
         base.Draw();
     }
