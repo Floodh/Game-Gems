@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using Size = System.Drawing.Size;
+using Bitmap = System.Drawing.Bitmap;
 
 abstract class Building : Targetable
 {
@@ -12,9 +13,9 @@ abstract class Building : Targetable
     public static List<Building> allBuildings = new List<Building>();
     private static Grid grid;
 
-    public static void SetGridSize(Size size)
+    public static void SetGrid(Bitmap sourceImage)
     {
-        grid = new Grid(size);
+        grid = new Grid(sourceImage);
     }
 
     public static void DrawAll()
@@ -29,7 +30,7 @@ abstract class Building : Targetable
     public Rectangle GridArea {get; protected set;} = Rectangle.Empty;
     
     //  can overide this
-    public Size GridSize{
+    public static Size GridSize{
         get {return new Size(2,2);}
     }
     public Rectangle DrawArea
@@ -64,7 +65,7 @@ abstract class Building : Targetable
     public bool Place(Point position)
     {
 
-        Rectangle area = new Rectangle(position.X, position.Y, this.GridSize.Width, this.GridSize.Height);
+        Rectangle area = new Rectangle(position.X, position.Y, GridSize.Width, GridSize.Height);
         return Place(area);
 
     }

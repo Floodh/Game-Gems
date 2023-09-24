@@ -11,7 +11,8 @@ public class GameWindow : Game
     public static SpriteBatch spriteBatch;
     public static GraphicsDevice graphicsDevice;
 
-    private Map bgMap;
+    private Map map;
+    private Level level;
 
 
     public GameWindow()
@@ -39,6 +40,12 @@ public class GameWindow : Game
         Console.WriteLine("Loading content...");
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
+
+        this.map = new Map("Data/MapData/OG.png");
+        Building.SetGrid(this.map.SourceImage);
+        Camera.Init(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+        this.level = new Level(this.map.SourceImage);
+        
         this.bgMap = new Map("Data/MapData/OG.png");
         //Camera.Init(bgMap.drawTextureSize);
         //  test
@@ -76,7 +83,7 @@ public class GameWindow : Game
         //Console.WriteLine("Drawing...");
         spriteBatch.Begin();
         
-        this.bgMap.Draw();
+        this.map.Draw();
 
         Building.DrawAll();
         spriteBatch.End();

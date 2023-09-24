@@ -14,7 +14,7 @@ using Bitmap = System.Drawing.Bitmap;
 class Map
 {
 
-    enum TilesRGB : uint
+    public enum TilesRGB : uint
     {
         Dirt = 0xFF663931,
         Grass = 0xFF4b692F,
@@ -28,7 +28,10 @@ class Map
     public const int mapPixelToGridTile_Multiplier = 1;  //  1 pixel = 2x2 tiles
     public const int mapPixelToTexturePixel_Multiplier = 16;
 
-    private Bitmap mapImage;
+    public Size SourceSize { get {return this.SourceImage.Size;} }
+    public Bitmap SourceImage {get; private set;}
+
+    public Point drawOffset = Point.Zero;
 
     private Texture2D drawTexture;
 
@@ -38,7 +41,7 @@ class Map
 
     private Size drawTextureSize;
 
-    public Point drawOffset = Point.Zero;
+
 
     
 
@@ -50,9 +53,8 @@ class Map
 
 
         //  load the map
-        this.mapImage = new Bitmap(path);
-        this.drawTextureSize = new Size(mapImage.Width * mapPixelToTexturePixel_Multiplier, mapImage.Height * mapPixelToTexturePixel_Multiplier);
-        Building.SetGridSize(new Size(mapImage.Width * mapPixelToGridTile_Multiplier, mapImage.Height * mapPixelToGridTile_Multiplier));
+        this.SourceImage = new Bitmap(path);
+        this.drawTextureSize = new Size(SourceImage.Width * mapPixelToTexturePixel_Multiplier, SourceImage.Height * mapPixelToTexturePixel_Multiplier);
 
         //  graphic libary stuff
         GraphicsDevice graphicsDevice = GameWindow.graphicsDevice;
@@ -68,11 +70,11 @@ class Map
         spriteBatch.Begin();
 
             graphicsDevice.SetRenderTarget(renderTargetIsAOffScreenBuffer);
-            for (int y = 0; y < this.mapImage.Width; y++)
-            for (int x = 0; x < this.mapImage.Height; x++)
+            for (int y = 0; y < this.SourceImage.Width; y++)
+            for (int x = 0; x < this.SourceImage.Height; x++)
             {
                 //Console.WriteLine($"x : {x}, y : {y}");
-                TilesRGB argb = (TilesRGB)mapImage.GetPixel(x, y).ToArgb();
+                TilesRGB argb = (TilesRGB)SourceImage.GetPixel(x, y).ToArgb();
                 Rectangle drawRect = new Rectangle(x * mapPixelToTexturePixel_Multiplier, y * mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier);
                 switch (argb)
                 {
