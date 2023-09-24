@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -19,11 +19,12 @@ public class GameWindow : Game
     {
         graphics = new GraphicsDeviceManager(this)
         {
-            PreferredBackBufferWidth = 1280,
-            PreferredBackBufferHeight = 1040
+            PreferredBackBufferWidth = 1920,
+            PreferredBackBufferHeight = 1080
         };
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
+        
     }
 
     protected override void Initialize()
@@ -31,6 +32,7 @@ public class GameWindow : Game
         // TODO: Add your initialization logic here
         Console.WriteLine("Initlizing...");
         base.Initialize();
+        
     }
 
     protected override void LoadContent()
@@ -41,9 +43,22 @@ public class GameWindow : Game
 
         this.map = new Map("Data/MapData/OG.png");
         Building.SetGrid(this.map.SourceImage);
-        Camera.Init(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         this.level = new Level(this.map.SourceImage);
         
+       // this.bgMap = new Map("Data/MapData/OG.png");
+        //  test
+        Boulder boulder = new Boulder();
+        boulder.Place(new Point(1, 0));
+        Wall wall = new Wall();
+        wall.Place(new Point(5,3));
+        Cannon cannon = new Cannon();
+        cannon.Place(new Point(3,3));
+        Healer healer = new Healer();
+        healer.Place(3,1);
+        Generator generator = new();
+        generator.Place(1,5);
+
+        // TODO: use this.Content to load your game content here
     }
 
     protected override void Update(GameTime gameTime)
@@ -52,7 +67,7 @@ public class GameWindow : Game
             Exit();
 
         // TODO: Add your update logic here
-        Camera.UpdateByMouse(Mouse.GetState());
+        Camera.UpdateByMouse(Mouse.GetState(),graphics);
         Camera.UpdateByKeyboard(Keyboard.GetState());
 
         level.MayTick();    //  performs all ticks

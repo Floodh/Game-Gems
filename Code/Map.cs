@@ -5,8 +5,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+
 using Size = System.Drawing.Size;
 using Bitmap = System.Drawing.Bitmap;
+
 
 
 class Map
@@ -38,6 +40,10 @@ class Map
     private Texture2D waterTexture;
 
     private Size drawTextureSize;
+
+
+
+    
 
 
 
@@ -96,15 +102,14 @@ class Map
         renderTargetIsAOffScreenBuffer.SaveAsPng(stream, drawTextureSize.Width, drawTextureSize.Height);
         this.drawTexture = Texture2D.FromStream(graphicsDevice, stream);
         graphicsDevice.SetRenderTarget(null);   //  give back the rendering target
-
-        
+        Camera.Init(drawTextureSize);
 
     }
 
     public void Draw()
     {
-        Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height);
-        //drawArea = Camera.Offset(drawArea);
+        Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height); 
+        drawArea = Camera.ModifiedDrawArea(drawArea, Camera.zoomLevel);
         GameWindow.spriteBatch.Draw(drawTexture, drawArea, Color.White);
         //Console.WriteLine($"texture size : {this.drawTexture.Width}, {this.drawTexture.Height}");
     }
