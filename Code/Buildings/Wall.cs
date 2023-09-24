@@ -10,6 +10,7 @@ class Wall : Building
     Texture2D baseTexture;
 
     public Wall()
+        : base(Faction.Player)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
     }

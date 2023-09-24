@@ -10,6 +10,7 @@ class Boulder : Building
     Texture2D baseTexture;
 
     public Boulder()
+        : base(Faction.Neutral)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
     }

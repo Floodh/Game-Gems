@@ -9,6 +9,7 @@ class ThePortal : Building
     Texture2D baseTexture;
 
     public ThePortal()
+        : base(Faction.Enemy)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
     }

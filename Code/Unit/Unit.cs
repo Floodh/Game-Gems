@@ -10,7 +10,7 @@ abstract class Unit : Targetable
 
     public static List<Unit> allUnits = new List<Unit>();
 
-    
+
     const int unitPxSize = 64;
 
     public static void DrawAll()
@@ -30,13 +30,14 @@ abstract class Unit : Targetable
             if (unit.IsDead)
                 i--;
         }
-    }   
+    }
 
+    public override Point TargetPosition {get {return new Point(((int)exactPosition.X), ((int)exactPosition.Y));}}
     protected Vector2 exactPosition;
     public bool IsDead {get; private set;} = false;
 
-    public Unit()
-        : base()
+    public Unit(Faction faction)
+        : base(faction)
     {
         allUnits.Add(this);
     }
