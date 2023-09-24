@@ -41,6 +41,8 @@ class Level
         ThePortal thePortal = new ThePortal();
         thePortal.Place(size.Width / 2 - 1, size.Height / 2 - 1);
 
+        Player player = new Player(new Vector2(25.0f, 25.0f));
+
         int numberOfRocks = 10000;
 
         for (int i = 0; i < numberOfRocks; i++)
@@ -61,7 +63,7 @@ class Level
         //  then do tick, the tick will check if the unit died
         Projectile.TickAll();
         Building.TickAll();
-        //Unit.TickAll();
+        Unit.TickAll();
 
     }
 

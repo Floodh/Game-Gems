@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -86,6 +86,7 @@ public class GameWindow : Game
         this.map.Draw();
 
         Building.DrawAll();
+        Unit.DrawAll();
         spriteBatch.End();
         //Unit.DrawAll();
 

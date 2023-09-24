@@ -10,10 +10,39 @@ abstract class Unit : Targetable
 
     public static List<Unit> allUnits = new List<Unit>();
 
-    protected Vector2 exactPosition;
-    const int unitPxSize = 16;
+    
+    const int unitPxSize = 64;
 
-    private Rectangle DrawArea {get 
+    public static void DrawAll()
+    {
+        foreach (Unit unit in allUnits)
+        {
+            unit.Draw();
+        }
+    }
+
+    public static void TickAll()
+    {
+        for (int i = 0; i < allUnits.Count; i++)
+        {
+            Unit unit = allUnits[i];
+            unit.Tick();
+            if (unit.IsDead)
+                i--;
+        }
+    }   
+
+    protected Vector2 exactPosition;
+    public bool IsDead {get; private set;} = false;
+
+    public Unit()
+        : base()
+    {
+        allUnits.Add(this);
+    }
+
+    protected Rectangle DrawArea {
+        get 
         {
             return new Rectangle(((int)exactPosition.X), ((int)exactPosition.Y), unitPxSize, unitPxSize);
         }

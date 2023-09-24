@@ -55,13 +55,13 @@ class Grid
                 //Console.WriteLine($"x : {x}, y : {y}");
                 if (this.IsTileTaken(x,y))
                 {
-                    Console.WriteLine("Could not place building!");
+                    //Console.WriteLine("Could not place building!");
                     return false;
                 }
-                else
-                {
-                    Console.WriteLine("Placed new building!");
-                }
+                // else
+                // {
+                //     Console.WriteLine("Placed new building!");
+                // }
             }
         }
         //  mark as taken
