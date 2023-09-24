@@ -102,7 +102,6 @@ class Map
         renderTargetIsAOffScreenBuffer.SaveAsPng(stream, drawTextureSize.Width, drawTextureSize.Height);
         this.drawTexture = Texture2D.FromStream(graphicsDevice, stream);
         graphicsDevice.SetRenderTarget(null);   //  give back the rendering target
-        Console.WriteLine("innan camera init");
         Camera.Init(drawTextureSize);
 
     }
@@ -110,7 +109,7 @@ class Map
     public void Draw()
     {
         Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height); 
-        drawArea = Camera.GetManipulatedViewArea(drawArea);
+        drawArea = Camera.ModifiedDrawArea(drawArea, Camera.zoomLevel);
         GameWindow.spriteBatch.Draw(drawTexture, drawArea, Color.White);
         //Console.WriteLine($"texture size : {this.drawTexture.Width}, {this.drawTexture.Height}");
     }

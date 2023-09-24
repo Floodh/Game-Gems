@@ -43,11 +43,9 @@ public class GameWindow : Game
 
         this.map = new Map("Data/MapData/OG.png");
         Building.SetGrid(this.map.SourceImage);
-        Camera.Init(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         this.level = new Level(this.map.SourceImage);
         
-        this.bgMap = new Map("Data/MapData/OG.png");
-        //Camera.Init(bgMap.drawTextureSize);
+       // this.bgMap = new Map("Data/MapData/OG.png");
         //  test
         Boulder boulder = new Boulder();
         boulder.Place(new Point(1, 0));
