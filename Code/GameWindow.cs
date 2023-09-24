@@ -31,6 +31,7 @@ public class GameWindow : Game
         // TODO: Add your initialization logic here
         Console.WriteLine("Initlizing...");
         base.Initialize();
+        
     }
 
     protected override void LoadContent()
@@ -39,7 +40,7 @@ public class GameWindow : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
         this.bgMap = new Map("Data/MapData/OG.png");
-        
+        //Camera.Init(bgMap.drawTextureSize);
         //  test
         Boulder boulder = new Boulder();
         boulder.Place(new Point(1, 0));

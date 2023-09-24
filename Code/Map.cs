@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+
 using Size = System.Drawing.Size;
 using Bitmap = System.Drawing.Bitmap;
 
@@ -100,14 +101,14 @@ class Map
         this.drawTexture = Texture2D.FromStream(graphicsDevice, stream);
         graphicsDevice.SetRenderTarget(null);   //  give back the rendering target
         Console.WriteLine("innan camera init");
-        Camera.Init(this.drawTextureSize);
+        Camera.Init(drawTextureSize);
 
     }
 
     public void Draw()
     {
         Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height); 
-        drawArea = Camera.rectOffset(drawArea);
+        drawArea = Camera.GetManipulatedViewArea(drawArea);
         GameWindow.spriteBatch.Draw(drawTexture, drawArea, Color.White);
         //Console.WriteLine($"texture size : {this.drawTexture.Width}, {this.drawTexture.Height}");
     }
