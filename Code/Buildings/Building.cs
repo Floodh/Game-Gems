@@ -30,7 +30,7 @@ abstract class Building : Targetable
     public Rectangle GridArea {get; protected set;} = Rectangle.Empty;
     
     //  can overide this
-    public Size GridSize{
+    public static Size GridSize{
         get {return new Size(2,2);}
     }
     public Rectangle DrawArea
@@ -65,7 +65,7 @@ abstract class Building : Targetable
     public bool Place(Point position)
     {
 
-        Rectangle area = new Rectangle(position.X, position.Y, this.GridSize.Width, this.GridSize.Height);
+        Rectangle area = new Rectangle(position.X, position.Y, GridSize.Width, GridSize.Height);
         return Place(area);
 
     }

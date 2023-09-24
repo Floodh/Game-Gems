@@ -39,6 +39,12 @@ class Grid
         return this.IsTileTaken(point.X, point.Y);
     }
 
+    public bool PlaceIfPossible(Building building, Point point)
+    {
+        Size size = Building.GridSize;
+        return PlaceIfPossible(building, new Rectangle(point.X, point.Y, size.Width, size.Height));
+    }
+
     public bool PlaceIfPossible(Building building, Rectangle area)
     {
         //Console.WriteLine();
@@ -51,6 +57,10 @@ class Grid
                 {
                     Console.WriteLine("Could not place building!");
                     return false;
+                }
+                else
+                {
+                    Console.WriteLine("Placed new building!");
                 }
             }
         }

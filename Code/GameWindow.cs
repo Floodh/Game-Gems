@@ -11,7 +11,9 @@ public class GameWindow : Game
     public static SpriteBatch spriteBatch;
     public static GraphicsDevice graphicsDevice;
 
-    private Map bgMap;
+    private Map map;
+    private Level level;
+
 
     public GameWindow()
     {
@@ -37,23 +39,11 @@ public class GameWindow : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
 
-        this.bgMap = new Map("Data/MapData/OG.png");
-        Building.SetGrid(this.bgMap.SourceImage);
+        this.map = new Map("Data/MapData/OG.png");
+        Building.SetGrid(this.map.SourceImage);
         Camera.Init(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+        this.level = new Level(this.map.SourceImage);
         
-        //  test
-        Boulder boulder = new Boulder();
-        boulder.Place(new Point(1, 0));
-        Wall wall = new Wall();
-        wall.Place(new Point(15,13));
-        Cannon cannon = new Cannon();
-        cannon.Place(new Point(13,13));
-        Healer healer = new Healer();
-        healer.Place(13,11);
-        Generator generator = new();
-        generator.Place(11,15);
-
-        // TODO: use this.Content to load your game content here
     }
 
     protected override void Update(GameTime gameTime)
@@ -76,7 +66,7 @@ public class GameWindow : Game
         //Console.WriteLine("Drawing...");
         spriteBatch.Begin();
         
-        this.bgMap.Draw();
+        this.map.Draw();
 
         Building.DrawAll();
         spriteBatch.End();
