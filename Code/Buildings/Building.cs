@@ -68,8 +68,8 @@ abstract class Building : Targetable
         //  if isSelected draw green outline
     }
 
-    public virtual void Action()
-    {}
+    // public virtual void Action()
+    // {}
 
     public override void Tick()
     {
