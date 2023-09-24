@@ -10,9 +10,6 @@ abstract class Unit : Targetable
 
     public static List<Unit> allUnits = new List<Unit>();
 
-    protected int hp;
-    protected int attackDmg;
-
     public void Draw()
     {}
 

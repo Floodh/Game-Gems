@@ -55,6 +55,8 @@ public class GameWindow : Game
         Camera.UpdateByMouse(Mouse.GetState());
         Camera.UpdateByKeyboard(Keyboard.GetState());
 
+        level.MayTick();    //  performs all ticks
+
         base.Update(gameTime);
     }
 

@@ -26,8 +26,21 @@ abstract class Building : Targetable
         }
     }
 
+    public static void TickAll()
+    {
+        for (int i = 0; i < allBuildings.Count; i++)
+        {
+            allBuildings[i].Tick();
+        }
+    }
+
+
     public bool IsDead{get; private set;} = false;
     public Rectangle GridArea {get; protected set;} = Rectangle.Empty;
+
+    public Building()
+        : base()
+    {}
     
     //  can overide this
     public static Size GridSize{
@@ -51,6 +64,9 @@ abstract class Building : Targetable
     {
         //  if isSelected draw green outline
     }
+
+    public virtual void Action()
+    {}
 
     public override void Tick()
     {
@@ -94,6 +110,7 @@ abstract class Building : Targetable
     protected override void Die()
     {
         this.IsDead = true;
+        //Console.WriteLine($"died {}");
         allBuildings.Remove(this);  //  consider delaying the removal of this object from the list for potential death animation
         grid.RemoveBuilding(this);
     }
