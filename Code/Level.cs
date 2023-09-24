@@ -41,7 +41,7 @@ class Level
         ThePortal thePortal = new ThePortal();
         thePortal.Place(size.Width / 2 - 1, size.Height / 2 - 1);
 
-        Player player = new Player(new Vector2(25.0f, 25.0f));
+        Player player = new Player(new Vector2(size.Width / 2 - 1, size.Height / 2 - 1));
 
         int numberOfRocks = 10000;
 

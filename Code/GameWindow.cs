@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -40,7 +40,7 @@ public class GameWindow : Game
         Console.WriteLine("Loading content...");
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
-
+       
         this.map = new Map("Data/MapData/OG.png");
         Building.SetGrid(this.map.SourceImage);
         this.level = new Level(this.map.SourceImage);
@@ -69,6 +69,7 @@ public class GameWindow : Game
         // TODO: Add your update logic here
         Camera.UpdateByMouse(Mouse.GetState(),graphics);
         Camera.UpdateByKeyboard(Keyboard.GetState());
+        
 
         level.MayTick();    //  performs all ticks
 

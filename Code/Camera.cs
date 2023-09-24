@@ -131,5 +131,12 @@ static class Camera
             offset.Y += 10;
         }
     }
+    public static Vector2 ScreenToWorld(Vector2 screenPosition)
+{
+    // Inverse of the ModifiedDrawArea logic
+    float worldX = (screenPosition.X / zoomLevel) - offset.X;
+    float worldY = (screenPosition.Y / zoomLevel) - offset.Y;
+    return new Vector2(worldX, worldY);
+}
 
 }
