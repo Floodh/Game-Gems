@@ -59,6 +59,7 @@ class Enemy : Unit
                 if (attackCounter >= AttackRate)
                 {
                     Projectile projectile = new Projectile(10, target, this);
+                    
                     attackCounter = 0;
                 }
             }
