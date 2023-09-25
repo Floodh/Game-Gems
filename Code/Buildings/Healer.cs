@@ -29,5 +29,8 @@ class Healer : Building
     {
         base.Tick();
     }
-
+    public override string ToString()
+    {
+        return $"Healer : {this.Hp} / {this.MaxHp}";
+    }
 }

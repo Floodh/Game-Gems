@@ -29,11 +29,11 @@ class Level
         Boulder boulder = new Boulder();
         boulder.Place(new Point(1, 0));
         Wall wall = new Wall();
-        wall.Place(new Point(15,13));
+        wall.Place(new Point(17,15));
         Cannon cannon = new Cannon();
         cannon.Place(new Point(13,13));
         Healer healer = new Healer();
-        healer.Place(13,11);
+        healer.Place(15,11);
         Generator generator = new Generator();
         generator.Place(11,15);
         Size size = bitmap.Size * Map.mapPixelToGridTile_Multiplier;

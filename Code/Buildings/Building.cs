@@ -46,8 +46,8 @@ abstract class Building : Targetable
         get 
         {
             return new Point(
-                DrawArea.X - DrawArea.Width / 2,
-                DrawArea.Y - DrawArea.Height / 2               
+                DrawArea.X + DrawArea.Width / 2,
+                DrawArea.Y + DrawArea.Height / 2               
             );
         }
     }

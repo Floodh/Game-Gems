@@ -29,5 +29,8 @@ class Generator : Building
     {
         base.Tick();
     }
-
+    public override string ToString()
+    {
+        return $"Generator : {this.Hp} / {this.MaxHp}";
+    }
 }

@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -24,9 +25,21 @@ class ThePortal : Building
         base.Draw();
     }
 
+
+    private int spawnCounter = 0;
+    private int threshHold = 100;
+
     public override void Tick()
     {
         base.Tick();
+        if (spawnCounter++ > threshHold)
+        {
+            spawnCounter = 0;
+            Enemy spawn = new Enemy(new Vector2(this.TargetPosition.X, this.TargetPosition.Y));
+        }
     }
-
+    public override string ToString()
+    {
+        return $"ThePortal : {this.Hp} / {this.MaxHp}";
+    }
 }

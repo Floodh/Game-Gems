@@ -29,5 +29,8 @@ class Wall : Building
     {
         base.Tick();
     }
-
+    public override string ToString()
+    {
+        return $"Wall : {this.Hp} / {this.MaxHp}";
+    }
 }
