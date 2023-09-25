@@ -45,7 +45,7 @@ class Enemy : Unit
             direction.Normalize();
             float speed = 2.0f;
             float distanceToCenter = Vector2.Distance(exactPosition + new Vector2(DrawArea.Width / 2, DrawArea.Height / 2), destination);
-            if (distanceToCenter > speed * 5)
+            if (distanceToCenter > speed * 25)
             {
                 // Move towards the destination
                 Vector2 movement = direction * speed;

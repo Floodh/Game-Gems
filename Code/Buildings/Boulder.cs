@@ -23,7 +23,7 @@ class Boulder : Building
         {
             Rectangle drawArea = Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel);
             GameWindow.spriteBatch.Draw(baseTexture, drawArea, Color.White);
-            hpBar.update();
+            hpBar.Update();
             if(this.MaxHp != Hp)
             hpBar.Draw();
         }

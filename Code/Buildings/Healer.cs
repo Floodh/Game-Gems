@@ -10,7 +10,9 @@ class Healer : Building
 
     Texture2D baseTexture;
     private HealthBar hpBar;
+    private EnergyBar energyBar;
     private Targetable target;
+    
 
     private int dmg = -10;
 
@@ -22,6 +24,7 @@ class Healer : Building
 
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
         hpBar = new HealthBar(this);
+        energyBar = new EnergyBar(this);        
     }
 
     public override void Draw()
@@ -30,8 +33,10 @@ class Healer : Building
         if (gridArea != Rectangle.Empty)
         {
             GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Color.White);
-            hpBar.update();
+            hpBar.Update();
+            energyBar.Update();
             hpBar.Draw();
+            energyBar.Draw();
         }
         base.Draw();
     }

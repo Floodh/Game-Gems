@@ -25,7 +25,7 @@ class Wall : Building
         if (gridArea != Rectangle.Empty)
         {
             GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Color.White);
-            hpBar.update();
+            hpBar.Update();
             hpBar.Draw();
         }
         base.Draw();
