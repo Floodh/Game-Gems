@@ -8,11 +8,13 @@ class Healer : Building
     private const string Path_BaseTexture = "Data/Texture/Healer.png";
 
     Texture2D baseTexture;
+    private HealthBar hpBar;
 
     public Healer()
          : base(Faction.Player)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
+        hpBar = new HealthBar(this);
     }
 
     public override void Draw()
@@ -21,6 +23,8 @@ class Healer : Building
         if (gridArea != Rectangle.Empty)
         {
             GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Color.White);
+            hpBar.update();
+            hpBar.Draw();
         }
         base.Draw();
     }

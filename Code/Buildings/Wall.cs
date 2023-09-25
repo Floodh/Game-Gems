@@ -8,11 +8,12 @@ class Wall : Building
     private const string Path_BaseTexture = "Data/Texture/Wall.png";
 
     Texture2D baseTexture;
-
+    private HealthBar hpBar;
     public Wall()
         : base(Faction.Player)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
+         hpBar = new HealthBar(this);
     }
 
     public override void Draw()
@@ -21,6 +22,8 @@ class Wall : Building
         if (gridArea != Rectangle.Empty)
         {
             GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Color.White);
+            hpBar.update();
+            hpBar.Draw();
         }
         base.Draw();
     }
