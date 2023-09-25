@@ -6,13 +6,14 @@ class Cannon : Building
 {
 
     private const string Path_BaseTexture = "Data/Texture/Cannon.png";
-
+    private HealthBar hpBar;
     Texture2D baseTexture;
 
     public Cannon()
         : base(Faction.Player)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
+        hpBar = new HealthBar(this);
     }
 
     public override void Draw()
@@ -21,6 +22,8 @@ class Cannon : Building
         if (gridArea != Rectangle.Empty)
         {
             GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Color.White);
+            hpBar.update();
+            hpBar.Draw();
         }
         base.Draw();
     }
