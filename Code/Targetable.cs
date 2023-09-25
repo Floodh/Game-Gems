@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 abstract class Targetable
 {
 
-    protected int MaxHp {get; set;} = 100;
+    public int MaxHp {get; protected set;} = 100;
     protected int StartHp {get; set;} = 100;
     protected int MaxSheild {get; set;} = 0;
     protected int StartSheild {get; set;} = 0;
@@ -19,7 +19,7 @@ abstract class Targetable
     protected int AttackRate {get; set;} = 100; //  lower = faster
 
     
-    protected int hp;
+    public int Hp {get; protected set;}
     protected int sheild;
 
     public abstract Point TargetPosition {get;}
@@ -29,19 +29,19 @@ abstract class Targetable
     public Targetable(Faction faction)
     {
         this.faction = faction;
-        this.hp = StartHp;
+        this.Hp = StartHp;
         this.sheild = StartSheild;
     }
 
     public virtual void Tick()
     {
 
-        this.hp += Regen_Health;
+        this.Hp += Regen_Health;
         this.sheild += Regen_Sheild;
 
-        this.hp = Math.Min(this.hp, MaxHp);
+        this.Hp = Math.Min(this.Hp, MaxHp);
         this.sheild = Math.Min(this.sheild, MaxSheild);
-        if (this.hp <= 0)
+        if (this.Hp <= 0)
             this.Die();
 
     }
@@ -81,7 +81,7 @@ abstract class Targetable
     {
         dmg -= this.DmgReduction_Health;
         dmg = Math.Max(dmg, 1);
-        this.hp -= dmg;     
+        this.Hp -= dmg;     
     }
 
     protected abstract void Die();

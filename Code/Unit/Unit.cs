@@ -66,7 +66,7 @@ abstract class Unit : Targetable
     public override bool Hit(Projectile projectile)
     {
         this.TakeDmg(projectile); 
-        return this.hp <= 0;
+        return this.Hp <= 0;
     }
 
     // protected override void Die()
