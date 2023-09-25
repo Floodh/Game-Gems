@@ -38,8 +38,6 @@ abstract class Building : Targetable
         }
     }
 
-
-    public bool IsDead{get; private set;} = false;
     public Rectangle GridArea {get; protected set;} = Rectangle.Empty;
 
     public override Point TargetPosition {

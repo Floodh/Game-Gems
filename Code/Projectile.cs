@@ -33,16 +33,18 @@ class Projectile
     {
     }
 
-    public Projectile(int damage, Targetable target, Targetable sender)
+    public Projectile(int damage, int energyTransfer, Targetable target, Targetable sender)
     {
         this.damage = damage;
         this.target = target;
         this.sender = sender;
+        this.energyTransfer = energyTransfer;
         allProjectiles.Add(this);
     }
 
     //Vector2 vector2;
-    public int damage = 10;
+    public int damage;
+    public int energyTransfer = 0;
     //double speed = 3.14;
     Targetable target;
     Targetable sender;

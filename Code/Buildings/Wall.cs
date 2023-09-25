@@ -12,8 +12,11 @@ class Wall : Building
     public Wall()
         : base(Faction.Player)
     {
+        this.MaxHp = 500;
+        this.Hp = this.MaxHp;
+
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
-         hpBar = new HealthBar(this);
+        hpBar = new HealthBar(this);
     }
 
     public override void Draw()
