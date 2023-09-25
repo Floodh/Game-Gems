@@ -88,8 +88,10 @@ public class GameWindow : Game
 
         Building.DrawAll();
         Unit.DrawAll();
+        Projectile.DrawAll();
+        
         spriteBatch.End();
-        //Unit.DrawAll();
+
 
         base.Draw(gameTime);
     }

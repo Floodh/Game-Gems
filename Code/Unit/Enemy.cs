@@ -24,6 +24,9 @@ class Enemy : Unit
         base.Draw();
     }
 
+
+    int attackCounter = 0;
+
     public override void Tick()
     {
         base.Tick();
@@ -42,11 +45,22 @@ class Enemy : Unit
             direction.Normalize();
             float speed = 5.0f;
             float distanceToCenter = Vector2.Distance(exactPosition + new Vector2(DrawArea.Width / 2, DrawArea.Height / 2), destination);
-            if (distanceToCenter > speed)
+            if (distanceToCenter > speed * 5)
             {
                 // Move towards the destination
                 Vector2 movement = direction * speed;
                 exactPosition += movement;
+                attackCounter = 0;
+
+            }
+            else
+            {
+                attackCounter++;
+                if (attackCounter >= AttackRate)
+                {
+                    Projectile projectile = new Projectile(10, target, this);
+                    attackCounter = 0;
+                }
             }
         }
 

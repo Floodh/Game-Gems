@@ -7,6 +7,8 @@ class Projectile
 {
     public static List<Projectile> allProjectiles = new List<Projectile>();
 
+
+
     public static void TickAll()
     {
 
@@ -21,8 +23,7 @@ class Projectile
         {
             if (allProjectiles[i].hasHit == true)
             {
-                i--;
-                allProjectiles.RemoveAt(i);
+                allProjectiles.RemoveAt(i--);
             }
         }
 
@@ -32,11 +33,19 @@ class Projectile
     {
     }
 
+    public Projectile(int damage, Targetable target, Targetable sender)
+    {
+        this.damage = damage;
+        this.target = target;
+        this.sender = sender;
+        allProjectiles.Add(this);
+    }
+
     //Vector2 vector2;
     public int damage = 10;
     //double speed = 3.14;
     Targetable target;
-    //Targetable sender;
+    Targetable sender;
     bool hasHit = false;
     
 }

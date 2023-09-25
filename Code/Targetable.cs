@@ -16,7 +16,7 @@ abstract class Targetable
     protected int Regen_Sheild {get; set;} = 1;
 
     protected int AttackDmg {get; set;} = 1;
-    protected int AttackRate {get; set;} = 100; //  lower = faster
+    protected int AttackRate {get; set;} = 50; //  lower = faster
 
     
     public int Hp {get; protected set;}
