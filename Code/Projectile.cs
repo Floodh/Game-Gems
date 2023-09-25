@@ -2,6 +2,8 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.Data;
 using System.Numerics;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 class Projectile
 {
@@ -31,6 +33,15 @@ class Projectile
 
     public static void DrawAll()
     {
+        foreach(Projectile proj in allProjectiles)
+        {
+            proj.Draw();
+        }
+    }
+    public void Draw()
+    {
+
+        GameWindow.spriteBatch.Draw(projTexture,Camera.ModifiedDrawArea(projRectangle, Camera.zoomLevel),Color.Purple );
     }
 
     public Projectile(int damage, int energyTransfer, Targetable target, Targetable sender)
@@ -39,6 +50,10 @@ class Projectile
         this.target = target;
         this.sender = sender;
         this.energyTransfer = energyTransfer;
+
+        this.projTexture = new(GameWindow.graphicsDevice,1,1);
+        projTexture.SetData(new Color[] {Color.White});
+        projRectangle = new Rectangle(target.TargetPosition.X,target.TargetPosition.Y, 5,5);
         allProjectiles.Add(this);
     }
 
@@ -49,5 +64,9 @@ class Projectile
     Targetable target;
     Targetable sender;
     bool hasHit = false;
+    public static readonly Color projColor = Color.White;
+    public Rectangle projRectangle;
+    public Texture2D projTexture;
+
     
 }
