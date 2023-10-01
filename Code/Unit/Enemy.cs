@@ -7,8 +7,11 @@ using Microsoft.Xna.Framework.Input;
 class Enemy : Unit
 {
     private const string Path_BaseTexture = "Data/Texture/Enemy.png";
-    Texture2D baseTexture;
 
+    public static int NumberOfEnemies {get; protected set;}
+
+
+    Texture2D baseTexture;
     Targetable target = null;
 
     public Enemy(Vector2 spawnPosition) 
@@ -16,6 +19,7 @@ class Enemy : Unit
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
         this.exactPosition = spawnPosition;
+        NumberOfEnemies++;
     }
 
     public override void Draw()
@@ -64,7 +68,13 @@ class Enemy : Unit
             }
         }
 
-    }            
+    }     
+
+    protected override void Die()
+    {
+        base.Die();
+        NumberOfEnemies--;
+    }     
 
         
 

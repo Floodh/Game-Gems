@@ -43,15 +43,10 @@ abstract class Bar
     }
     public void Draw()
     {
-        // this.building.Hp;
-        // this.building.MaxHp;
-        // this.building.DrawArea;
         Rectangle transformedBgDrawArea = Camera.ModifiedDrawArea(bgDrawArea, Camera.zoomLevel);
         Rectangle transformedFillDrawArea = Camera.ModifiedDrawArea(fillDrawArea, Camera.zoomLevel);
-
         GameWindow.spriteBatch.Draw(whitePixelTexture, transformedBgDrawArea, bgColor);
         GameWindow.spriteBatch.Draw(whitePixelTexture,transformedFillDrawArea, fillColor);
-        
     }
 
     protected abstract double Percentace();

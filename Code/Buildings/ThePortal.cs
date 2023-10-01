@@ -6,6 +6,7 @@ class ThePortal : Building
 {
 
     private const string Path_BaseTexture = "Data/Texture/ThePortal.png";
+    private const int MaxSpawnedUnits = 10;
 
     Texture2D baseTexture;
 
@@ -27,12 +28,13 @@ class ThePortal : Building
 
 
     private int spawnCounter = 0;
-    private int threshHold = 100;
+    private int threshHold = 50;
 
     public override void Tick()
     {
         base.Tick();
         if (spawnCounter++ > threshHold)
+        if (Enemy.NumberOfEnemies < MaxSpawnedUnits)
         {
             spawnCounter = 0;
             Enemy spawn = new Enemy(new Vector2(this.TargetPosition.X, this.TargetPosition.Y));

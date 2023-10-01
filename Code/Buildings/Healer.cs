@@ -14,12 +14,12 @@ class Healer : Building
     private Targetable target;
     
 
-    private int dmg = -10;
+    private int dmg = -1;
 
     public Healer()
         : base(Faction.Player)
     {
-        this.AttackRate = 20;
+        this.AttackRate = 10;
         this.MaxEnergy = 100;
 
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);

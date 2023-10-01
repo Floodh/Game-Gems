@@ -12,13 +12,13 @@ class Generator : Building
     private HealthBar hpBar;
     private Targetable target;
 
-    private int energyTransfer = 25;
+    private int energyTransfer = 1;
 
 
     public Generator()
         : base(Faction.Player)
     {
-        this.AttackRate = 40;
+        this.AttackRate = 10;
 
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
         hpBar = new HealthBar(this);
@@ -43,7 +43,6 @@ class Generator : Building
         if (this.target == null || this.target.Energy == this.target.MaxEnergy)
         {
             this.target = this.FindTarget(Faction.Player, false, true);
-            //Console.WriteLine($"Energy target : {this.target}");
         }
         else
         {
