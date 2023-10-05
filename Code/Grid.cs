@@ -92,4 +92,16 @@ class Grid
         //  Draw available tiles
     }
 
+
+    public static Rectangle ToDrawArea(Rectangle gridArea)
+    {
+        return new Rectangle(
+            gridArea.X * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier,
+            gridArea.Y * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier,
+            gridArea.Width * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier,
+            gridArea.Height * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier
+        );  
+
+    }
+
 }

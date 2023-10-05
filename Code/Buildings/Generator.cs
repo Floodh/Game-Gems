@@ -53,7 +53,7 @@ class Generator : Building
                 Projectile projectile = new Projectile(0, energyTransfer, target, this);
                 attackCounter = 0;
             }
-        }        
+        }
     }
     public override string ToString()
     {

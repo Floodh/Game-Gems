@@ -61,12 +61,7 @@ abstract class Building : Targetable
     public Rectangle DrawArea
     {   get
         {   return
-            new Rectangle(
-                GridArea.X * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier,
-                GridArea.Y * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier,
-                GridArea.Width * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier,
-                GridArea.Height * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier
-            );  
+            Grid.ToDrawArea(GridArea);
         }      
     }
 
