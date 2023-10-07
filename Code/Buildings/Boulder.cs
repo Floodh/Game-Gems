@@ -22,7 +22,7 @@ class Boulder : Building
         if (gridArea != Rectangle.Empty)
         {
             Rectangle drawArea = Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel);
-            GameWindow.spriteBatch.Draw(baseTexture, drawArea, Color.White);
+            GameWindow.spriteBatch.Draw(baseTexture, drawArea, Sunlight.Mask);
             hpBar.Update();
             if(this.MaxHp != Hp)
             hpBar.Draw();

@@ -131,7 +131,7 @@ class EnergyBeam : Animation
                 
                 Rectangle area = areas[i];
                 area.Offset(-origo.X, -origo.Y);
-                Console.WriteLine($"    {areas[i]} --> {area}");
+                //Console.WriteLine($"    {areas[i]} --> {area}");
                 int textureIndex = (animationStep + i) % baseTextures.Length;
                 GameWindow.spriteBatch.Draw(baseTextures[textureIndex], area, Color.White);
                 
@@ -184,7 +184,7 @@ class EnergyBeam : Animation
         //  we wan't these values to be equal
         int need_for_x = Math.Abs(xStep) * (Math.Abs(yDiff) + 1);
         int need_for_y = Math.Abs(yStep) * (Math.Abs(xDiff) + 1);
-        Console.WriteLine($"     need x : {need_for_x}={xStep}*{(Math.Abs(yDiff) + 1)}, need y : {need_for_y}={yStep}*{(Math.Abs(xDiff) + 1)}");
+        //Console.WriteLine($"     need x : {need_for_x}={xStep}*{(Math.Abs(yDiff) + 1)}, need y : {need_for_y}={yStep}*{(Math.Abs(xDiff) + 1)}");
         return need_for_x >= need_for_y;
     }
 

@@ -110,7 +110,7 @@ class Map
     {
         Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height); 
         drawArea = Camera.ModifiedDrawArea(drawArea, Camera.zoomLevel);
-        GameWindow.spriteBatch.Draw(drawTexture, drawArea, Color.White);
+        GameWindow.spriteBatch.Draw(drawTexture, drawArea, Sunlight.Mask);
         //Console.WriteLine($"texture size : {this.drawTexture.Width}, {this.drawTexture.Height}");
     }
 }

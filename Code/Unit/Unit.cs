@@ -8,10 +8,10 @@ using Size = System.Drawing.Size;
 abstract class Unit : Targetable
 {
 
+    const int unitPxSize = 32;
+
     public static List<Unit> allUnits = new List<Unit>();
-
-
-    const int unitPxSize = 64;
+    
 
     public static void DrawAll()
     {
@@ -32,9 +32,8 @@ abstract class Unit : Targetable
         }
     }
 
-    public override Point TargetPosition {get {return new Point(((int)exactPosition.X), ((int)exactPosition.Y));}}
+    public override Point TargetPosition {get {return new Point(((int)exactPosition.X + unitPxSize / 2), ((int)exactPosition.Y + unitPxSize / 2));}}
     protected Vector2 exactPosition;
-    public bool IsDead {get; private set;} = false;
 
     public Unit(Faction faction)
         : base(faction)
