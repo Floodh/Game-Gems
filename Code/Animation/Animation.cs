@@ -34,6 +34,8 @@ class Animation
     {
         allAnimations.Add(animation);
         animation.IsPlaying = true;
+        animation.currentFrame = 0;
+        //Console.WriteLine($"     - {animation.IsPlaying}");
     }
 
     int currentFrame = 0;

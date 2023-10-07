@@ -47,7 +47,7 @@ class Healer : Building
     public override void Tick()
     {
         base.Tick();
-        if (this.target == null || this.target.Hp == this.target.MaxHp)
+        if (this.target == null || this.target.Hp == this.target.MaxHp || this.target.IsDead)
         {
             this.target = this.FindTarget(Faction.Player, true, false);
             if (this.target != null)
@@ -60,10 +60,11 @@ class Healer : Building
             if (this.Energy >= -dmg)
             {           
                 Console.WriteLine("Healig");
-                Projectile projectile = new Projectile(dmg, 0, target, this);
+                Projectile projectile = new(dmg, 0, target, this);
                 attackCounter = 0;
+                Console.WriteLine(this.animation.IsPlaying);
                 if (this.animation.IsPlaying == false)
-                    this.animation.Play();                
+                    this.animation.Play();
             }
 
         }

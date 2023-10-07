@@ -100,14 +100,16 @@ class EnergyBeam : Animation
         Point origo = encloseingArea.Location;
         using RenderTarget2D renderTargetIsAOffScreenBuffer = new (GameWindow.graphicsDevice, encloseingArea.Width, encloseingArea.Height, false, SurfaceFormat.Color, DepthFormat.None);
 
-        GameWindow.spriteBatch.Begin();
+        
         GameWindow.graphicsDevice.SetRenderTarget(renderTargetIsAOffScreenBuffer);
 
         Texture2D[] result = new Texture2D[baseTextures.Length];
         for (int animationStep = 0; animationStep < baseTextures.Length; animationStep++)
         {
             Texture2D texture = new(GameWindow.graphicsDevice, encloseingArea.Width, encloseingArea.Height);
-            GameWindow.graphicsDevice.Clear(Color.Azure);
+            GameWindow.graphicsDevice.Clear(Color.Transparent);
+
+            GameWindow.spriteBatch.Begin();
             for (int i = 0; i < areas.Length; i++)
             {
                 
@@ -118,6 +120,8 @@ class EnergyBeam : Animation
                 GameWindow.spriteBatch.Draw(baseTextures[textureIndex], area, Color.White);
                 
             }
+            GameWindow.spriteBatch.End();   //  the stuff will not be drawn onto the target unless this function is called
+
             using MemoryStream stream = new MemoryStream();
             renderTargetIsAOffScreenBuffer.SaveAsPng(stream, encloseingArea.Width, encloseingArea.Height);
             texture = Texture2D.FromStream(GameWindow.graphicsDevice, stream);              
@@ -128,7 +132,7 @@ class EnergyBeam : Animation
            
         }
 
-        GameWindow.spriteBatch.End();
+        
         GameWindow.graphicsDevice.SetRenderTarget(null);
 
         return result;
