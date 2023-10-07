@@ -23,6 +23,7 @@ class Animation
             {
                 i--;
                 allAnimations.Remove(animation);
+                animation.IsPlaying = false;
             }
         }        
 
@@ -53,7 +54,6 @@ class Animation
         this.frames = frames;
         this.drawArea = drawArea;
         this.frameDuration = frameDuration;
-        allAnimations.Add(this);
 
         for (int i = 0; i < Duration; i++)
             if (frames[i] == null)

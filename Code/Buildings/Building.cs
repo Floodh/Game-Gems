@@ -38,7 +38,7 @@ abstract class Building : Targetable
         }
     }
 
-    public Rectangle GridArea {get; protected set;} = Rectangle.Empty;
+    public override Rectangle GridArea {get; protected set;} = Rectangle.Empty;
 
     public override Point TargetPosition {
         get 

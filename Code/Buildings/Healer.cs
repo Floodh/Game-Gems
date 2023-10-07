@@ -26,7 +26,7 @@ class Healer : Building
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
         hpBar = new HealthBar(this);
         energyBar = new EnergyBar(this);     
-        animation = new(this.GridArea.Center, new Point(40,50), EnergyBeam.Type.Line);   
+        //animation = new(this.GridArea.Center, new Point(40,50), EnergyBeam.Type.Line);   
     }
 
     public override void Draw()
@@ -50,20 +50,22 @@ class Healer : Building
         if (this.target == null || this.target.Hp == this.target.MaxHp)
         {
             this.target = this.FindTarget(Faction.Player, true, false);
+            if (this.target != null)
+                animation = new(this.GridArea.Center, target.GridArea.Center, EnergyBeam.Type.Line); 
         }
         else
         {
-            //Console.WriteLine($"Healer energy {Energy}");
             attackCounter++;
             if (attackCounter >= AttackRate)
             if (this.Energy >= -dmg)
             {           
-                //Console.WriteLine("Healig");
+                Console.WriteLine("Healig");
                 Projectile projectile = new Projectile(dmg, 0, target, this);
                 attackCounter = 0;
+                if (this.animation.IsPlaying == false)
+                    this.animation.Play();                
             }
-            if (this.animation.IsPlaying == false)
-                this.animation.Play();
+
         }
         
     }

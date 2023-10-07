@@ -87,23 +87,23 @@ static class Camera
     offset.X -= (int)((mouseWorldPosition.X * zoomFactor) - mouseWorldPosition.X);
     offset.Y -= (int)((mouseWorldPosition.Y * zoomFactor) - mouseWorldPosition.Y);
 
-    // Check if the mouse is near the screen edges for panning
-    if (mouseState.Position.X < leftMargin)
-    {
-        offset.X += 10;
-    }
-    if (mouseState.Position.X > rightMargin)
-    {
-        offset.X -= 10;
-    }
-    if (mouseState.Position.Y < topMargin)
-    {
-        offset.Y += 10;
-    }
-    if (mouseState.Position.Y > bottomMargin)
-    {
-        offset.Y -= 10;
-    }
+    // // Check if the mouse is near the screen edges for panning
+    // if (mouseState.Position.X < leftMargin)
+    // {
+    //     offset.X += 10;
+    // }
+    // if (mouseState.Position.X > rightMargin)
+    // {
+    //     offset.X -= 10;
+    // }
+    // if (mouseState.Position.Y < topMargin)
+    // {
+    //     offset.Y += 10;
+    // }
+    // if (mouseState.Position.Y > bottomMargin)
+    // {
+    //     offset.Y -= 10;
+    // }
 
     // Update the zoom level
     zoomLevel = newZoomLevel;

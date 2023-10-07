@@ -27,6 +27,7 @@ abstract class Targetable
     public int Energy {get; protected set;}
 
     public abstract Point TargetPosition {get;}
+    public virtual Rectangle GridArea {get; protected set;} //  should not be used for units (yet)
 
     public readonly Faction faction;
 

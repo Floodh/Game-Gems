@@ -49,7 +49,7 @@ class Generator : Building
             attackCounter++;
             if (attackCounter >= AttackRate)
             {          
-                Console.WriteLine($"Giving energy to : {target}");
+                //Console.WriteLine($"Giving energy to : {target}");
                 Projectile projectile = new Projectile(0, energyTransfer, target, this);
                 attackCounter = 0;
             }
