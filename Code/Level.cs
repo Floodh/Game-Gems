@@ -64,6 +64,7 @@ class Level
         Projectile.TickAll();
         Building.TickAll();
         Unit.TickAll();
+        Animation.TickAll();
 
     }
 

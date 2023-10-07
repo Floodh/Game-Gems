@@ -7,12 +7,42 @@ class Animation
 {
     private static List<Animation> allAnimations = new List<Animation>();
 
+    public static void DrawAll()
+    {
+        foreach (Animation animation in allAnimations)
+        {
+            animation.Draw();
+        }
+    }
+    public static void TickAll()
+    {
+        for (int i = 0; i < allAnimations.Count; i++)
+        {
+            Animation animation = allAnimations[i];
+            if (animation.IsPlaying == false)
+            {
+                i--;
+                allAnimations.Remove(animation);
+            }
+        }        
+
+    }
+
+
+    public static void PlayAnimation(Animation animation)
+    {
+        allAnimations.Add(animation);
+        animation.IsPlaying = true;
+    }
+
     int currentFrame = 0;
     readonly Texture2D[] frames;
     Rectangle drawArea;
     readonly int frameDuration;
 
     int Duration {get {return this.frames.Length;}}
+
+    public bool IsPlaying{get; private set;}
 
     public Animation(Tuple<Texture2D[], Rectangle> data, int frameDuration)
         :   this(data.Item1, data.Item2, frameDuration)
@@ -24,10 +54,22 @@ class Animation
         this.drawArea = drawArea;
         this.frameDuration = frameDuration;
         allAnimations.Add(this);
+
+        for (int i = 0; i < Duration; i++)
+            if (frames[i] == null)
+                throw new Exception($"frame {i} is null!");
+        
+
     }
 
-    public void Draw()
+    public void Play()
     {
+        PlayAnimation(this);
+    }
+
+    private void Draw()
+    {
+        //Console.WriteLine("Is drawing...");
 
         if (currentFrame/frameDuration < Duration)
         {
@@ -35,12 +77,10 @@ class Animation
         }
         else
         {
-            allAnimations.Remove(this); //  consider not doing this in the draw phase
+            this.IsPlaying = false;
         }
         
     }
-
-
 
 
 }

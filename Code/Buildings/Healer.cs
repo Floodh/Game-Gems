@@ -13,8 +13,9 @@ class Healer : Building
     private EnergyBar energyBar;
     private Targetable target;
     
-
     private int dmg = -1;
+    private EnergyBeam animation;
+
 
     public Healer()
         : base(Faction.Player)
@@ -24,7 +25,8 @@ class Healer : Building
 
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
         hpBar = new HealthBar(this);
-        energyBar = new EnergyBar(this);        
+        energyBar = new EnergyBar(this);     
+        animation = new(this.GridArea.Center, new Point(40,50), EnergyBeam.Type.Line);   
     }
 
     public override void Draw()
@@ -60,6 +62,8 @@ class Healer : Building
                 Projectile projectile = new Projectile(dmg, 0, target, this);
                 attackCounter = 0;
             }
+            if (this.animation.IsPlaying == false)
+                this.animation.Play();
         }
         
     }

@@ -72,6 +72,7 @@ public class GameWindow : Game
         
 
         level.MayTick();    //  performs all ticks
+        
 
         base.Update(gameTime);
     }
@@ -89,6 +90,7 @@ public class GameWindow : Game
         Building.DrawAll();
         Unit.DrawAll();
         Projectile.DrawAll();
+        Animation.DrawAll();
         
         spriteBatch.End();
 
