@@ -51,7 +51,7 @@ class Healer : Building
         {
             this.target = this.FindTarget(this, Faction.Player, true, false);
             if (this.target != null)
-                animation = new(this.GridArea.Center, target.GridArea.Center, EnergyBeam.Type.Line); 
+                animation = new(this.GridArea.Location, target.GridArea.Location, EnergyBeam.Type.Line); 
         }
         else
         {

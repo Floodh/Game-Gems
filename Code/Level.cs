@@ -26,16 +26,14 @@ class Level
         this.r = new Random();
 
         //  test
-        Boulder boulder = new Boulder();
-        boulder.Place(new Point(1, 0));
         Wall wall = new Wall();
-        wall.Place(new Point(17,15));
+        wall.Place(new Point(47,45));
         Cannon cannon = new Cannon();
-        cannon.Place(new Point(13,13));
+        cannon.Place(new Point(43,43));
         Healer healer = new Healer();
-        healer.Place(15,11);
+        healer.Place(85,41);
         Generator generator = new Generator();
-        generator.Place(11,15);
+        generator.Place(41,45);
         Size size = bitmap.Size * Map.mapPixelToGridTile_Multiplier;
 
         ThePortal thePortal = new ThePortal();

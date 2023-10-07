@@ -60,7 +60,7 @@ class EnergyBeam : Animation
         Point walkPoint = gridStart;
 
 
-        for (int i = 0; i < distance; i++)
+        for (int i = 0; i <= distance; i++)
         {
             
 
@@ -84,12 +84,10 @@ class EnergyBeam : Animation
             nextPoint.Y += yDiff;
 
 
-            Rectangle currentDrawArea = Grid.ToDrawArea(new Rectangle(walkPoint, new Point(2,2)));
-            Rectangle nextDrawArea = Grid.ToDrawArea(new Rectangle(nextPoint, new Point(2,2)));
-            Rectangle drawArea = new Rectangle(
-                (currentDrawArea.Location.X), 
-                (currentDrawArea.Location.Y), 
-                nextDrawArea.Size.X, nextDrawArea.Size.Y);
+            Rectangle currentDrawArea = Grid.ToDrawArea(new Rectangle(walkPoint, new Point(1,1)));
+            Rectangle nextDrawArea = Grid.ToDrawArea(new Rectangle(nextPoint, new Point(1,1)));
+            Rectangle drawArea = currentDrawArea;
+            drawArea.Offset(drawArea.Size.X / 2, drawArea.Size.Y /2);
 
             Console.WriteLine($"walkpoint : {walkPoint} ---> {nextPoint}, draw Area {drawArea}");
             drawAreas.Add(drawArea);
@@ -107,13 +105,13 @@ class EnergyBeam : Animation
 
     private static Texture2D[] RenderTextures(Rectangle encloseingArea, Rectangle[] areas, Texture2D[] baseTextures)
     {
-        int count = 0;
-        foreach (Texture2D baseTexture in baseTextures)
-        {
-            MemoryStream stream = new MemoryStream(); 
-            baseTexture.SaveAsPng(stream, baseTexture.Width, baseTexture.Height);
-            File.WriteAllBytes($"baseText_{count++}.png", stream.ToArray());            
-        }
+        // int count = 0;
+        // foreach (Texture2D baseTexture in baseTextures)
+        // {
+        //     MemoryStream stream = new MemoryStream(); 
+        //     baseTexture.SaveAsPng(stream, baseTexture.Width, baseTexture.Height);
+        //     File.WriteAllBytes($"baseText_{count++}.png", stream.ToArray());            
+        // }
 
         Point origo = encloseingArea.Location;
         using RenderTarget2D renderTargetIsAOffScreenBuffer = new (GameWindow.graphicsDevice, encloseingArea.Width, encloseingArea.Height, false, SurfaceFormat.Color, DepthFormat.None);
@@ -184,8 +182,9 @@ class EnergyBeam : Animation
     {
         //  xStep * yDiff = yStep * xDiff
         //  we wan't these values to be equal
-        int need_for_x = xStep * (Math.Abs(yDiff) + 1);
-        int need_for_y = yStep * (Math.Abs(xDiff) + 1);
+        int need_for_x = Math.Abs(xStep) * (Math.Abs(yDiff) + 1);
+        int need_for_y = Math.Abs(yStep) * (Math.Abs(xDiff) + 1);
+        Console.WriteLine($"     need x : {need_for_x}={xStep}*{(Math.Abs(yDiff) + 1)}, need y : {need_for_y}={yStep}*{(Math.Abs(xDiff) + 1)}");
         return need_for_x >= need_for_y;
     }
 
