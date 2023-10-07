@@ -26,11 +26,29 @@ class EnergyBeam : Animation
 
         int dx = gridStart.X - gridEnd.X;
         int dy = gridStart.Y - gridEnd.Y;
-        int gcd = GCD(dx, dy);
+        
 
         //  ratio
-        int xStep = dx / gcd;
-        int yStep = dy / gcd;
+        int xStep;
+        int yStep;
+        if (dx == 0)
+        {
+            xStep = 0;
+            yStep = dy;  // will always step in y direction
+        }
+        else if (dy == 0)
+        {
+            xStep = dx; // will always step in y direction
+            yStep = 0; 
+        }
+        else
+        {
+            int gcd = GCD(dx, dy);
+            xStep = dx / gcd;
+            yStep = dy / gcd;            
+        }
+
+
 
         int xDiff = 0;
         int yDiff = 0;
@@ -69,8 +87,8 @@ class EnergyBeam : Animation
             Rectangle currentDrawArea = Grid.ToDrawArea(new Rectangle(walkPoint, new Point(2,2)));
             Rectangle nextDrawArea = Grid.ToDrawArea(new Rectangle(nextPoint, new Point(2,2)));
             Rectangle drawArea = new Rectangle(
-                (currentDrawArea.Location + nextDrawArea.Location).X / 2, 
-                (currentDrawArea.Location + nextDrawArea.Location).Y / 2, 
+                (currentDrawArea.Location.X), 
+                (currentDrawArea.Location.Y), 
                 nextDrawArea.Size.X, nextDrawArea.Size.Y);
 
             Console.WriteLine($"walkpoint : {walkPoint} ---> {nextPoint}, draw Area {drawArea}");
@@ -127,9 +145,6 @@ class EnergyBeam : Animation
             texture = Texture2D.FromStream(GameWindow.graphicsDevice, stream);              
             result[animationStep] = texture;
 
-            //  debugg
-            File.WriteAllBytes($"prerendered_{animationStep}.png", stream.ToArray());
-           
         }
 
         

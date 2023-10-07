@@ -49,7 +49,7 @@ class Healer : Building
         base.Tick();
         if (this.target == null || this.target.Hp == this.target.MaxHp || this.target.IsDead)
         {
-            this.target = this.FindTarget(Faction.Player, true, false);
+            this.target = this.FindTarget(this, Faction.Player, true, false);
             if (this.target != null)
                 animation = new(this.GridArea.Center, target.GridArea.Center, EnergyBeam.Type.Line); 
         }
@@ -59,10 +59,9 @@ class Healer : Building
             if (attackCounter >= AttackRate)
             if (this.Energy >= -dmg)
             {           
-                Console.WriteLine("Healig");
+                //Console.WriteLine("Healig");
                 Projectile projectile = new(dmg, 0, target, this);
                 attackCounter = 0;
-                Console.WriteLine(this.animation.IsPlaying);
                 if (this.animation.IsPlaying == false)
                     this.animation.Play();
             }

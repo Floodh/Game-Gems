@@ -42,7 +42,7 @@ class Generator : Building
         base.Tick();
         if (this.target == null || this.target.Energy == this.target.MaxEnergy)
         {
-            this.target = this.FindTarget(Faction.Player, false, true);
+            this.target = this.FindTarget(this, Faction.Player, false, true);
         }
         else
         {

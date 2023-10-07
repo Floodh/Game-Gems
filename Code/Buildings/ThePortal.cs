@@ -6,7 +6,7 @@ class ThePortal : Building
 {
 
     private const string Path_BaseTexture = "Data/Texture/ThePortal.png";
-    private const int MaxSpawnedUnits = 10;
+    private const int MaxSpawnedUnits = 4;
 
     Texture2D baseTexture;
 

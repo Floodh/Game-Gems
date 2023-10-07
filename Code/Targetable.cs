@@ -118,7 +118,7 @@ abstract class Targetable
 
 
 
-    protected Targetable FindTarget(Faction faction, bool inNeed_Health, bool inNeed_Energy)
+    protected Targetable FindTarget(Targetable self, Faction faction, bool inNeed_Health, bool inNeed_Energy)
     {
         double distanceSquared = double.MaxValue;
         Targetable target = null;
@@ -157,7 +157,8 @@ abstract class Targetable
 
         }
 
-
+        if (target == self)
+            return null;
         return target;
 
     }

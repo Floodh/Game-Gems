@@ -37,7 +37,7 @@ class Enemy : Unit
         if (this.target == null || this.target.IsDead)
         {
             //Console.WriteLine("Trying to find target");
-            this.target = this.FindTarget(Faction.Player, false, false);
+            this.target = this.FindTarget(this, Faction.Player, false, false);
             //Console.WriteLine($"Found target: {target}");
         }
         else
