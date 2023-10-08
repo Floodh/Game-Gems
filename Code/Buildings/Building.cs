@@ -22,7 +22,7 @@ abstract class Building : Targetable
     }
 
     public static List<Building> allBuildings = new List<Building>();
-    private static Grid grid;
+    public static Grid grid;
 
 
     public static void SetGrid(Bitmap sourceImage)

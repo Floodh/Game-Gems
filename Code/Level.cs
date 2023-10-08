@@ -61,6 +61,7 @@ class Level
         this.startTime = DateTime.Now;
 
         Camera.zoomLevel = 5.0f;
+        Building.grid.CalculateEnemyValue();
 
     }
 
