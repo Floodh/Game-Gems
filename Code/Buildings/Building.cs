@@ -10,6 +10,17 @@ using Bitmap = System.Drawing.Bitmap;
 abstract class Building : Targetable
 {
 
+    public enum Type
+    {
+        Boulder,
+        Cannon,
+        Generator,
+        Healer,
+        Mineral,
+        ThePortal,
+        Wall
+    }
+
     public static List<Building> allBuildings = new List<Building>();
     private static Grid grid;
 
