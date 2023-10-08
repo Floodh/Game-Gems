@@ -89,7 +89,7 @@ class EnergyBeam : Animation
             Rectangle drawArea = currentDrawArea;
             drawArea.Offset(drawArea.Size.X / 2, drawArea.Size.Y /2);
 
-            Console.WriteLine($"walkpoint : {walkPoint} ---> {nextPoint}, draw Area {drawArea}");
+            //Console.WriteLine($"walkpoint : {walkPoint} ---> {nextPoint}, draw Area {drawArea}");
             drawAreas.Add(drawArea);
 
             walkPoint = nextPoint;
@@ -105,13 +105,6 @@ class EnergyBeam : Animation
 
     private static Texture2D[] RenderTextures(Rectangle encloseingArea, Rectangle[] areas, Texture2D[] baseTextures)
     {
-        // int count = 0;
-        // foreach (Texture2D baseTexture in baseTextures)
-        // {
-        //     MemoryStream stream = new MemoryStream(); 
-        //     baseTexture.SaveAsPng(stream, baseTexture.Width, baseTexture.Height);
-        //     File.WriteAllBytes($"baseText_{count++}.png", stream.ToArray());            
-        // }
 
         Point origo = encloseingArea.Location;
         using RenderTarget2D renderTargetIsAOffScreenBuffer = new (GameWindow.graphicsDevice, encloseingArea.Width, encloseingArea.Height, false, SurfaceFormat.Color, DepthFormat.None);
@@ -209,7 +202,7 @@ class EnergyBeam : Animation
         return n1 > n2 ? n1 * m1 : n2 * m2;
     }
 
-    public static Rectangle FindEncloseingArea(Rectangle[] areas)
+    private static Rectangle FindEncloseingArea(Rectangle[] areas)
     {
         if (areas.Length == 0)
             return Rectangle.Empty;

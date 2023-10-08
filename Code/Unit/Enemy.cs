@@ -14,11 +14,10 @@ class Enemy : Unit
     Texture2D baseTexture;
     Targetable target = null;
 
-    public Enemy(Vector2 spawnPosition) 
-        : base(Faction.Enemy)
+    public Enemy(Point spawnGridPosition) 
+        : base(Faction.Enemy, spawnGridPosition)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
-        this.exactPosition = spawnPosition;
         NumberOfEnemies++;
     }
 
@@ -43,18 +42,12 @@ class Enemy : Unit
         else
         {
 
-            // Calculate the direction vector
-            Vector2 destination = new Vector2(target.TargetPosition.X, target.TargetPosition.Y);
-            Vector2 direction = destination - (this.exactPosition + new Vector2(DrawArea.Width / 2, DrawArea.Height / 2));
-            direction.Normalize();
-            float speed = 2.0f;
-            float distanceToCenter = Vector2.Distance(exactPosition + new Vector2(DrawArea.Width / 2, DrawArea.Height / 2), destination);
-            if (distanceToCenter > speed * 25)
+            // Calculate the movement
+
+            if (false)
             {
                 // Move towards the destination
-                Vector2 movement = direction * speed;
-                exactPosition += movement;
-                attackCounter = 0;
+
 
             }
             else

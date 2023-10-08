@@ -10,6 +10,7 @@ class Grid
 {
 
     private readonly bool[][] isTaken;
+    private readonly int[][] enemyValue;    //  how much an enemy value being in a specific tile, equals the reverse distance to player structures
 
     public Grid(Bitmap sourceImage)
     {
@@ -17,16 +18,22 @@ class Grid
         Size size = sourceImage.Size * multi;
 
         this.isTaken = new bool[size.Height][];
+        this.enemyValue = new int[size.Height][];
         for (int y = 0; y < size.Height; y++)
+        {
             this.isTaken[y] = new bool[size.Width];
-
+            this.enemyValue[y] = new int[size.Width];
+        }
 
         //  this one could be buggy, if the grid behaves strange along edges, check this
         for (int y = 0; y < size.Height; y++)
         for (int x = 0; x < size.Width; x++)
         {
             if ((Map.TilesRGB)sourceImage.GetPixel(x, y).ToArgb() == Map.TilesRGB.Water)
+            {
                 Mark(new Rectangle(x * multi, y * multi, multi, multi), true);
+                enemyValue[y][x] = int.MinValue;
+            }
         }
     }
 
@@ -52,16 +59,10 @@ class Grid
         {
             for (int y = area.Top; y < area.Bottom; y++)
             {
-                //Console.WriteLine($"x : {x}, y : {y}");
                 if (this.IsTileTaken(x,y))
                 {
-                    //Console.WriteLine("Could not place building!");
                     return false;
                 }
-                // else
-                // {
-                //     Console.WriteLine("Placed new building!");
-                // }
             }
         }
         //  mark as taken

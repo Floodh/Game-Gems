@@ -12,14 +12,12 @@ class Player : Unit
 
 
 
-    public Player(Vector2 spawnPosition)
-        : base(Faction.Player)
+    public Player(Point spawnGridPosition)
+        : base(Faction.Player, spawnGridPosition)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
-        this.exactPosition = spawnPosition;
         this.lastMouseClickPosition = Vector2.Zero; // Initialize it to some default value
         this.isMoving = false;
-
     }
 
     public override void Draw()
@@ -43,20 +41,12 @@ class Player : Unit
     if (isMoving)
     {
         // Calculate the direction vector
-        Vector2 direction = lastMouseClickPosition - (exactPosition + new Vector2(DrawArea.Width / 2, DrawArea.Height / 2));
-        direction.Normalize();
-
-        // Adjust the movement speed as needed
-        float speed = 5.0f;
-
-        // Calculate the distance to the destination's center
-        float distanceToCenter = Vector2.Distance(exactPosition + new Vector2(DrawArea.Width / 2, DrawArea.Height / 2), lastMouseClickPosition);
 
         // Check if the player has reached the center of the target
-        if (distanceToCenter > speed)
+        if (false)
         {
             // Move towards the destination
-            exactPosition += direction * speed;
+
         }
         else
         {

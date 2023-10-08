@@ -8,8 +8,6 @@ using Size = System.Drawing.Size;
 abstract class Unit : Targetable
 {
 
-    const int unitPxSize = 32;
-
     public static List<Unit> allUnits = new List<Unit>();
     
 
@@ -32,19 +30,27 @@ abstract class Unit : Targetable
         }
     }
 
-    public override Point TargetPosition {get {return new Point(((int)exactPosition.X + unitPxSize / 2), ((int)exactPosition.Y + unitPxSize / 2));}}
-    protected Vector2 exactPosition;
+    public override Point TargetPosition {
+        get 
+        {
+            return new Point(
+                DrawArea.X + DrawArea.Width / 2,
+                DrawArea.Y + DrawArea.Height / 2               
+            );
+        }
+    }
 
-    public Unit(Faction faction)
+    public Unit(Faction faction, Point gridPosition)
         : base(faction)
     {
         allUnits.Add(this);
+        this.GridArea = new Rectangle(gridPosition, new Point(1,1));
     }
 
     protected Rectangle DrawArea {
         get 
         {
-            return new Rectangle(((int)exactPosition.X), ((int)exactPosition.Y), unitPxSize, unitPxSize);
+            return Grid.ToDrawArea(GridArea);
         }
     }
     

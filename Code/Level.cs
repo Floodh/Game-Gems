@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Size = System.Drawing.Size;
 using Bitmap = System.Drawing.Bitmap;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 
 class Level
 {
@@ -39,7 +40,7 @@ class Level
         ThePortal thePortal = new ThePortal();
         thePortal.Place(size.Width / 2 - 1, size.Height / 2 - 1);
 
-        Player player = new Player(new Vector2(size.Width / 2 - 1, size.Height / 2 - 1));
+        Player player = new Player(new Point(size.Width / 2 - 4, size.Height / 2 - 3));
 
         int numberOfRocks = 10000;
 
@@ -47,11 +48,19 @@ class Level
         {
             int x = r.Next() % size.Width;
             int y = r.Next() % size.Height;
-            Boulder rock = new Boulder();
-            rock.Place(x, y);
+            int dx = thePortal.GridArea.X - x,
+                dy = thePortal.GridArea.Y - y;
+            int distanceSquared = dx * dx + dy * dy;
+            if (distanceSquared >  5 * 5)
+            {
+                Boulder rock = new Boulder();
+                rock.Place(x, y);
+            }
         }
 
         this.startTime = DateTime.Now;
+
+        Camera.zoomLevel = 5.0f;
 
     }
 

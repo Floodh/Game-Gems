@@ -37,7 +37,7 @@ class ThePortal : Building
         if (Enemy.NumberOfEnemies < MaxSpawnedUnits)
         {
             spawnCounter = 0;
-            Enemy spawn = new Enemy(new Vector2(this.TargetPosition.X, this.TargetPosition.Y));
+            Enemy spawn = new Enemy(this.GridArea.Center);
         }
     }
     public override string ToString()

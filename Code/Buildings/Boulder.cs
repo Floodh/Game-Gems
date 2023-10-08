@@ -25,7 +25,7 @@ class Boulder : Building
             GameWindow.spriteBatch.Draw(baseTexture, drawArea, Sunlight.Mask);
             hpBar.Update();
             if(this.MaxHp != Hp)
-            hpBar.Draw();
+                hpBar.Draw();
         }
         base.Draw();
     }
