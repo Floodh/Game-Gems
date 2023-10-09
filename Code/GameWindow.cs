@@ -16,7 +16,6 @@ public class GameWindow : Game
 
     private BuildingSelector buildingSelector;
 
-
     public GameWindow()
     {
         graphics = new GraphicsDeviceManager(this)
@@ -74,8 +73,8 @@ public class GameWindow : Game
         // TODO: Add your update logic here
         Camera.UpdateByMouse(Mouse.GetState(),graphics);
         Camera.UpdateByKeyboard(Keyboard.GetState());
+        this.buildingSelector.UpdateByMouse(Mouse.GetState());
         this.buildingSelector.UpdateByKeyboard(Keyboard.GetState());
-        this.buildingSelector.Update();
         
 
         level.MayTick();    //  performs all ticks
