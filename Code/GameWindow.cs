@@ -14,6 +14,8 @@ public class GameWindow : Game
     private Map map;
     private Level level;
 
+    private BuildingSelector buildingSelector;
+
 
     public GameWindow()
     {
@@ -44,6 +46,8 @@ public class GameWindow : Game
         this.map = new Map("Data/MapData/OG.png");
         Building.SetGrid(this.map.SourceImage);
         this.level = new Level(this.map.SourceImage);
+        var displaySize = new Size(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+        this.buildingSelector = new BuildingSelector(displaySize);
         
        // this.bgMap = new Map("Data/MapData/OG.png");
         //  test
@@ -69,6 +73,8 @@ public class GameWindow : Game
         // TODO: Add your update logic here
         Camera.UpdateByMouse(Mouse.GetState(),graphics);
         Camera.UpdateByKeyboard(Keyboard.GetState());
+        this.buildingSelector.UpdateByKeyboard(Keyboard.GetState());
+        this.buildingSelector.Update();
         
 
         level.MayTick();    //  performs all ticks
@@ -91,6 +97,8 @@ public class GameWindow : Game
         Unit.DrawAll();
         Projectile.DrawAll();
         Animation.DrawAll();
+
+        this.buildingSelector.Draw(spriteBatch);
         
         spriteBatch.End();
 
