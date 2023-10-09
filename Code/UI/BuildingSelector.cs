@@ -17,6 +17,13 @@ class BuildingSelector
     //     throw new NotImplementedException();
     // }
 
+    public enum EState 
+    {
+        NotVisible = 0,
+        Visible = 1,
+        PlacementPending = 2
+    }   
+
 
     Texture2D centerTexture;
     Texture2D centerTexturePointing;
@@ -31,7 +38,7 @@ class BuildingSelector
     private BuildingOption selectedItem = null;
 
     private const string Path_Option1Texture = "Data/Texture/GreenGem.png";
-    public int State = 0;
+    public EState State = EState.NotVisible;
     List<BuildingOption> spriteList = new List<BuildingOption>();
 
     public Point Center
@@ -55,20 +62,20 @@ class BuildingSelector
         this.spriteList.Add(new BuildingOption(this, "Data/Texture/GreenGem.png", -1.7f));
         this.spriteList.Add(new BuildingOption(this, "Data/Texture/BlueGem.png", -0.85f));
         this.spriteList.Add(new BuildingOption(this, "Data/Texture/PurpleGem.png", 0f));
-        this.spriteList.Add(new BuildingOption(this, "Data/Texture/GreenGem.png", 0.85f));
-        this.spriteList.Add(new BuildingOption(this, "Data/Texture/BlueGem.png", 1.7f));
+        this.spriteList.Add(new BuildingOption(this, "Data/Texture/RedGem.png", 0.85f));
+        this.spriteList.Add(new BuildingOption(this, "Data/Texture/GreenGem.png", 1.7f));
     }
 
     public void UpdateByKeyboard(KeyboardState keyboardState)
     {
-        if(this.State < 2)
+        if(this.State == EState.NotVisible || this.State == EState.Visible)
         {
             if (keyboardState.IsKeyDown(Keys.LeftShift) || keyboardState.IsKeyDown(Keys.RightShift))
             {
-                this.State = 1;
+                this.State = EState.Visible;
             } 
             else{
-                this.State = 0;
+                this.State = EState.NotVisible;
             }
         }
         else
@@ -81,7 +88,7 @@ class BuildingSelector
 
     public void UpdateByMouse(MouseState mouseState)
     {
-        if(this.State <= 0)
+        if(this.State == EState.NotVisible)
             return;
             
         foreach(var sprite in this.spriteList)
@@ -89,7 +96,7 @@ class BuildingSelector
             sprite.UpdateByMouse(mouseState);
         }
 
-        if(this.State == 1)
+        if(this.State == EState.Visible)
         {
             if(mouseState.LeftButton == ButtonState.Pressed)
             {
@@ -101,16 +108,16 @@ class BuildingSelector
                 if(this.selectedItem != null)
                 {
                     this.BuildingToPlaceTexture = this.selectedItem.PlacementTexture;
-                    this.State = 2;
+                    this.State = EState.PlacementPending;
                 }
                 else
                 {
-                    this.State = 0;
+                    this.State = EState.NotVisible;
                 }
                 selectingOption = false;
             }
         } 
-        else if(this.State == 2)
+        else if(this.State == EState.PlacementPending)
         {
             this.BuildingToPlaceRect = new Rectangle(
                         mouseState.X, mouseState.Y, this.BuildingToPlaceTexture.Width, this.BuildingToPlaceTexture.Height);
@@ -124,13 +131,13 @@ class BuildingSelector
             {
                 // TODO Send build data
                 selectingOption = false;
-                this.State = 0;
+                this.State = EState.NotVisible;
             }
 
             if(mouseState.RightButton == ButtonState.Pressed)
             {
                 selectingOption = false;
-                this.State = 0;
+                this.State = EState.NotVisible;
             }
         }
         // Console.WriteLine($"State:{this.State}, LB:{mouseState.LeftButton.ToString()}");
@@ -138,10 +145,10 @@ class BuildingSelector
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        if(this.State <= 0)
+        if(this.State == EState.NotVisible)
             return;
 
-        if( this.State == 1)
+        if( this.State == EState.Visible)
         {
             // Draw the options
             foreach (var sprite in this.spriteList)
@@ -166,7 +173,7 @@ class BuildingSelector
             }
             this.selectedItem = null; // Otherwise the last selected item will be pointed at forever
         }
-        else if(this.State == 2)
+        else if(this.State == EState.PlacementPending)
         {
             // TODO adjust to map view
             GameWindow.spriteBatch.Draw(
