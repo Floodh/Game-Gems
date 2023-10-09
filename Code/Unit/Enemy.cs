@@ -33,32 +33,47 @@ class Enemy : Unit
     public override void Tick()
     {
         base.Tick();
-        if (this.target == null || this.target.IsDead)
+        // Calculate the movement
+
+        // Figure out an available tile
+        
+        int currentValue = Building.grid.GetEnemyValue(GridArea.X, GridArea.Y);
+        if (currentValue <= 1)
         {
-            //Console.WriteLine("Trying to find target");
-            this.target = this.FindTarget(this, Faction.Player, false, false);
-            //Console.WriteLine($"Found target: {target}");
+            this.target ??= this.FindTarget(this, Faction.Player, false, false);
+
+            //  perform attack
+            attackCounter++;
+            if (attackCounter >= AttackRate)
+            {
+                Projectile projectile = new Projectile(10, 0, target, this);
+                attackCounter = 0;
+            }
+                        
         }
         else
         {
+            this.target = null;
 
-            // Calculate the movement
-
-            if (false)
+            int nextValue = currentValue;
+            Point nextPos = this.GridArea.Location;
+            for (int i = 0; i < Grid.offsets.Length / 2; i++)
             {
-                // Move towards the destination
-
-
-            }
-            else
-            {
-                attackCounter++;
-                if (attackCounter >= AttackRate)
+                int newX = GridArea.X + Grid.offsets[i * 2];
+                int newY = GridArea.Y + Grid.offsets[i * 2 + 1];
+                int newValue = Building.grid.GetEnemyValue(newX, newY);
+                if (newValue >= nextValue)
                 {
-                    Projectile projectile = new Projectile(10, 0, target, this);
-                    attackCounter = 0;
+                    if (Building.grid.IsTileTaken(newX, newY) == false)
+                    {
+                        nextValue = newValue;
+                        nextPos = new Point(newX, newY);
+                    }
                 }
             }
+            //  verification of the new position has already been done
+            this.GridArea = new Rectangle(nextPos, new Point(1,1));
+
         }
 
     }     

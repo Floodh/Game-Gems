@@ -91,6 +91,11 @@ class Grid
         }         
     }
 
+    public int GetEnemyValue(int x, int y)
+    {
+        return enemyValue[y][x];
+    }
+
     public void CalculateEnemyValue()
     {
         ClearEnemyValue();
@@ -115,7 +120,7 @@ class Grid
         }
     }
 
-    static readonly int[] offsets = {1,0,-1,0,0,1,0,-1};
+    public static readonly int[] offsets = {1,0,-1,0,0,1,0,-1};
     private void CalculateEnemyValue(int x, int y, int distance)
     {
         for (int i = 0; i < offsets.Length / 2; i++)
