@@ -27,6 +27,14 @@ static class Camera
         cameraWindowSize = drawTextureSize;
     }
 
+    //  untested
+    public static Point ModifyPoint(Point point)
+    {
+        int x = (int)((point.X + offset.X) * zoomLevel);
+        int y = (int)((point.Y + offset.Y) * zoomLevel);  
+        return new Point(x, y);      
+    }
+
     public static Rectangle ModifiedDrawArea(Rectangle area, float zoomLevel)
     {
         int xOffset = (int)((area.X + offset.X) * zoomLevel);

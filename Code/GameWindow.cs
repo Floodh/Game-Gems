@@ -48,7 +48,8 @@ public class GameWindow : Game
         this.level = new Level(this.map.SourceImage);
         var displaySize = new Size(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         this.buildingSelector = new BuildingSelector(displaySize);
-        
+
+
        // this.bgMap = new Map("Data/MapData/OG.png");
         //  test
         Boulder boulder = new Boulder();

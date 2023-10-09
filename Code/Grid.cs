@@ -182,9 +182,13 @@ class Grid
 
     }
 
-
-
-
+    //  untested
+    public static Point ToWorldPoint(Point point)
+    {
+        return new Point(
+            (point.X * Map.mapPixelToGridTile_Multiplier) / Map.mapPixelToTexturePixel_Multiplier,
+            (point.Y * Map.mapPixelToGridTile_Multiplier) / Map.mapPixelToTexturePixel_Multiplier);
+    }
 
 
     public static Rectangle ToDrawArea(Rectangle gridArea)
@@ -195,7 +199,6 @@ class Grid
             gridArea.Width * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier,
             gridArea.Height * Map.mapPixelToTexturePixel_Multiplier / Map.mapPixelToGridTile_Multiplier
         );  
-
     }
 
     public void Draw()
