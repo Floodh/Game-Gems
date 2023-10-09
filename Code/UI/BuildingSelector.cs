@@ -123,11 +123,13 @@ class BuildingSelector
             if(selectingOption == true &&  mouseState.LeftButton == ButtonState.Released)
             {
                 // TODO Send build data
+                selectingOption = false;
                 this.State = 0;
             }
 
             if(mouseState.RightButton == ButtonState.Pressed)
             {
+                selectingOption = false;
                 this.State = 0;
             }
         }
