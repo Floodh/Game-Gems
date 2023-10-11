@@ -165,8 +165,8 @@ class Grid
         }
 
         foreach (Building building in Building.allBuildings)
-        for (int dy = 0; dy < building.GridArea.Width; dy++)
-        for (int dx = 0; dx < building.GridArea.Height; dx++)
+            for (int dy = 0; dy < building.GridArea.Width; dy++)
+            for (int dx = 0; dx < building.GridArea.Height; dx++)
         {
             Point p = building.GridArea.Location;
             System.Drawing.Color color = System.Drawing.Color.BurlyWood;

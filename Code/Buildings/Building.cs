@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using Size = System.Drawing.Size;
 using Bitmap = System.Drawing.Bitmap;
 
+
 abstract class Building : Targetable
 {
 

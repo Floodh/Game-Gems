@@ -89,7 +89,7 @@ class BuildingSelector
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        if( this.State > 0)
+        if (this.State > 0)
         {
             foreach (var sprite in this.spriteList)
             {
