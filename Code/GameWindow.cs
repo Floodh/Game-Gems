@@ -45,6 +45,7 @@ public class GameWindow : Game
         this.map = new Map("Data/MapData/OG.png");
         Building.SetGrid(this.map.SourceImage);
         this.level = new Level(this.map.SourceImage);
+        this.map.RenderGrid = true;
         var displaySize = new Size(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         this.buildingSelector = new BuildingSelector(displaySize);
 
@@ -75,7 +76,8 @@ public class GameWindow : Game
         Camera.UpdateByKeyboard(Keyboard.GetState());
         this.buildingSelector.UpdateByMouse(Mouse.GetState());
         this.buildingSelector.UpdateByKeyboard(Keyboard.GetState());
-        
+
+        //if (this.buildingSelector.state == BuildingSelector.State.Selecting || this.buildingSelector.state == BuildingSelector.State.Placing)
 
         level.MayTick();    //  performs all ticks
         
