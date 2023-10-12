@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 /// <summary>
 /// </summary>
-public static class ShapeUtils
+public static class StolenStuff
 {
 
 
