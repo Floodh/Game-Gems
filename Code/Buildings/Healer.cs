@@ -8,13 +8,14 @@ class Healer : Building
 
     private const string Path_BaseTexture = "Data/Texture/Healer.png";
 
-    Texture2D baseTexture;
+    private Texture2D baseTexture;
     private HealthBar hpBar;
     private EnergyBar energyBar;
     private Targetable target;
+    private EnergyBeam animation;
     
     private int dmg = -1;
-    private EnergyBeam animation;
+    
 
 
     public Healer()

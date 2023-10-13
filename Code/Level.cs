@@ -8,18 +8,16 @@ using System.Diagnostics.CodeAnalysis;
 
 class Level
 {
-    public const int tickPerSec = 30;
-    public const int slowDownThreashold = 10;
+    public const long tickPerSec = 30;
+    public const long slowDownThreashold = 10;
 
-    public int CurrentTick {get; private set;} = 0;
-    public TimeSpan ElapsedTime { get {return DateTime.Now - startTime;} }
-    public TimeSpan ElapsedGameTime { get {return TimeSpan.FromSeconds(CurrentTick) / tickPerSec;}}
+    public long CurrentTick {get; private set;} = 0;
 
+    private long startTime_s;
+    private long currentTime_s;
+    private long skippedTicks = 0;
 
-
-    private int skippedTicks = 0;
     private readonly Random r = new Random();
-    private DateTime startTime;
 
     public Level(Bitmap bitmap)
     {
@@ -58,7 +56,8 @@ class Level
             }
         }
 
-        this.startTime = DateTime.Now;
+        this.startTime_s = DateTimeOffset.Now.ToUnixTimeSeconds();
+        this.currentTime_s = startTime_s;
 
         Camera.zoomLevel = 5.0f;
         Building.grid.CalculateEnemyValue();
@@ -67,7 +66,7 @@ class Level
 
     public void Tick()
     {
-        //  First make things take damage
+                //  First make things take damage
         //  then do tick, the tick will check if the unit died
         Projectile.TickAll();
         Building.TickAll();
@@ -79,10 +78,14 @@ class Level
     //  
     public bool MayTick()
     {
-        int ticks = OverdueTicks();
-        if (ticks > slowDownThreashold)
-            skippedTicks += ticks - slowDownThreashold;
-        if (ticks > 0)
+        this.currentTime_s = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+        long overdueTicks = OverdueTicks();
+        if (overdueTicks > slowDownThreashold)
+        {
+            skippedTicks += overdueTicks - slowDownThreashold;
+        }
+        if (overdueTicks > 0)
         {
             this.Tick();
             this.CurrentTick++;
@@ -91,8 +94,8 @@ class Level
         return false;
     }
 
-    private int OverdueTicks()
+    private long OverdueTicks()
     {
-        return (ElapsedTime.Seconds * tickPerSec) - skippedTicks;
+        return (this.currentTime_s * tickPerSec) - skippedTicks;
     }
 }
