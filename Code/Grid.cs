@@ -73,6 +73,23 @@ class Grid
         return true;
     }
 
+    public bool CanPlace(Rectangle area)
+    {
+
+        for (int x = area.Left; x < area.Right; x++)
+        {
+            for (int y = area.Top; y < area.Bottom; y++)
+            {
+                if (this.IsTileTaken(x,y))
+                {
+                    return false;
+                }
+            }
+        } 
+        return true; 
+              
+    }
+
     public void RemoveBuilding(Building building)
     {
         //  mark as free
@@ -183,11 +200,11 @@ class Grid
     }
 
     //  untested
-    public static Point ToWorldPoint(Point point)
+    public static Point WorldToGrid(Point worldPoint)
     {
         return new Point(
-            (point.X * Map.mapPixelToGridTile_Multiplier) / Map.mapPixelToTexturePixel_Multiplier,
-            (point.Y * Map.mapPixelToGridTile_Multiplier) / Map.mapPixelToTexturePixel_Multiplier);
+            (worldPoint.X * Map.mapPixelToGridTile_Multiplier) / Map.mapPixelToTexturePixel_Multiplier,
+            (worldPoint.Y * Map.mapPixelToGridTile_Multiplier) / Map.mapPixelToTexturePixel_Multiplier);
     }
 
 
