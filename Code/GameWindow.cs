@@ -77,7 +77,15 @@ public class GameWindow : Game
         this.buildingSelector.UpdateByMouse(Mouse.GetState());
         this.buildingSelector.UpdateByKeyboard(Keyboard.GetState());
 
-        //if (this.buildingSelector.state == BuildingSelector.State.Selecting || this.buildingSelector.state == BuildingSelector.State.Placing)
+        if (this.buildingSelector.State == BuildingSelector.EState.PlacementPending)
+        {
+            if (this.map.RenderGrid == false)
+                this.map.RenderGrid = true;
+        }
+        else
+        {
+            this.map.RenderGrid = false;
+        }
 
         level.MayTick();    //  performs all ticks
         
