@@ -32,6 +32,9 @@ class BuildingSelector
 
     private Rectangle BuildingToPlaceRect;
     private Texture2D BuildingToPlaceTexture;
+
+    private Building buildingToPlace;
+
     private Size displaySize;
 
     private int? selectedIndex = null;
@@ -108,6 +111,7 @@ class BuildingSelector
                 if(this.selectedItem != null)
                 {
                     this.BuildingToPlaceTexture = this.selectedItem.PlacementTexture;
+                    this.buildingToPlace = new Cannon(); // TODO fix generic
                     this.State = EState.PlacementPending;
                 }
                 else
@@ -174,14 +178,35 @@ class BuildingSelector
             this.selectedItem = null; // Otherwise the last selected item will be pointed at forever
         }
         else if(this.State == EState.PlacementPending)
-        {
-            // TODO adjust to map view
+        {     
+            Vector2 worldCenterVec = Camera.ScreenToWorld(new Vector2(this.BuildingToPlaceRect.Center.X, this.BuildingToPlaceRect.Center.Y));
+            Rectangle worldRect = new(worldCenterVec.ToPoint().X, worldCenterVec.ToPoint().Y, this.BuildingToPlaceTexture.Width, this.BuildingToPlaceTexture.Height);
+
+            // Grid based positioning (for placement)
+            Point gridCenterPoint = Grid.WorldToGrid(worldCenterVec.ToPoint());
+            Rectangle gridRect = new(gridCenterPoint.X, gridCenterPoint.Y, 1, 1);
+            bool canplace = Building.grid.CanPlace(gridRect);
+
+            if(canplace) // TODO move this to mouseclick for placement
+            {
+                this.buildingToPlace.Place(gridCenterPoint);
+                this.buildingToPlace = new Cannon();
+            }
+
+            // Draw by Camera/Screen based positioning (remove when debugging done)
             GameWindow.spriteBatch.Draw(
                     this.BuildingToPlaceTexture, this.BuildingToPlaceRect, null, new Color(Color.White, 0.3f), 0f, 
                     new Vector2(this.BuildingToPlaceTexture.Width / 2, this.BuildingToPlaceTexture.Height / 2), SpriteEffects.None, 0f);
-        }
 
-        
+            // Draw by World based positioning
+            float intensity = canplace?1f:0.5f;
+            GameWindow.spriteBatch.Draw(
+                    this.BuildingToPlaceTexture, worldRect, null, new Color(Color.White, intensity), 0f, 
+                    new Vector2(this.BuildingToPlaceTexture.Width / 2, this.BuildingToPlaceTexture.Height / 2), SpriteEffects.None, 0f);
+
+            Console.WriteLine($"screen:{this.BuildingToPlaceRect.Center.ToString()}, world:{worldCenterVec.ToString()}, grid:{gridCenterPoint.ToString()}"); 
+            Console.WriteLine($"place:{canplace}"); 
+        }    
     }
 
 }
