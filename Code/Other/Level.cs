@@ -26,13 +26,13 @@ class Level
 
         //  test
         Wall wall = new Wall();
-        wall.Place(new Point(52,50));
+        wall.Place(new Point(55,53));
         Cannon cannon = new Cannon();
-        cannon.Place(new Point(47,48));
+        cannon.Place(new Point(50,51));
         Healer healer = new Healer();
         healer.Place(90,46);
         Generator generator = new Generator();
-        generator.Place(46,50);
+        generator.Place(49,53);
         Size size = bitmap.Size * Map.mapPixelToGridTile_Multiplier;
 
         ThePortal thePortal = new ThePortal();

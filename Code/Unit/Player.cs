@@ -50,7 +50,7 @@ class Player : Unit
                     int newX = GridArea.X + Grid.offsets[i * 2];
                     int newY = GridArea.Y + Grid.offsets[i * 2 + 1];
                     int newValue = Building.grid.GetPlayerValue(newX, newY);
-                    if (newValue >= nextValue)
+                    if (newValue > nextValue)
                     {
                         if (Building.grid.IsTileTaken(newX, newY) == false)
                         {
