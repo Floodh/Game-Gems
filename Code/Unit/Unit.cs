@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -50,7 +51,8 @@ abstract class Unit : Targetable
         this.GridArea = new Rectangle(gridPosition, new Point(1,1));
     }
 
-    protected Rectangle DrawArea {
+    protected Rectangle DrawArea 
+    {
         get 
         {
             return Grid.ToDrawArea(GridArea);
@@ -67,7 +69,9 @@ abstract class Unit : Targetable
 
     protected override void Die()
     {
-
+        this.IsDead = true;
+        allUnits.Remove(this);
+        //  consider spawning death animation
     }
 
     //  returns true if health is negative
@@ -77,11 +81,29 @@ abstract class Unit : Targetable
         return this.Hp <= 0;
     }
 
-    // protected override void Die()
-    // {
-    //     this.IsDead = true;
-    //     //Console.WriteLine($"died {}");
-    //     allBuildings.Remove(this);  //  consider delaying the removal of this object from the list for potential death animation
-    //     grid.RemoveBuilding(this);
-    // }
+    protected bool CanMoveTo(Point gridPosition)
+    {
+        return !Building.grid.IsTileTaken(gridPosition.X, gridPosition.Y);
+    }
+    protected void MoveTo(Point gridDestination)
+    {
+        if (Building.grid.IsTileTaken(gridDestination))
+            throw new ArgumentException("Tried to move to a taken tile!");
+
+        Building.grid.Mark(gridDestination, true);
+    }
+    protected void MoveFrom(Point gridOrigin)
+    {
+        if (!Building.grid.IsTileTaken(gridOrigin))
+            throw new ArgumentException("Tried to move from a position that isn't taken by anything!");
+        Building.grid.Mark(gridOrigin, false);
+    }
+    protected void MoveToFrom(Point gridDestination, Point gridOrigin)
+    {
+        if (gridDestination == gridOrigin)
+            throw new ArgumentException("Tried to move to the same position!");
+        MoveFrom(gridOrigin);
+        MoveTo(gridDestination);
+    }
+
 }

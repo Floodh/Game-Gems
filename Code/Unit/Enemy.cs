@@ -19,6 +19,7 @@ class Enemy : Unit
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
         NumberOfEnemies++;
+        this.MoveTo(spawnGridPosition);
     }
 
     public override void Draw()
@@ -37,12 +38,12 @@ class Enemy : Unit
 
         // Figure out an available tile
         
-        
         int currentValue = Building.grid.GetEnemyValue(GridArea.X, GridArea.Y);
         if (currentValue == int.MaxValue)
         {
             this.target ??= this.FindTarget(this, Faction.Player, false, false);
-
+            if (this.target.IsDead)
+                Console.WriteLine("Warning! : Attacking dead target");
             //  perform attack
             opertunityCounter++;
             if (opertunityCounter >= AttackRate)
@@ -78,7 +79,11 @@ class Enemy : Unit
                 }
                 
                 //  verification of the new position has already been done
-                this.GridArea = new Rectangle(nextPos, new Point(1,1));
+                if (nextPos != this.GridArea.Location)
+                {
+                    this.MoveToFrom(nextPos, this.GridArea.Location);
+                    this.GridArea = new Rectangle(nextPos, new Point(1,1));
+                }
             }
 
         }

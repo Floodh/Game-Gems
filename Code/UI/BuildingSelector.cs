@@ -8,15 +8,6 @@ using Size = System.Drawing.Size;
 
 class BuildingSelector
 {
-
-    // public delegate void UserPlacementOrder(Point selectedPoint, Building.Type building);
-    // public UserPlacementOrder placementOrderResponse = null;
-
-    // public BuildingSelector(Texture2D[] textures, Size windowSize)
-    // {
-    //     throw new NotImplementedException();
-    // }
-
     public enum EState 
     {
         NotVisible = 0,
@@ -24,13 +15,14 @@ class BuildingSelector
         PlacementPending = 2
     }   
 
+    Rectangle worldRect;
+    bool canplace = false;
 
     Texture2D centerTexture;
     Texture2D centerTexturePointing;
 
     private Point center;
 
-    private Rectangle BuildingToPlaceRect;
     private Texture2D BuildingToPlaceTexture;
 
     private Building buildingToPlace;
@@ -40,9 +32,22 @@ class BuildingSelector
     private int? selectedIndex = null;
     private BuildingOption selectedItem = null;
 
-    private const string Path_Option1Texture = "Data/Texture/GreenGem.png";
     public EState State = EState.NotVisible;
     List<BuildingOption> spriteList = new List<BuildingOption>();
+
+    public BuildingSelector(Size displaySize)
+    {
+        this.displaySize = displaySize;
+        this.center = new Point(this.displaySize.Width/2, this.displaySize.Height/2);
+        this.centerTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3-null.png");
+        this.centerTexturePointing = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3.png");
+
+        this.spriteList.Add(new BuildingOption(this, new Cannon(), "Data/Texture/PurpleGem.png", -1.7f));
+        this.spriteList.Add(new BuildingOption(this, new Generator(), "Data/Texture/RedGem.png", -0.85f));
+        this.spriteList.Add(new BuildingOption(this, new Healer(), "Data/Texture/GreenGem.png", 0f));
+        this.spriteList.Add(new BuildingOption(this, new ThePortal(), "Data/Texture/BlueGem.png", 0.85f));
+        this.spriteList.Add(new BuildingOption(this, new ThePortal(), "Data/Texture/BlueGem.png", 1.7f));
+    }
 
     public Point Center
     {
@@ -54,20 +59,6 @@ class BuildingSelector
 
     public int? SelectedIndex { get => selectedIndex; set => selectedIndex = value; }
     internal BuildingOption SelectedItem { get => selectedItem; set => selectedItem = value; }
-
-    public BuildingSelector(Size displaySize)
-    {
-        this.displaySize = displaySize;
-        this.center = new Point(this.displaySize.Width/2, this.displaySize.Height/2);
-        this.centerTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3-null.png");
-        this.centerTexturePointing = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3.png");
-
-        this.spriteList.Add(new BuildingOption(this, "Data/Texture/GreenGem.png", -1.7f));
-        this.spriteList.Add(new BuildingOption(this, "Data/Texture/BlueGem.png", -0.85f));
-        this.spriteList.Add(new BuildingOption(this, "Data/Texture/PurpleGem.png", 0f));
-        this.spriteList.Add(new BuildingOption(this, "Data/Texture/RedGem.png", 0.85f));
-        this.spriteList.Add(new BuildingOption(this, "Data/Texture/GreenGem.png", 1.7f));
-    }
 
     public void UpdateByKeyboard(KeyboardState keyboardState)
     {
@@ -111,7 +102,7 @@ class BuildingSelector
                 if(this.selectedItem != null)
                 {
                     this.BuildingToPlaceTexture = this.selectedItem.PlacementTexture;
-                    this.buildingToPlace = new Cannon(); // TODO fix generic
+                    this.buildingToPlace = this.selectedItem.Building;
                     this.State = EState.PlacementPending;
                 }
                 else
@@ -123,8 +114,13 @@ class BuildingSelector
         } 
         else if(this.State == EState.PlacementPending)
         {
-            this.BuildingToPlaceRect = new Rectangle(
-                        mouseState.X, mouseState.Y, this.BuildingToPlaceTexture.Width, this.BuildingToPlaceTexture.Height);
+            Vector2 mouseVec = new(mouseState.X, mouseState.Y);
+            Vector2 worldCenterVec = Camera.ScreenToWorld(mouseVec);
+            Vector2 worldTopLeftVec = worldCenterVec - new Vector2(this.BuildingToPlaceTexture.Width / 2, this.BuildingToPlaceTexture.Height / 2);
+            this.worldRect = new(worldTopLeftVec.ToPoint().X, worldTopLeftVec.ToPoint().Y, this.BuildingToPlaceTexture.Width, this.BuildingToPlaceTexture.Height);
+            Point gridCenterPoint = Grid.WorldToGrid(worldCenterVec.ToPoint());
+            Rectangle gridRect = new(gridCenterPoint.X, gridCenterPoint.Y, 2, 2); // Asuming build size 2 atm.
+            this.canplace = Building.grid.CanPlace(gridRect);
 
             if(mouseState.LeftButton == ButtonState.Pressed)
             {
@@ -133,9 +129,14 @@ class BuildingSelector
 
             if(selectingOption == true &&  mouseState.LeftButton == ButtonState.Released)
             {
-                // TODO Send build data
-                selectingOption = false;
-                this.State = EState.NotVisible;
+                if(this.canplace)
+                {
+                    this.buildingToPlace.Place(gridCenterPoint);
+                    this.buildingToPlace = null;
+                    selectingOption = false;
+                    this.selectedItem = null;
+                    this.State = EState.NotVisible;
+                }
             }
 
             if(mouseState.RightButton == ButtonState.Pressed)
@@ -144,7 +145,6 @@ class BuildingSelector
                 this.State = EState.NotVisible;
             }
         }
-        // Console.WriteLine($"State:{this.State}, LB:{mouseState.LeftButton.ToString()}");
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -179,34 +179,10 @@ class BuildingSelector
         }
         else if(this.State == EState.PlacementPending)
         {     
-            Vector2 worldCenterVec = Camera.ScreenToWorld(new Vector2(this.BuildingToPlaceRect.Center.X, this.BuildingToPlaceRect.Center.Y));
-            Rectangle worldRect = new(worldCenterVec.ToPoint().X, worldCenterVec.ToPoint().Y, this.BuildingToPlaceTexture.Width, this.BuildingToPlaceTexture.Height);
+            float intensity = this.canplace?1f:0.5f;
+            GameWindow.spriteBatch.Draw(this.BuildingToPlaceTexture, Camera.ModifiedDrawArea(this.worldRect, Camera.zoomLevel), new Color(Color.White, intensity));
 
-            // Grid based positioning (for placement)
-            Point gridCenterPoint = Grid.WorldToGrid(worldCenterVec.ToPoint());
-            Rectangle gridRect = new(gridCenterPoint.X, gridCenterPoint.Y, 1, 1);
-            bool canplace = Building.grid.CanPlace(gridRect);
-
-            if(canplace) // TODO move this to mouseclick for placement
-            {
-                this.buildingToPlace.Place(gridCenterPoint);
-                this.buildingToPlace = new Cannon();
-            }
-
-            // Draw by Camera/Screen based positioning (remove when debugging done)
-            GameWindow.spriteBatch.Draw(
-                    this.BuildingToPlaceTexture, this.BuildingToPlaceRect, null, new Color(Color.White, 0.3f), 0f, 
-                    new Vector2(this.BuildingToPlaceTexture.Width / 2, this.BuildingToPlaceTexture.Height / 2), SpriteEffects.None, 0f);
-
-            // Draw by World based positioning
-            float intensity = canplace?1f:0.5f;
-            GameWindow.spriteBatch.Draw(
-                    this.BuildingToPlaceTexture, worldRect, null, new Color(Color.White, intensity), 0f, 
-                    new Vector2(this.BuildingToPlaceTexture.Width / 2, this.BuildingToPlaceTexture.Height / 2), SpriteEffects.None, 0f);
-
-            Console.WriteLine($"screen:{this.BuildingToPlaceRect.Center.ToString()}, world:{worldCenterVec.ToString()}, grid:{gridCenterPoint.ToString()}"); 
-            Console.WriteLine($"place:{canplace}"); 
+            Console.WriteLine($"Rect:{this.worldRect}, Can place:{this.canplace}"); 
         }    
     }
-
 }

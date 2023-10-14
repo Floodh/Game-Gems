@@ -106,6 +106,12 @@ class Grid
         //  mark as free
         Rectangle area = building.GridArea;
         this.Mark(area, false);
+        this.CalculateEnemyValue();
+    }
+
+    public void Mark(Point gridPosition, bool taken)
+    {
+        isTaken[gridPosition.Y][gridPosition.X] = taken;
     }
 
     private void Mark(Rectangle area, bool taken)
