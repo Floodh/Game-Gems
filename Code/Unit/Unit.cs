@@ -7,8 +7,11 @@ using Size = System.Drawing.Size;
 
 abstract class Unit : Targetable
 {
+    protected const int movementRate = 150;
 
     public static List<Unit> allUnits = new List<Unit>();
+
+    
     
 
     public static void DrawAll()

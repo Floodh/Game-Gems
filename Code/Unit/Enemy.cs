@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Input;
 class Enemy : Unit
 {
     private const string Path_BaseTexture = "Data/Texture/Enemy.png";
-    private const int movementRate = 200;
 
     public static int NumberOfEnemies {get; protected set;}
 

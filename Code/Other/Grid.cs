@@ -12,6 +12,7 @@ class Grid
 
     private readonly bool[][] isTaken;
     private readonly int[][] enemyValue;    //  how much an enemy value being in a specific tile, equals the reverse distance to player structures
+    private readonly int[][] playerValue;
     private readonly Size size;
 
     public Grid(Bitmap sourceImage)
@@ -21,10 +22,12 @@ class Grid
 
         this.isTaken = new bool[size.Height][];
         this.enemyValue = new int[size.Height][];
+        this.playerValue = new int[size.Height][];
         for (int y = 0; y < size.Height; y++)
         {
             this.isTaken[y] = new bool[size.Width];
             this.enemyValue[y] = new int[size.Width];
+            this.playerValue[y] = new int[size.Width];
         }
 
         //  this one could be buggy, if the grid behaves strange along edges, check this
@@ -35,9 +38,17 @@ class Grid
             {
                 Mark(new Rectangle(x * multi, y * multi, multi, multi), true);
                 enemyValue[y][x] = int.MinValue;
+                this.playerValue[y][x] = int.MinValue;
                 //Console.WriteLine($"x={x},y={y} set to {int.MinValue}");
             }
         }
+    }
+
+    //  inside does not include the edges, and the Rectangle.Contains uses the <= and >= operators
+    public bool InsideBounds(Point gridPoint)
+    {
+        Rectangle area = new Rectangle(1, 1, this.size.Width - 2, this.size.Height - 2);
+        return area.Contains(gridPoint);
     }
 
     public bool IsTileTaken(int x, int y)
@@ -87,7 +98,7 @@ class Grid
             }
         } 
         return true; 
-              
+
     }
 
     public void RemoveBuilding(Building building)
@@ -112,10 +123,14 @@ class Grid
     {
         return enemyValue[y][x];
     }
+    public int GetPlayerValue(int x, int y)
+    {
+        return playerValue[y][x];
+    }
 
     public void CalculateEnemyValue()
     {
-        ClearEnemyValue();
+        ClearValue(this.enemyValue);
         foreach (Building building in Building.allBuildings)
             if (building.faction == Faction.Player)
         {
@@ -133,12 +148,18 @@ class Grid
         {
             int x = p.X + dx,
                 y = p.Y + dy;
-            CalculateEnemyValue(x, y, 0);
+            CalculateValue(x, y, 0, this.enemyValue);
         }
     }
 
+    public void CalculatePlayerValue(Point gridDestination)
+    {
+        this.ClearValue(playerValue);
+        this.CalculateValue(gridDestination.X, gridDestination.Y, 0, playerValue);
+    }
+
     public static readonly int[] offsets = {1,0,-1,0,0,1,0,-1};
-    private void CalculateEnemyValue(int x, int y, int distance)
+    private void CalculateValue(int x, int y, int distance, int[][] data)
     {
         for (int i = 0; i < offsets.Length / 2; i++)
         {
@@ -147,24 +168,24 @@ class Grid
             int value = int.MaxValue - distance;
             // Console.Write($"newX={newX},newY={newY}");
             // Console.WriteLine($", enemyValue[newY][newX] {enemyValue[newY][newX]}, evaluation = {enemyValue[newY][newX] < value}");
-            if (enemyValue[newY][newX] < value)  //  only travel if the value is less, otherwise theres no point
-            if (enemyValue[newY][newX] != int.MinValue)
+            if (data[newY][newX] < value)  //  only travel if the value is less, otherwise theres no point
+            if (data[newY][newX] != int.MinValue)
             {
-                enemyValue[newY][newX] = value;
-                CalculateEnemyValue(newX, newY, distance + 1);
+                data[newY][newX] = value;
+                CalculateValue(newX, newY, distance + 1, data);
             }
         }
     }
 
-    private void ClearEnemyValue()
+    private void ClearValue(int[][] data)
     {
         for (int y = 0; y < size.Width; y++)
         for (int x = 0; x < size.Height; x++) 
         {
             if (this.isTaken[y][x])
-                enemyValue[y][x] = int.MinValue;
+                data[y][x] = int.MinValue;
             else
-                enemyValue[y][x] = 0;
+                data[y][x] = 0;
         }
     }
 
@@ -198,6 +219,7 @@ class Grid
         image.Save("EnemyValue.png", ImageFormat.Png);
 
     }
+
 
     //  untested
     public static Point WorldToGrid(Point worldPoint)

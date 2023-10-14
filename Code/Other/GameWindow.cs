@@ -10,6 +10,9 @@ public class GameWindow : Game
     public static GraphicsDeviceManager graphics;
     public static SpriteBatch spriteBatch;
     public static GraphicsDevice graphicsDevice;
+    public static MouseState contextMouseState;
+    public static KeyboardState contextKeyboardState;
+    public static bool interactingWithUI = false;
 
     private Map map;
     private Level level;
@@ -68,14 +71,18 @@ public class GameWindow : Game
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+        contextKeyboardState = Keyboard.GetState();
+        contextMouseState = Mouse.GetState();
+
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || contextKeyboardState.IsKeyDown(Keys.Escape))
             Exit();
 
         // TODO: Add your update logic here
-        Camera.UpdateByMouse(Mouse.GetState(),graphics);
-        Camera.UpdateByKeyboard(Keyboard.GetState());
-        this.buildingSelector.UpdateByMouse(Mouse.GetState());
-        this.buildingSelector.UpdateByKeyboard(Keyboard.GetState());
+
+        Camera.UpdateByMouse(contextMouseState,graphics);
+        Camera.UpdateByKeyboard(contextKeyboardState);
+        this.buildingSelector.UpdateByMouse(contextMouseState);
+        this.buildingSelector.UpdateByKeyboard(contextKeyboardState);
 
         if (this.buildingSelector.State == BuildingSelector.EState.PlacementPending)
         {

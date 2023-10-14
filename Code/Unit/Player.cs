@@ -6,9 +6,15 @@ using Microsoft.Xna.Framework.Input;
 class Player : Unit
 {
     private const string Path_BaseTexture = "Data/Texture/Player.png";
-    Texture2D baseTexture;
-    private Vector2 lastMouseClickPosition;
-    private bool isMoving;
+
+
+    public Point GridLocation {get{return this.GridArea.Location;}}
+    public bool IsMoving {get{return this.GridLocation != this.gridDestination;}}
+
+    private Point gridDestination;
+    private Texture2D baseTexture;
+    
+
 
 
 
@@ -16,8 +22,7 @@ class Player : Unit
         : base(Faction.Player, spawnGridPosition)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
-        this.lastMouseClickPosition = Vector2.Zero; // Initialize it to some default value
-        this.isMoving = false;
+        this.gridDestination = GridLocation;
     }
 
     public override void Draw()
@@ -26,38 +31,60 @@ class Player : Unit
         base.Draw();
     }
 
-   public override void Tick()
-{
-    base.Tick();
-
-    // Check if right mouse button is clicked
-    if (Mouse.GetState().RightButton == ButtonState.Pressed)
+    int opertunityCounter = 0;
+    public override void Tick()
     {
-        // Update the last clicked position
-        lastMouseClickPosition = Camera.ScreenToWorld(Mouse.GetState().Position.ToVector2());
-        isMoving = true;
-    }
+        base.Tick();
 
-    if (isMoving)
-    {
-        // Calculate the direction vector
-
-        // Check if the player has reached the center of the target
-        if (false)
+        this.HandleMouse(GameWindow.contextMouseState, GameWindow.interactingWithUI);
+        if (this.IsMoving)
         {
-            // Move towards the destination
-
-        }
-        else
-        {
-            // Stop moving once the center is reached
-            isMoving = false;
+            int currentValue = Building.grid.GetPlayerValue(GridArea.X, GridArea.Y);
+            if (opertunityCounter++ > movementRate)
+            {
+                opertunityCounter = 0;
+                int nextValue = currentValue;
+                Point nextPos = this.GridArea.Location;
+                for (int i = 0; i < Grid.offsets.Length / 2; i++)
+                {
+                    int newX = GridArea.X + Grid.offsets[i * 2];
+                    int newY = GridArea.Y + Grid.offsets[i * 2 + 1];
+                    int newValue = Building.grid.GetPlayerValue(newX, newY);
+                    if (newValue >= nextValue)
+                    {
+                        if (Building.grid.IsTileTaken(newX, newY) == false)
+                        {
+                            nextValue = newValue;
+                            nextPos = new Point(newX, newY);
+                        }
+                    }
+                }
+                
+                //  verification of the new position has already been done
+                this.GridArea = new Rectangle(nextPos, new Point(1,1));
+            }            
         }
     }
-}
-    public void HandleMouseClick(Vector2 clickPosition)
+    private void HandleMouse(MouseState mouseState, bool interactingWithUI)
     {
-        lastMouseClickPosition = Camera.ScreenToWorld(clickPosition);
+
+        if (!interactingWithUI)
+        {
+            Point mousePosition = mouseState.Position;
+            if (mouseState.LeftButton == ButtonState.Pressed)
+            {
+                Vector2 worldPoint = Camera.ScreenToWorld(new Vector2(mousePosition.X, mousePosition.Y));
+                Point gridPoint = Grid.WorldToGrid(new Point((int)worldPoint.X, (int)worldPoint.Y));
+                if ((this.gridDestination != gridPoint) && Building.grid.InsideBounds(gridPoint))
+                {
+                    Console.WriteLine("     Recalculateing player destination...");
+                    this.gridDestination = gridPoint;
+                    Building.grid.CalculatePlayerValue(this.gridDestination);
+                    Console.WriteLine("     Done!");
+                }
+            }
+        }
+
     }
 
 }
