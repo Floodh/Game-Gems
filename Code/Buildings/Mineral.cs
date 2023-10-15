@@ -18,6 +18,11 @@ class Mineral : Building
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
     }
 
+    public override Building CreateNew()
+    {
+        return new Mineral();
+    }
+
     public override void Tick()
     {
         if (this.quantity == 0)

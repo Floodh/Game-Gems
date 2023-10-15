@@ -60,6 +60,11 @@ class Generator : Building
             }
         }
     }
+
+    public override Building CreateNew()
+    {
+        return new Generator();
+    }
     public override string ToString()
     {
         return $"Generator : {this.Hp} / {this.MaxHp}";

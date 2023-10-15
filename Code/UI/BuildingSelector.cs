@@ -131,7 +131,7 @@ class BuildingSelector
             {
                 if(this.canplace)
                 {
-                    this.buildingToPlace.Place(gridCenterPoint);
+                    this.buildingToPlace.CreateNew().Place(gridCenterPoint);
                     this.buildingToPlace = null;
                     selectingOption = false;
                     this.selectedItem = null;

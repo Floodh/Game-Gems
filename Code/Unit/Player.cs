@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 class Player : Unit
 {
-    private const string Path_BaseTexture = "Data/Texture/Player.png";
+    private const string Path_BaseTexture = "Data/Texture/wizard1.png";
 
 
     public Point GridLocation {get{return this.GridArea.Location;}}

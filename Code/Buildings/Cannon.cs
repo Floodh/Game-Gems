@@ -32,6 +32,11 @@ class Cannon : Building
     {
         base.Tick();
     }
+
+    public override Building CreateNew()
+    {
+        return new Cannon();
+    }
     public override string ToString()
     {
         return $"Cannon : {this.Hp} / {this.MaxHp}";

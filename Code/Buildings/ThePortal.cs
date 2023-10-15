@@ -46,6 +46,11 @@ class ThePortal : Building
                        
         }
     }
+
+    public override Building CreateNew()
+    {
+        return new ThePortal();
+    }
     public override string ToString()
     {
         return $"ThePortal : {this.Hp} / {this.MaxHp}";
