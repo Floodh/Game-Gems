@@ -15,6 +15,8 @@ class Grid
     private readonly int[][] playerValue;
     private readonly Size size;
 
+    public bool hasUpdated = false;
+
     public Grid(Bitmap sourceImage)
     {
         const int multi = Map.mapPixelToGridTile_Multiplier;
@@ -111,11 +113,13 @@ class Grid
 
     public void Mark(Point gridPosition, bool taken)
     {
+        this.hasUpdated = true;
         isTaken[gridPosition.Y][gridPosition.X] = taken;
     }
 
     private void Mark(Rectangle area, bool taken)
     {
+        this.hasUpdated = true;
         for (int x = area.Left; x < area.Right; x++)
         {
             for (int y = area.Top; y < area.Bottom; y++)

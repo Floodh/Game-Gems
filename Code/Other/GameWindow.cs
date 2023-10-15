@@ -95,6 +95,11 @@ public class GameWindow : Game
         }
 
         level.MayTick();    //  performs all ticks
+        if (Building.grid.hasUpdated && this.map.RenderGrid)    //  this is ugly, but it works
+        {
+            Building.grid.hasUpdated = false;
+            this.map.RenderGrid = true; //  force update
+        }
         
 
         base.Update(gameTime);

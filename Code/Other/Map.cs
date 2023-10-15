@@ -133,10 +133,10 @@ class Map
                 {
                     spriteBatch.Draw(inValidTileTexture, drawRect, Color.White);
                 }
-                else
-                {
-                    spriteBatch.Draw(validTileTexture, drawRect, Color.White);
-                }
+                // else
+                // {
+                //     spriteBatch.Draw(validTileTexture, drawRect, Color.White);
+                // }
             }
         spriteBatch.End();
 
