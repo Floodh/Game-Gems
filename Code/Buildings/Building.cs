@@ -126,6 +126,8 @@ abstract class Building : Targetable
         return this.Hp <= 0;
     }
 
+    public abstract Building CreateNew();
+
     protected override void Die()
     {
         this.IsDead = true;

@@ -35,6 +35,11 @@ class Boulder : Building
         base.Tick();
     }
 
+    public override Building CreateNew()
+    {
+        return new Boulder();
+    }
+
     public override string ToString()
     {
         return $"Boulder : {this.Hp} / {this.MaxHp}";

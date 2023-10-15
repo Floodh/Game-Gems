@@ -70,6 +70,11 @@ class Healer : Building
         }
         
     }
+
+    public override Building CreateNew()
+    {
+        return new Healer();
+    }
     public override string ToString()
     {
         return $"Healer : Hp:{this.Hp}/{this.MaxHp}, Energy:{this.Energy}/{this.MaxEnergy}";
