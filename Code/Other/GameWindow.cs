@@ -45,7 +45,7 @@ public class GameWindow : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
 
-        this.map = new Map("Data/MapData/OG.png");
+        this.map = new Map("Data/MapData/TwoSides.png");
         Building.SetGrid(this.map.SourceImage);
         this.level = new Level(this.map.SourceImage);
         this.map.RenderGrid = true;

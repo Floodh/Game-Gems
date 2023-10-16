@@ -6,6 +6,41 @@ using Microsoft.Xna.Framework.Graphics;
 
 static class TextureSource
 {
+
+    public static Texture2D[] LoadStone()
+    {
+
+        int xStart = 81;
+        int yStart = 74;
+        int width = 226 - xStart;
+        int height = 219 - yStart;
+        int xBuffer = 268 - width - xStart;
+        int yBuffer = 259 - height - yStart;
+
+        Point[] selected = new Point[]
+        {
+                                                                                new Point(4, 0),
+                             new Point(1, 1), new Point(2, 1), new Point(3, 1),
+                             new Point(1, 2),                  new Point(3, 2), new Point(4, 2),
+                             new Point(1, 3),                                                    
+                             new Point(1, 4), new Point(2, 4), new Point(3, 4),
+        };
+        Rectangle[] areas = new Rectangle[selected.Length];
+        for (int i = 0; i < selected.Length; i++)
+        {
+            areas[i] = new Rectangle(
+                xStart + (width + xBuffer) * selected[i].X,
+                yStart + (height + yBuffer) * selected[i].Y,
+                width,
+                height
+            );
+        }
+
+        return Load("Data/TextureSources/Dirt.jpg", areas);
+
+    }
+
+
     public static Texture2D[] LoadDirt()
     {
 
@@ -34,8 +69,6 @@ static class TextureSource
                 height
             );
         }
-
-        Console.WriteLine($"width : {width}, height : {height}, xBuffer : {xBuffer}, yBuffer {yBuffer}");
 
         return Load("Data/TextureSources/Dirt.jpg", areas);
 

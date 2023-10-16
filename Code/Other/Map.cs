@@ -20,6 +20,7 @@ class Map
         Dirt = 0xFF663931,
         Grass = 0xFF4b692F,
         Water = 0xFF5b6ee1,
+        Stone = 0xFF595652
     }
 
     private const string DIRT_TEXTURE_PATH = "Data/Texture/Dirt.png";
@@ -42,6 +43,8 @@ class Map
     private Texture2D[] dirtTextures;
     private Texture2D[] grassTextures;
     private Texture2D[] waterTextures;
+    private Texture2D[] stoneTextures;
+
     private Texture2D validTileTexture;
     private Texture2D inValidTileTexture;
 
@@ -73,6 +76,7 @@ class Map
         this.grassTextures = TextureSource.LoadGrass();
         this.waterTextures = TextureSource.LoadWater();
         this.dirtTextures = TextureSource.LoadDirt();
+        this.stoneTextures = TextureSource.LoadStone();
         this.validTileTexture = Texture2D.FromFile(graphicsDevice, GRID_VALIDTILE_TEXTURE_PATH);
         this.inValidTileTexture = Texture2D.FromFile(graphicsDevice, GRID_INVALIDTILE_TEXTURE_PATH);
 
@@ -95,6 +99,9 @@ class Map
                         break;
                     case TilesRGB.Water:
                         spriteBatch.Draw(waterTextures[random.Next() % waterTextures.Length], drawRect, Color.White);
+                        break;
+                    case TilesRGB.Stone:
+                        spriteBatch.Draw(stoneTextures[random.Next() % stoneTextures.Length], drawRect, Color.White);
                         break;
                     default:
                         Console.WriteLine("Warning not a tile");
