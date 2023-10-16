@@ -44,7 +44,7 @@ public class GameWindow : Game
         Console.WriteLine("Loading content...");
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
-       
+
         this.map = new Map("Data/MapData/OG.png");
         Building.SetGrid(this.map.SourceImage);
         this.level = new Level(this.map.SourceImage);

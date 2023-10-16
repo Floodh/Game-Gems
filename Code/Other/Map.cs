@@ -29,7 +29,7 @@ class Map
     private const string GRID_INVALIDTILE_TEXTURE_PATH = "Data/Texture/Grid_InValidTile.png";
 
     public const int mapPixelToGridTile_Multiplier = 1;  //  1 pixel = 2x2 tiles
-    public const int mapPixelToTexturePixel_Multiplier = 16;
+    public const int mapPixelToTexturePixel_Multiplier = 16 * 2;
 
     public Size SourceSize { get {return this.SourceImage.Size;} }
     public Bitmap SourceImage {get; private set;}
@@ -39,9 +39,9 @@ class Map
     private Texture2D drawTexture;
     private Texture2D gridDrawTexture;
 
-    private Texture2D dirtTexture;
-    private Texture2D grassTexture;
-    private Texture2D waterTexture;
+    private Texture2D[] dirtTextures;
+    private Texture2D[] grassTextures;
+    private Texture2D[] waterTextures;
     private Texture2D validTileTexture;
     private Texture2D inValidTileTexture;
 
@@ -56,6 +56,7 @@ class Map
 
     public Map(string path)
     {
+        Random random = new();
         //this.drawOffset = new Point(-150, -200);
         //  load the map
         this.SourceImage = new Bitmap(path);
@@ -68,9 +69,10 @@ class Map
 
         //  load the textures
         //this.drawTexture = new Texture2D(Game1.graphicsDevice, size.Width, size.Height);
-        this.dirtTexture = Texture2D.FromFile(graphicsDevice, DIRT_TEXTURE_PATH);
-        this.grassTexture = Texture2D.FromFile(graphicsDevice, GRASS_TEXTURE_PATH);
-        this.waterTexture = Texture2D.FromFile(graphicsDevice, WATER_TEXTURE_PATH);
+        //this.dirtTextures = TextureSource.LoadDirt();
+        this.grassTextures = TextureSource.LoadGrass();
+        this.waterTextures = TextureSource.LoadWater();
+        this.dirtTextures = TextureSource.LoadDirt();
         this.validTileTexture = Texture2D.FromFile(graphicsDevice, GRID_VALIDTILE_TEXTURE_PATH);
         this.inValidTileTexture = Texture2D.FromFile(graphicsDevice, GRID_INVALIDTILE_TEXTURE_PATH);
 
@@ -86,13 +88,13 @@ class Map
                 switch (argb)
                 {
                     case TilesRGB.Dirt:
-                        spriteBatch.Draw(dirtTexture, drawRect, new Rectangle(0,0,16,16), Color.White);
+                        spriteBatch.Draw(dirtTextures[random.Next() % dirtTextures.Length], drawRect, Color.White);
                         break;
                     case TilesRGB.Grass:
-                        spriteBatch.Draw(grassTexture, drawRect, new Rectangle(0,0,16,16), Color.White);
+                        spriteBatch.Draw(grassTextures[random.Next() % grassTextures.Length], drawRect, Color.White);
                         break;
                     case TilesRGB.Water:
-                        spriteBatch.Draw(waterTexture, drawRect, new Rectangle(0,0,16,16), Color.White);
+                        spriteBatch.Draw(waterTextures[random.Next() % waterTextures.Length], drawRect, Color.White);
                         break;
                     default:
                         Console.WriteLine("Warning not a tile");

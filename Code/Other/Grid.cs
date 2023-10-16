@@ -226,7 +226,7 @@ class Grid
             image.SetPixel(p.X + dx, p.Y + dy, color);            
         }
 
-        image.Save("EnemyValue.png", ImageFormat.Png);
+        image.Save("Cache/EnemyValue.png", ImageFormat.Png);
 
     }
 
