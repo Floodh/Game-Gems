@@ -122,6 +122,8 @@ class BuildingSelector
             Rectangle gridRect = new(gridCenterPoint.X, gridCenterPoint.Y, 2, 2); // Asuming build size 2 atm.
             this.canplace = Building.grid.CanPlace(gridRect);
 
+            Map.hightlightGridArea = gridRect;  //  in order to highlight valid tiles
+
             if(mouseState.LeftButton == ButtonState.Pressed)
             {
                 selectingOption = true;
@@ -136,6 +138,7 @@ class BuildingSelector
                     selectingOption = false;
                     this.selectedItem = null;
                     this.State = EState.NotVisible;
+                    Map.hightlightGridArea = Rectangle.Empty;   //  to stop higlighting areas
                 }
             }
 

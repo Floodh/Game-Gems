@@ -64,7 +64,9 @@ abstract class Building : Targetable
 
     public Building(Faction faction)
         : base(faction)
-    {}
+    {
+        
+    }
     
     //  can overide this
     public static Size GridSize{

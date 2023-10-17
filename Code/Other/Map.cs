@@ -20,16 +20,15 @@ class Map
         Dirt = 0xFF663931,
         Grass = 0xFF4b692F,
         Water = 0xFF5b6ee1,
+        Stone = 0xFF595652
     }
-
-    private const string DIRT_TEXTURE_PATH = "Data/Texture/Dirt.png";
-    private const string GRASS_TEXTURE_PATH = "Data/Texture/Grass.png";
-    private const string WATER_TEXTURE_PATH = "Data/Texture/Water.png";
     private const string GRID_VALIDTILE_TEXTURE_PATH = "Data/Texture/Grid_ValidTile.png";
     private const string GRID_INVALIDTILE_TEXTURE_PATH = "Data/Texture/Grid_InValidTile.png";
 
     public const int mapPixelToGridTile_Multiplier = 1;  //  1 pixel = 2x2 tiles
-    public const int mapPixelToTexturePixel_Multiplier = 16;
+    public const int mapPixelToTexturePixel_Multiplier = 16 * 2 * 2;
+
+    public static Rectangle hightlightGridArea = Rectangle.Empty;
 
     public Size SourceSize { get {return this.SourceImage.Size;} }
     public Bitmap SourceImage {get; private set;}
@@ -39,23 +38,24 @@ class Map
     private Texture2D drawTexture;
     private Texture2D gridDrawTexture;
 
-    private Texture2D dirtTexture;
-    private Texture2D grassTexture;
-    private Texture2D waterTexture;
+    private Texture2D[] dirtTextures;
+    private Texture2D[] grassTextures;
+    private Texture2D[] waterTextures;
+    private Texture2D[] stoneTextures;
+
     private Texture2D validTileTexture;
     private Texture2D inValidTileTexture;
 
     private Size drawTextureSize;
 
 
-    public bool RenderGrid {get { return this.renderGrid;} set{this.renderGrid = value; if(value)this.RenderGridStatus();}}
-    private bool renderGrid = false;
 
-    
+
 
 
     public Map(string path)
     {
+        Random random = new();
         //this.drawOffset = new Point(-150, -200);
         //  load the map
         this.SourceImage = new Bitmap(path);
@@ -68,9 +68,11 @@ class Map
 
         //  load the textures
         //this.drawTexture = new Texture2D(Game1.graphicsDevice, size.Width, size.Height);
-        this.dirtTexture = Texture2D.FromFile(graphicsDevice, DIRT_TEXTURE_PATH);
-        this.grassTexture = Texture2D.FromFile(graphicsDevice, GRASS_TEXTURE_PATH);
-        this.waterTexture = Texture2D.FromFile(graphicsDevice, WATER_TEXTURE_PATH);
+        //this.dirtTextures = TextureSource.LoadDirt();
+        this.grassTextures = TextureSource.LoadGrass();
+        this.waterTextures = TextureSource.LoadWater();
+        this.dirtTextures = TextureSource.LoadDirt();
+        this.stoneTextures = TextureSource.LoadStone();
         this.validTileTexture = Texture2D.FromFile(graphicsDevice, GRID_VALIDTILE_TEXTURE_PATH);
         this.inValidTileTexture = Texture2D.FromFile(graphicsDevice, GRID_INVALIDTILE_TEXTURE_PATH);
 
@@ -86,13 +88,16 @@ class Map
                 switch (argb)
                 {
                     case TilesRGB.Dirt:
-                        spriteBatch.Draw(dirtTexture, drawRect, new Rectangle(0,0,16,16), Color.White);
+                        spriteBatch.Draw(dirtTextures[random.Next() % dirtTextures.Length], drawRect, Color.White);
                         break;
                     case TilesRGB.Grass:
-                        spriteBatch.Draw(grassTexture, drawRect, new Rectangle(0,0,16,16), Color.White);
+                        spriteBatch.Draw(grassTextures[random.Next() % grassTextures.Length], drawRect, Color.White);
                         break;
                     case TilesRGB.Water:
-                        spriteBatch.Draw(waterTexture, drawRect, new Rectangle(0,0,16,16), Color.White);
+                        spriteBatch.Draw(waterTextures[random.Next() % waterTextures.Length], drawRect, Color.White);
+                        break;
+                    case TilesRGB.Stone:
+                        spriteBatch.Draw(stoneTextures[random.Next() % stoneTextures.Length], drawRect, Color.White);
                         break;
                     default:
                         Console.WriteLine("Warning not a tile");
@@ -155,9 +160,25 @@ class Map
         Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height); 
         drawArea = Camera.ModifiedDrawArea(drawArea, Camera.zoomLevel);
         GameWindow.spriteBatch.Draw(drawTexture, drawArea, Sunlight.Mask);
-        if (this.RenderGrid)
+        if (hightlightGridArea != Rectangle.Empty)
         {
-            GameWindow.spriteBatch.Draw(gridDrawTexture, drawArea, Color.White);
+            for (int y = hightlightGridArea.Y; y < hightlightGridArea.Bottom; y++)
+            for (int x = hightlightGridArea.X; x < hightlightGridArea.Right; x++)
+            {
+                
+                Rectangle tileArea = new Rectangle(x * mapPixelToTexturePixel_Multiplier, y * mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier);
+                tileArea = Camera.ModifiedDrawArea(tileArea, Camera.zoomLevel);
+                if (Building.grid.IsTileTaken(x, y))
+                {
+                    GameWindow.spriteBatch.Draw(inValidTileTexture, tileArea, Color.White);
+                }
+                else
+                {
+                    GameWindow.spriteBatch.Draw(validTileTexture, tileArea, Color.White);
+                }
+
+            }
+            //GameWindow.spriteBatch.Draw(gridDrawTexture, drawArea, Color.White);
         }
 
 

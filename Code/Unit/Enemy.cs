@@ -30,6 +30,7 @@ class Enemy : Unit
 
 
     int opertunityCounter = 0;
+    Point previusGridPoint = Point.Zero;
 
     public override void Tick()
     {
@@ -61,13 +62,15 @@ class Enemy : Unit
                 opertunityCounter = 0;
                 this.target = null;
 
-                int nextValue = currentValue;
+                int nextValue = currentValue - 2;
                 Point nextPos = this.GridArea.Location;
                 for (int i = 0; i < Grid.offsets.Length / 2; i++)
                 {
                     int newX = GridArea.X + Grid.offsets[i * 2];
                     int newY = GridArea.Y + Grid.offsets[i * 2 + 1];
                     int newValue = Building.grid.GetEnemyValue(newX, newY);
+                    if (new Point(newX, newY) == previusGridPoint)
+                        newValue--; //  this is safe since the condition can't be true if newValue = int.MinValue    
                     if (newValue >= nextValue)
                     {
                         if (Building.grid.IsTileTaken(newX, newY) == false)
@@ -82,7 +85,9 @@ class Enemy : Unit
                 if (nextPos != this.GridArea.Location)
                 {
                     this.MoveToFrom(nextPos, this.GridArea.Location);
+                    this.previusGridPoint = this.GridArea.Location;
                     this.GridArea = new Rectangle(nextPos, new Point(1,1));
+                    
                 }
             }
 

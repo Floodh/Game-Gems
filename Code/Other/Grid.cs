@@ -165,7 +165,15 @@ class Grid
     public void CalculatePlayerValue(Point gridDestination)
     {
         this.ClearValue(playerValue);
-        this.CalculateValue(gridDestination.X, gridDestination.Y, 0, playerValue);
+        if (playerValue[gridDestination.Y][gridDestination.X] != int.MinValue)
+        {
+            playerValue[gridDestination.Y][gridDestination.X] = int.MaxValue;
+            this.CalculateValue(gridDestination.X, gridDestination.Y, 1, playerValue);
+        }
+        else
+        {
+            Console.WriteLine($"{gridDestination} is taken, value = {playerValue[gridDestination.X][gridDestination.Y]}");
+        }
     }
 
     public static readonly int[] offsets = {1,0,-1,0,0,1,0,-1};
@@ -226,7 +234,7 @@ class Grid
             image.SetPixel(p.X + dx, p.Y + dy, color);            
         }
 
-        image.Save("EnemyValue.png", ImageFormat.Png);
+        image.Save("Cache/EnemyValue.png", ImageFormat.Png);
 
     }
 

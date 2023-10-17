@@ -24,23 +24,18 @@ class Level
 
         this.r = new Random();
 
-        //  test
-        Wall wall = new Wall();
-        wall.Place(new Point(55,53));
-        Cannon cannon = new Cannon();
-        cannon.Place(new Point(50,51));
-        Healer healer = new Healer();
-        healer.Place(90,46);
-        Generator generator = new Generator();
-        generator.Place(49,53);
+
         Size size = bitmap.Size * Map.mapPixelToGridTile_Multiplier;
 
         ThePortal thePortal = new ThePortal();
         thePortal.Place(size.Width / 2 - 1, size.Height / 2 - 1);
 
-        Player player = new Player(new Point(size.Width / 2 - 4, size.Height / 2 - 3));
+        Wall wall = new Wall();
+        wall.Place(14, 19);
 
-        int numberOfRocks = 10000;
+        Player player = new Player(new Point(thePortal.GridArea.X - 1, thePortal.GridArea.Y));
+
+        int numberOfRocks = 1000;
 
         for (int i = 0; i < numberOfRocks; i++)
         {

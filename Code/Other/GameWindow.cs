@@ -45,11 +45,11 @@ public class GameWindow : Game
         Console.WriteLine("Loading content...");
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
-       
-        this.map = new Map("Data/MapData/OG.png");
+
+        this.map = new Map("Data/MapData/TwoSides.png");
         Building.SetGrid(this.map.SourceImage);
         this.level = new Level(this.map.SourceImage);
-        this.map.RenderGrid = true;
+        //this.map.RenderGrid = true;
         var displaySize = new Size(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         this.buildingSelector = new BuildingSelector(displaySize);
         this.resourcesUi = new ResourcesUi(displaySize);
@@ -88,20 +88,20 @@ public class GameWindow : Game
 
         if (this.buildingSelector.State == BuildingSelector.EState.PlacementPending)
         {
-            if (this.map.RenderGrid == false)
-                this.map.RenderGrid = true;
+            // if (this.map.RenderGrid == false)
+            //     this.map.RenderGrid = true;
         }
         else
         {
-            this.map.RenderGrid = false;
+            //this.map.RenderGrid = false;
         }
 
         level.MayTick();    //  performs all ticks
-        if (Building.grid.hasUpdated && this.map.RenderGrid)    //  this is ugly, but it works
-        {
-            Building.grid.hasUpdated = false;
-            this.map.RenderGrid = true; //  force update
-        }
+        // if (Building.grid.hasUpdated && this.map.RenderGrid)    //  this is ugly, but it works
+        // {
+        //     Building.grid.hasUpdated = false;
+        //     this.map.RenderGrid = true; //  force update
+        // }
         
 
         base.Update(gameTime);
