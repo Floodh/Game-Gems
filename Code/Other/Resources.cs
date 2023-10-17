@@ -45,5 +45,23 @@ static class Resources
         Red += red;
     }
 
+    public static int GetBlue()
+    {
+        return Blue;
+    }
 
+    public static int GetGreen()
+    {
+        return Green;
+    }
+
+    public static int GetPurple()
+    {
+        return Purple;
+    }
+
+    public static int GetRed()
+    {
+        return Red;
+    }
 }

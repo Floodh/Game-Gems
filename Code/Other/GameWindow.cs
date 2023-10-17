@@ -18,6 +18,7 @@ public class GameWindow : Game
     private Level level;
 
     private BuildingSelector buildingSelector;
+    private ResourcesUi resourcesUi;
 
     public GameWindow()
     {
@@ -51,6 +52,7 @@ public class GameWindow : Game
         this.map.RenderGrid = true;
         var displaySize = new Size(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         this.buildingSelector = new BuildingSelector(displaySize);
+        this.resourcesUi = new ResourcesUi(displaySize);
 
 
        // this.bgMap = new Map("Data/MapData/OG.png");
@@ -121,6 +123,7 @@ public class GameWindow : Game
         Animation.DrawAll();
 
         this.buildingSelector.Draw(spriteBatch);
+        this.resourcesUi.Draw(spriteBatch);
         
         spriteBatch.End();
 
