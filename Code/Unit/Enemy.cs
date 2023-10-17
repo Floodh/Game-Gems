@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 
 class Enemy : Unit
 {
-    private const string Path_BaseTexture = "Data/Texture/Enemy.png";
+    private const string Path_BaseTexture = "Data/Texture/fighter1.png";
 
     public static int NumberOfEnemies {get; protected set;}
 
