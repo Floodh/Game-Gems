@@ -28,6 +28,8 @@ class Map
     public const int mapPixelToGridTile_Multiplier = 1;  //  1 pixel = 2x2 tiles
     public const int mapPixelToTexturePixel_Multiplier = 16 * 2 * 2;
 
+    public static Rectangle hightlightGridArea = Rectangle.Empty;
+
     public Size SourceSize { get {return this.SourceImage.Size;} }
     public Bitmap SourceImage {get; private set;}
 
@@ -47,10 +49,8 @@ class Map
     private Size drawTextureSize;
 
 
-    public bool RenderGrid {get { return this.renderGrid;} set{this.renderGrid = value; if(value)this.RenderGridStatus();}}
-    private bool renderGrid = false;
 
-    
+
 
 
     public Map(string path)
@@ -160,9 +160,25 @@ class Map
         Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height); 
         drawArea = Camera.ModifiedDrawArea(drawArea, Camera.zoomLevel);
         GameWindow.spriteBatch.Draw(drawTexture, drawArea, Sunlight.Mask);
-        if (this.RenderGrid)
+        if (hightlightGridArea != Rectangle.Empty)
         {
-            GameWindow.spriteBatch.Draw(gridDrawTexture, drawArea, Color.White);
+            for (int y = hightlightGridArea.Y; y < hightlightGridArea.Bottom; y++)
+            for (int x = hightlightGridArea.X; x < hightlightGridArea.Right; x++)
+            {
+                
+                Rectangle tileArea = new Rectangle(x * mapPixelToTexturePixel_Multiplier, y * mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier);
+                tileArea = Camera.ModifiedDrawArea(tileArea, Camera.zoomLevel);
+                if (Building.grid.IsTileTaken(x, y))
+                {
+                    GameWindow.spriteBatch.Draw(inValidTileTexture, tileArea, Color.White);
+                }
+                else
+                {
+                    GameWindow.spriteBatch.Draw(validTileTexture, tileArea, Color.White);
+                }
+
+            }
+            //GameWindow.spriteBatch.Draw(gridDrawTexture, drawArea, Color.White);
         }
 
 
