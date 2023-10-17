@@ -22,15 +22,11 @@ class Map
         Water = 0xFF5b6ee1,
         Stone = 0xFF595652
     }
-
-    private const string DIRT_TEXTURE_PATH = "Data/Texture/Dirt.png";
-    private const string GRASS_TEXTURE_PATH = "Data/Texture/Grass.png";
-    private const string WATER_TEXTURE_PATH = "Data/Texture/Water.png";
     private const string GRID_VALIDTILE_TEXTURE_PATH = "Data/Texture/Grid_ValidTile.png";
     private const string GRID_INVALIDTILE_TEXTURE_PATH = "Data/Texture/Grid_InValidTile.png";
 
     public const int mapPixelToGridTile_Multiplier = 1;  //  1 pixel = 2x2 tiles
-    public const int mapPixelToTexturePixel_Multiplier = 16 * 2;
+    public const int mapPixelToTexturePixel_Multiplier = 16 * 2 * 2;
 
     public Size SourceSize { get {return this.SourceImage.Size;} }
     public Bitmap SourceImage {get; private set;}

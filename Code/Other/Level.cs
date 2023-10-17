@@ -30,9 +30,12 @@ class Level
         ThePortal thePortal = new ThePortal();
         thePortal.Place(size.Width / 2 - 1, size.Height / 2 - 1);
 
+        Wall wall = new Wall();
+        wall.Place(14, 19);
+
         Player player = new Player(new Point(thePortal.GridArea.X - 1, thePortal.GridArea.Y));
 
-        int numberOfRocks = 100;
+        int numberOfRocks = 1000;
 
         for (int i = 0; i < numberOfRocks; i++)
         {
