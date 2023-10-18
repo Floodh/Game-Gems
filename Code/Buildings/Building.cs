@@ -11,17 +11,6 @@ using Bitmap = System.Drawing.Bitmap;
 abstract class Building : Targetable
 {
 
-    public enum Type
-    {
-        Boulder,
-        Cannon,
-        Generator,
-        Healer,
-        Mineral,
-        ThePortal,
-        Wall
-    }
-
     public static List<Building> allBuildings = new List<Building>();
     public static Grid grid;
 
@@ -115,6 +104,8 @@ abstract class Building : Targetable
         {
             allBuildings.Add(this);
             this.GridArea = area;
+            if (this.faction != Faction.Neutral)
+                grid.CalculateEnemyValue();
             return true;
         }
         return false;
