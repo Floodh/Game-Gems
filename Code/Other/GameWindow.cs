@@ -12,7 +12,10 @@ public class GameWindow : Game
     public static GraphicsDevice graphicsDevice;
     public static MouseState contextMouseState;
     public static KeyboardState contextKeyboardState;
+
+
     public static bool interactingWithUI = false;
+    private bool InteractingWithUI {get{return this.buildingSelector.State != BuildingSelector.EState.NotVisible;}}
 
     private Map map;
     private Level level;
@@ -96,6 +99,7 @@ public class GameWindow : Game
             //this.map.RenderGrid = false;
         }
 
+        interactingWithUI = this.InteractingWithUI;
         level.MayTick();    //  performs all ticks
         // if (Building.grid.hasUpdated && this.map.RenderGrid)    //  this is ugly, but it works
         // {

@@ -35,7 +35,26 @@ class Level
 
         Player player = new Player(new Point(thePortal.GridArea.X - 1, thePortal.GridArea.Y));
 
+        int numberOfMinerals = 4 * 3; 
         int numberOfRocks = 1000;
+
+        for (int i = 0; i < numberOfMinerals; i++)
+        {
+            Mineral.Type type = (Mineral.Type)(i % 4);
+            Mineral mineral = new Mineral(type);
+            while (true)
+            {
+                int x = r.Next() % size.Width;
+                int y = r.Next() % size.Height;
+                int dx = thePortal.GridArea.X - x,
+                    dy = thePortal.GridArea.Y - y;
+                int distanceSquared = dx * dx + dy * dy;
+                if (distanceSquared >  5 * 5)
+                    if (mineral.Place(x, y))
+                        break;
+            }
+
+        }
 
         for (int i = 0; i < numberOfRocks; i++)
         {

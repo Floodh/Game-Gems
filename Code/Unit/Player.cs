@@ -76,12 +76,18 @@ class Player : Unit
                 Vector2 worldPoint = Camera.ScreenToWorld(new Vector2(mousePosition.X, mousePosition.Y));
                 Point gridPoint = Grid.WorldToGrid(new Point((int)worldPoint.X, (int)worldPoint.Y));
                 if ((this.gridDestination != gridPoint) && Building.grid.InsideBounds(gridPoint))
+                if (!Building.grid.IsTileTaken(gridDestination))
                 {
                     Console.WriteLine("     Recalculateing player destination...");
                     this.gridDestination = gridPoint;
                     Building.grid.CalculatePlayerValue(this.gridDestination);
                     Console.WriteLine("     Done!");
                 }
+                else
+                {
+                    
+                }
+
             }
         }
 

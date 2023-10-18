@@ -7,6 +7,38 @@ using Microsoft.Xna.Framework.Graphics;
 static class TextureSource
 {
 
+    public static Texture2D[] LoadMinerals()
+    {
+
+        int xStart = 75;
+        int yStart = 78;
+        int width = 337 - xStart;
+        int height = width;
+        int xBuffer = 390 - width - xStart;
+        int yBuffer = 394 - height - yStart;
+
+        Point[] selected = new Point[]
+        {
+            new Point(0, 1), new Point(1, 1),
+            new Point(0, 2), new Point(1, 2),
+        };
+        Rectangle[] areas = new Rectangle[selected.Length];
+        for (int i = 0; i < selected.Length; i++)
+        {
+            areas[i] = new Rectangle(
+                xStart + (width + xBuffer) * selected[i].X,
+                yStart + (height + yBuffer) * selected[i].Y,
+                width,
+                height
+            );
+        }
+
+        return Load("Data/TextureSources/Minerals.jpg", areas);
+
+    }
+
+
+
     public static Texture2D[] LoadStone()
     {
 
