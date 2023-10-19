@@ -1,6 +1,7 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Microsoft.Xna.Framework.Input;
 
 class Cannon : Building
 {
@@ -37,6 +38,20 @@ class Cannon : Building
     {
         return new Cannon();
     }
+
+    public enum EState 
+    {
+        Normal = 0,
+        Clicked = 1,
+        BuildingTransition = 2,
+        DestroyTransition = 3
+    }
+
+    public override void UpdateByMouse(MouseState mouseState)
+    {
+        Console.WriteLine("CannonMouse");
+    }
+    
     public override string ToString()
     {
         return $"Cannon : {this.Hp} / {this.MaxHp}";
