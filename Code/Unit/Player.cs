@@ -23,6 +23,7 @@ class Player : Unit
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
         this.gridDestination = GridLocation;
+        this.MoveTo(gridDestination);
     }
 
     public override void Draw()
@@ -61,7 +62,11 @@ class Player : Unit
                 }
                 
                 //  verification of the new position has already been done
-                this.GridArea = new Rectangle(nextPos, new Point(1,1));
+                if (nextPos != this.GridArea.Location)
+                {
+                    this.MoveToFrom(nextPos, this.GridArea.Location);                
+                    this.GridArea = new Rectangle(nextPos, new Point(1,1));
+                }
             }            
         }
     }
@@ -75,8 +80,9 @@ class Player : Unit
             {
                 Vector2 worldPoint = Camera.ScreenToWorld(new Vector2(mousePosition.X, mousePosition.Y));
                 Point gridPoint = Grid.WorldToGrid(new Point((int)worldPoint.X, (int)worldPoint.Y));
+                Console.WriteLine("Might calculate");
                 if ((this.gridDestination != gridPoint) && Building.grid.InsideBounds(gridPoint))
-                if (!Building.grid.IsTileTaken(gridDestination))
+                if (!Building.grid.IsTileTaken(gridPoint))
                 {
                     Console.WriteLine("     Recalculateing player destination...");
                     this.gridDestination = gridPoint;
