@@ -9,12 +9,12 @@ static class TextureSource
 
     public static Texture2D[] LoadIcons()
     {
-        int xStart = 23;
-        int yStart = 47;
-        int width = 160 - xStart;
+        int xStart = 24;
+        int yStart = 52;
+        int width = 166 - xStart;
         int height = width;
-        int xBuffer = 191 - width - xStart;
-        int yBuffer = 239 - height - yStart;
+        int xBuffer = 194 - width - xStart;
+        int yBuffer = 244 - height - yStart;
 
         Point[] selected = new Point[]
         {

@@ -4,30 +4,30 @@ static class Resources
     public static int Blue      {get; private set;} = 64;
     public static int Green     {get; private set;} = 0;
     public static int Purple    {get; private set;} = 0;
-    public static int Red       {get; private set;} = 0;
+    public static int Orange       {get; private set;} = 0;
 
     public static void Init()
     {
         Blue = 64;
         Green = 0;
         Purple = 0;
-        Red = 0;        
+        Orange = 0;        
     }
 
 
-    public static bool CanBuy(int blue, int green, int purple, int red)
+    public static bool CanBuy(int blue, int green, int purple, int orange)
     {
-        return blue <= Blue && green <= Green && purple <= Purple && red <= Red;
+        return blue <= Blue && green <= Green && purple <= Purple && orange <= Orange;
     }
 
-    public static bool BuyFor(int blue, int green, int purple, int red)
+    public static bool BuyFor(int blue, int green, int purple, int orange)
     {
-        if (CanBuy(blue, green, purple, red))
+        if (CanBuy(blue, green, purple, orange))
         {       
             Blue -= blue;
             Green -= green;
             Purple -= purple;
-            Red -= red;
+            Orange -= orange;
             return true;
         }
         else
@@ -37,12 +37,12 @@ static class Resources
 
     }
 
-    public static void Gain(int blue, int green, int purple, int red)
+    public static void Gain(int blue, int green, int purple, int orange)
     {
         Blue += blue;
         Green += green;
         Purple += purple;
-        Red += red;
+        Orange += orange;
     }
 
     public static int GetBlue()
@@ -60,8 +60,8 @@ static class Resources
         return Purple;
     }
 
-    public static int GetRed()
+    public static int GetOrange()
     {
-        return Red;
+        return Orange;
     }
 }
