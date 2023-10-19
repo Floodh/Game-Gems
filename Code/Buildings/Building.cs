@@ -13,6 +13,7 @@ abstract class Building : Targetable
 
     public static List<Building> allBuildings = new List<Building>();
     public static Grid grid;
+    public EState State = EState.Normal;
 
 
     public static void SetGrid(Bitmap sourceImage)
@@ -133,29 +134,71 @@ abstract class Building : Targetable
     {
         if(mouseState.LeftButton == ButtonState.Pressed)
         {
-            Console.WriteLine($"W MouseDown| x:{mouseState.X}, y:{mouseState.Y}");
-
-            Point wPoint = new(mouseState.X, mouseState.Y);
-            Point gPoint = Grid.WorldToGrid(wPoint);
-
-            Console.WriteLine($"G MouseDown| x:{gPoint.X}, y:{gPoint.Y}");
-            
-            foreach (Building building in Building.allBuildings)
+            Building.selectedBuilding = null;
             {
-                if(building.faction == Faction.Neutral && building.GetType() == typeof(Mineral))
+                foreach(Building building in Building.GetClickableBuildings())
                 {
-                    building.UpdateByMouse(mouseState);
-                    Console.WriteLine(building.ToString());
-                }   
-                
+                    Point gridPoint = Building.GetMouseGridPoint(mouseState);
+                    if(building.GridArea.Contains(gridPoint))
+                    {
+                        Building.selectedBuilding = building;
+                        Building.selectedBuilding.State = EState.Normal;
+
+                        // Console.WriteLine("Press on: " + building.ToString());
+                    }
+                }
             }
-            Console.WriteLine("--------\n");
-        }
+        }  
+        else if(mouseState.LeftButton == ButtonState.Released)
+        {    
+            if(Building.selectedBuilding != null && Building.selectedBuilding.State != EState.Selected)
+            {
+                Point gridPoint = Building.GetMouseGridPoint(mouseState);
+                // Ensure that press and release is on the same building
+                if(Building.selectedBuilding.GridArea.Contains(gridPoint)) 
+                {
+                    Building.selectedBuilding.State = EState.Selected;
+
+                    Console.WriteLine("Selected: " + Building.selectedBuilding.ToString());
+                }  
+            }  
+        }   
     }
+
+    public enum EState 
+    {
+        Normal = 0,
+        Selected = 1,
+        BuildingTransition = 2,
+        DestroyTransition = 3
+    }
+
+    protected bool mousePressed = false;
+    public static Building selectedBuilding = null;
 
     public virtual void UpdateByMouse(MouseState mouseState)
     {
-        // Console.WriteLine("BaseMouse");
+        Console.WriteLine("UpdateByMouse| " + this.ToString());
+    }
+
+    public static List<Building> GetClickableBuildings()
+    {
+        List<Building>list = new();
+        foreach (Building building in Building.allBuildings)
+        {
+            if(building.faction == Faction.Neutral && building.GetType() == typeof(Mineral))
+            {
+                list.Add(building);
+            }
+        }
+        return list;
+    }
+
+    public static Point GetMouseGridPoint(MouseState mouseState)
+    {
+        Vector2 worldVec = Camera.ScreenToWorld(new Vector2(mouseState.X, mouseState.Y));
+        Point gridPoint = Grid.WorldToGrid(worldVec.ToPoint());
+        return gridPoint;
     }
 
     // If child doesnt have a ToString()
