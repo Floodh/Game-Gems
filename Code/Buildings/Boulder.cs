@@ -16,7 +16,7 @@ class Boulder : Building
         hpBar = new HealthBar(this);
     }
 
-   public override void Draw()
+    public override void Draw()
     {
         Rectangle gridArea = this.GridArea;
         if (gridArea != Rectangle.Empty)

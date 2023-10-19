@@ -129,6 +129,11 @@ class Grid
         }         
     }
 
+    // public Targetable FindOcupant()
+    // {
+
+    // }
+
     public int GetEnemyValue(int x, int y)
     {
         return enemyValue[y][x];
