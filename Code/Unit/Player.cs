@@ -44,29 +44,38 @@ class Player : Unit
             int currentValue = Building.grid.GetPlayerValue(GridArea.X, GridArea.Y);
             if (opertunityCounter++ > movementRate)
             {
+                Console.WriteLine($"     value : {currentValue}");
                 opertunityCounter = 0;
-                int nextValue = currentValue;
-                Point nextPos = this.GridArea.Location;
-                for (int i = 0; i < Grid.offsets.Length / 2; i++)
+                if (this.currentTarget != null && currentValue == int.MaxValue)
                 {
-                    int newX = GridArea.X + Grid.offsets[i * 2];
-                    int newY = GridArea.Y + Grid.offsets[i * 2 + 1];
-                    int newValue = Building.grid.GetPlayerValue(newX, newY);
-                    if (newValue > nextValue)
+                    Console.WriteLine("     MINERALZ :D");
+                    this.currentTarget.PlayerInteraction();
+                }
+                else
+                {
+                    int nextValue = currentValue;
+                    Point nextPos = this.GridArea.Location;
+                    for (int i = 0; i < Grid.offsets.Length / 2; i++)
                     {
-                        if (Building.grid.IsTileTaken(newX, newY) == false)
+                        int newX = GridArea.X + Grid.offsets[i * 2];
+                        int newY = GridArea.Y + Grid.offsets[i * 2 + 1];
+                        int newValue = Building.grid.GetPlayerValue(newX, newY);
+                        if (newValue > nextValue)
                         {
-                            nextValue = newValue;
-                            nextPos = new Point(newX, newY);
+                            if (Building.grid.IsTileTaken(newX, newY) == false)
+                            {
+                                nextValue = newValue;
+                                nextPos = new Point(newX, newY);
+                            }
                         }
                     }
-                }
-                
-                //  verification of the new position has already been done
-                if (nextPos != this.GridArea.Location)
-                {
-                    this.MoveToFrom(nextPos, this.GridArea.Location);                
-                    this.GridArea = new Rectangle(nextPos, new Point(1,1));
+                    
+                    //  verification of the new position has already been done
+                    if (nextPos != this.GridArea.Location)
+                    {
+                        this.MoveToFrom(nextPos, this.GridArea.Location);                
+                        this.GridArea = new Rectangle(nextPos, new Point(1,1));
+                    }
                 }
             }            
         }

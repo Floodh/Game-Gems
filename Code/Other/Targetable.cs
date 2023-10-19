@@ -115,9 +115,11 @@ abstract class Targetable
 
     protected abstract void Die();
 
-
-
-
+    public virtual void PlayerInteraction()
+    {
+        
+    }
+    
     protected Targetable FindTarget(Targetable self, Faction faction, bool inNeed_Health, bool inNeed_Energy)
     {
         double distanceSquared = double.MaxValue;

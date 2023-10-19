@@ -40,6 +40,11 @@ class Mineral : Building
                 data[index] = color;
             }
             redTexture.SetData(data);
+
+            //  swap green and blue texture
+            Texture2D blueTexture = baseTextures[((int)Type.Green)];
+            baseTextures[((int)Type.Green)] = baseTextures[((int)Type.Blue)];
+            baseTextures[((int)Type.Blue)] = blueTexture;
         }
     }
 
@@ -67,5 +72,27 @@ class Mineral : Building
     public override void UpdateByMouse(Microsoft.Xna.Framework.Input.MouseState mouseState)
     {
         Console.WriteLine("Mineral Mouse");
+    }
+
+    public override void PlayerInteraction()
+    {
+        base.PlayerInteraction();
+
+        switch (this.type)
+        {
+            case Type.Blue:
+                Resources.Gain(1,0,0,0);
+                break;
+            case Type.Green:
+                Resources.Gain(0,1,0,0);
+                break;
+            case Type.Purple:
+                Resources.Gain(0,0,1,0);
+                break;
+            case Type.Orange:
+                Resources.Gain(0,0,0,1);
+                break;                                
+        }
+
     }
 }
