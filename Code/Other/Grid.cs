@@ -171,8 +171,6 @@ class Grid
         HideUnits();
         ClearValue(this.enemyValue);
         
-
-        PresentValue(this.enemyValue);
         foreach (Building building in Building.allBuildings)
             if (building.faction == Faction.Player && !building.IsDead)
                 CalculateEnemyValue(building);
@@ -182,7 +180,7 @@ class Grid
                 CalculateValue(unit.GridArea.X, unit.GridArea.Y, 0, enemyValue);
 
         RevealUnits();
-        PresentValue(this.enemyValue);
+        //PresentValue(this.enemyValue);
     }
 
     private void CalculateEnemyValue(Building building)
@@ -207,6 +205,7 @@ class Grid
             {
                 this.CalculateValue(x, y, 0, playerValue);
             }
+        PresentValue(this.enemyValue);
     }
 
     //  slightly different logic since we wan't to arrive at this point

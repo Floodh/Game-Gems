@@ -28,7 +28,7 @@ class ThePortal : Building
 
 
     private int spawnCounter = 0;
-    private const int threshHold = 500;
+    private const int threshHold = 50000;
 
     public override void Tick()
     {

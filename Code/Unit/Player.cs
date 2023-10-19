@@ -9,7 +9,8 @@ class Player : Unit
 
 
     public Point GridLocation {get{return this.GridArea.Location;}}
-    public bool IsMoving {get{return this.GridLocation != this.gridDestination;}}
+    public bool IsMoving {get{return this.GridLocation != this.gridDestination || currentTarget != null;}}
+    private Targetable currentTarget = null;
 
     private Point gridDestination;
     private Texture2D baseTexture;
@@ -93,10 +94,16 @@ class Player : Unit
                 {
                     //  in this senario the player might try to move to attack a boulder or mine a resource
                     Targetable ocupant = Building.grid.FindOcupant(gridPoint);
-                    if (ocupant == null)
-                        throw new Exception("Could not find ocupant");
-                    Console.WriteLine($"     Trying to go next to a target! {ocupant.GridArea}");
-                    Building.grid.CalculatePlayerValue(ocupant);
+                    if (ocupant != null)
+                    {
+                        Console.WriteLine($"     Trying to go next to a target! {ocupant.GridArea}");
+                        if (currentTarget != ocupant)
+                            Building.grid.CalculatePlayerValue(ocupant);
+                        this.currentTarget = ocupant;
+                    }
+                    else
+                        Console.WriteLine("     Tried to go to water!");
+
                 }
 
             }
