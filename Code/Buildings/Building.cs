@@ -128,5 +128,43 @@ abstract class Building : Targetable
         allBuildings.Remove(this);  //  consider delaying the removal of this object from the list for potential death animation
         grid.RemoveBuilding(this);
     }
+
+    public static void UpdateAllByMouse(MouseState mouseState)
+    {
+        if(mouseState.LeftButton == ButtonState.Pressed)
+        {
+            Console.WriteLine($"W MouseDown| x:{mouseState.X}, y:{mouseState.Y}");
+
+            Point wPoint = new(mouseState.X, mouseState.Y);
+            Point gPoint = Grid.WorldToGrid(wPoint);
+
+            Console.WriteLine($"G MouseDown| x:{gPoint.X}, y:{gPoint.Y}");
+            
+            foreach (Building building in Building.allBuildings)
+            {
+                if(building.faction == Faction.Neutral && building.GetType() == typeof(Mineral))
+                {
+                    building.UpdateByMouse(mouseState);
+                    Console.WriteLine(building.ToString());
+                }   
+                
+            }
+            Console.WriteLine("--------\n");
+        }
+    }
+
+    public virtual void UpdateByMouse(MouseState mouseState)
+    {
+        // Console.WriteLine("BaseMouse");
+    }
+
+    // If child doesnt have a ToString()
+    public override string ToString()
+    {
+        Type type = this.GetType();
+        return $"Building| Pos:{this.GridArea.ToString()}, Type:{type.ToString()}, Faction:{this.faction.ToString()}";
+    }
+
+    
 }
 

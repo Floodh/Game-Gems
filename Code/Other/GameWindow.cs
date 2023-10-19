@@ -88,6 +88,7 @@ public class GameWindow : Game
         Camera.UpdateByKeyboard(contextKeyboardState);
         this.buildingSelector.UpdateByMouse(contextMouseState);
         this.buildingSelector.UpdateByKeyboard(contextKeyboardState);
+        Building.UpdateAllByMouse(contextMouseState);
 
         if (this.buildingSelector.State == BuildingSelector.EState.PlacementPending)
         {
