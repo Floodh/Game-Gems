@@ -80,7 +80,7 @@ class Player : Unit
             {
                 Vector2 worldPoint = Camera.ScreenToWorld(new Vector2(mousePosition.X, mousePosition.Y));
                 Point gridPoint = Grid.WorldToGrid(new Point((int)worldPoint.X, (int)worldPoint.Y));
-                Console.WriteLine("Might calculate");
+
                 if ((this.gridDestination != gridPoint) && Building.grid.InsideBounds(gridPoint))
                 if (!Building.grid.IsTileTaken(gridPoint))
                 {
@@ -91,12 +91,22 @@ class Player : Unit
                 }
                 else
                 {
-                    
+                    //  in this senario the player might try to move to attack a boulder or mine a resource
+                    Targetable ocupant = Building.grid.FindOcupant(gridPoint);
+                    if (ocupant == null)
+                        throw new Exception("Could not find ocupant");
+                    Console.WriteLine($"     Trying to go next to a target! {ocupant.GridArea}");
+                    Building.grid.CalculatePlayerValue(ocupant);
                 }
 
             }
         }
 
     }
-
+    protected override void Die()
+    {
+        base.Die();
+        Building.grid.CalculateEnemyValue();
+        Console.WriteLine("The player Wizard has died!");
+    }
 }

@@ -71,7 +71,9 @@ abstract class Unit : Targetable
     {
         this.IsDead = true;
         allUnits.Remove(this);
+        this.MoveFrom(this.GridArea.Location);
         //  consider spawning death animation
+        Console.WriteLine("A unit has died!");
     }
 
     //  returns true if health is negative

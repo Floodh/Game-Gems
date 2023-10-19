@@ -129,10 +129,23 @@ class Grid
         }         
     }
 
-    // public Targetable FindOcupant()
-    // {
+    public Targetable FindOcupant(Point gridPoint)
+    {
 
-    // }
+        foreach (Building building in Building.allBuildings)
+        {
+            if (building.GridArea.Contains(gridPoint))
+                return building;
+        }
+        foreach (Unit unit in Unit.allUnits)
+        {
+            if (unit.GridArea.Contains(gridPoint))
+                return unit;
+        }
+
+        return null;
+
+    }
 
     public int GetEnemyValue(int x, int y)
     {
@@ -147,12 +160,14 @@ class Grid
     {
         ClearValue(this.enemyValue);
         foreach (Building building in Building.allBuildings)
-            if (building.faction == Faction.Player)
-        {
-            CalculateEnemyValue(building);
-        }
+            if (building.faction == Faction.Player && !building.IsDead)
+                CalculateEnemyValue(building);
+        
+        foreach (Unit unit in Unit.allUnits)
+            if (unit.faction == Faction.Player && !unit.IsDead)
+                CalculateValue(unit.GridArea.X, unit.GridArea.Y, 0, enemyValue);
 
-        PresentEnemyValue();
+        PresentValue(enemyValue);
     }
 
     public void CalculateEnemyValue(Building building)
@@ -167,6 +182,19 @@ class Grid
         }
     }
 
+    //  same logic as with CalculateEnemyValue(Building building) 
+    public void CalculatePlayerValue(Targetable target)
+    {
+        this.ClearValue(playerValue);
+        Rectangle area = target.GridArea;
+        for (int x = area.Left; x < area.Right; x++)
+            for (int y = area.Top; y < area.Bottom; y++)
+            {
+                this.CalculateValue(x, y, 0, playerValue);
+            }
+    }
+
+    //  slightly different logic since we wan't to arrive at this point
     public void CalculatePlayerValue(Point gridDestination)
     {
         this.ClearValue(playerValue);
@@ -212,14 +240,14 @@ class Grid
         }
     }
 
-    private void PresentEnemyValue()
+    private void PresentValue(int[][] data)
     {
         Bitmap image = new Bitmap(size.Width, size.Height);
         for (int y = 0; y < size.Width; y++)
         for (int x = 0; x < size.Height; x++)
         {
-            int colorValue = enemyValue[y][x] - (int.MaxValue - 254);
-            if (enemyValue[y][x] == int.MinValue)
+            int colorValue = data[y][x] - (int.MaxValue - 254);
+            if (data[y][x] == int.MinValue)
                 colorValue = 0;
             colorValue = Math.Max(0, colorValue);
             image.SetPixel(x, y, System.Drawing.Color.FromArgb(colorValue, colorValue, colorValue));
@@ -239,7 +267,7 @@ class Grid
             image.SetPixel(p.X + dx, p.Y + dy, color);            
         }
 
-        image.Save("Cache/EnemyValue.png", ImageFormat.Png);
+        image.Save("Cache/Value.png", ImageFormat.Png);
 
     }
 

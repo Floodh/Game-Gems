@@ -44,7 +44,11 @@ class Enemy : Unit
         {
             this.target ??= this.FindTarget(this, Faction.Player, false, false);
             if (this.target.IsDead)
+            {
                 Console.WriteLine("Warning! : Attacking dead target");
+                this.target = null;
+                return;
+            }
             //  perform attack
             opertunityCounter++;
             if (opertunityCounter >= AttackRate)
