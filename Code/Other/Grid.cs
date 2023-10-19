@@ -15,7 +15,6 @@ class Grid
     private readonly int[][] playerValue;
     private readonly Size size;
 
-    public bool hasUpdated = false;
 
     public Grid(Bitmap sourceImage)
     {
@@ -60,6 +59,17 @@ class Grid
     public bool IsTileTaken(Point point)
     {
         return this.IsTileTaken(point.X, point.Y);
+    }
+
+    private void HideUnits()
+    {
+        foreach (Unit unit in Unit.allUnits)
+            this.Mark(unit.GridArea.Location, false);
+    }
+    private void RevealUnits()
+    {
+        foreach (Unit unit in Unit.allUnits)
+            this.Mark(unit.GridArea.Location, true);
     }
 
     public bool PlaceIfPossible(Building building, Point point)
@@ -113,13 +123,11 @@ class Grid
 
     public void Mark(Point gridPosition, bool taken)
     {
-        this.hasUpdated = true;
         isTaken[gridPosition.Y][gridPosition.X] = taken;
     }
 
     private void Mark(Rectangle area, bool taken)
     {
-        this.hasUpdated = true;
         for (int x = area.Left; x < area.Right; x++)
         {
             for (int y = area.Top; y < area.Bottom; y++)
@@ -158,7 +166,13 @@ class Grid
 
     public void CalculateEnemyValue()
     {
+        Console.WriteLine("Calculateing enemy value");
+
+        HideUnits();
         ClearValue(this.enemyValue);
+        
+
+        PresentValue(this.enemyValue);
         foreach (Building building in Building.allBuildings)
             if (building.faction == Faction.Player && !building.IsDead)
                 CalculateEnemyValue(building);
@@ -167,10 +181,11 @@ class Grid
             if (unit.faction == Faction.Player && !unit.IsDead)
                 CalculateValue(unit.GridArea.X, unit.GridArea.Y, 0, enemyValue);
 
-        PresentValue(enemyValue);
+        RevealUnits();
+        PresentValue(this.enemyValue);
     }
 
-    public void CalculateEnemyValue(Building building)
+    private void CalculateEnemyValue(Building building)
     {
         Point p = building.GridArea.Location;
         for (int dy = 0; dy < building.GridArea.Height; dy++)
