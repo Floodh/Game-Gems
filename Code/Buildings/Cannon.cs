@@ -39,17 +39,9 @@ class Cannon : Building
         return new Cannon();
     }
 
-    public enum EState 
-    {
-        Normal = 0,
-        Clicked = 1,
-        BuildingTransition = 2,
-        DestroyTransition = 3
-    }
-
     public override void UpdateByMouse(MouseState mouseState)
     {
-        Console.WriteLine("CannonMouse");
+        Console.WriteLine("Cannon Mouse");
     }
     
     public override string ToString()
