@@ -80,19 +80,19 @@ class ResourcesUi
 
         x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding*2;
         ResourcesUi.resourceList.Add(
-            new ResourceTypeUi(textures[2],
+            new ResourceTypeUi(textures[1],
             Resources.GetGreen,
             new Point(x, y)));
 
         x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding*2;
         ResourcesUi.resourceList.Add(
-            new ResourceTypeUi(textures[3],
+            new ResourceTypeUi(textures[2],
             Resources.GetPurple,
             new Point(x, y)));
 
         x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding*2;
         ResourcesUi.resourceList.Add(
-            new ResourceTypeUi(textures[1],
+            new ResourceTypeUi(textures[3],
             Resources.GetOrange,
             new Point(x, y)));
 
