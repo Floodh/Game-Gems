@@ -1,12 +1,13 @@
 
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 class Background
 {
 
-    public Rectangle DrawArea {get {return new Rectangle(0,0,windowSize.X, windowSize.Y);}}
-    private Point windowSize;
+    private Rectangle DrawArea {get {return new Rectangle(0,0,windowSize.X, windowSize.Y);}}
+    public Point windowSize;
     private Texture2D texture;
 
 

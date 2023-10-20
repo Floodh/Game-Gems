@@ -33,7 +33,8 @@ public class GameWindow : Game
         };
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        
+        Window.AllowUserResizing = true;
+        Window.ClientSizeChanged += this.OnResize;
     }
 
     protected override void Initialize()
@@ -140,4 +141,14 @@ public class GameWindow : Game
 
         base.Draw(gameTime);
     }
+    
+    
+    public void OnResize(Object sender, EventArgs e)
+    {
+        Console.WriteLine("Updating");
+        if (this.background != null)
+            this.background.windowSize = this.Window.ClientBounds.Size;
+    }
+
+
 }
