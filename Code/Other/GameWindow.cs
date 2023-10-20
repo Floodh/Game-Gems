@@ -19,6 +19,7 @@ public class GameWindow : Game
 
     private Map map;
     private Level level;
+    private Background background;
 
     private BuildingSelector buildingSelector;
     private ResourcesUi resourcesUi;
@@ -48,6 +49,8 @@ public class GameWindow : Game
         Console.WriteLine("Loading content...");
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
+
+        this.background = new Background(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, graphicsDevice);
 
         this.map = new Map("Data/MapData/TwoSides.png");
         Building.SetGrid(this.map.SourceImage);
@@ -119,6 +122,8 @@ public class GameWindow : Game
         // TODO: Add your drawing code here
         //Console.WriteLine("Drawing...");
         spriteBatch.Begin();
+
+        this.background.Draw();
         
         this.map.Draw();
 
