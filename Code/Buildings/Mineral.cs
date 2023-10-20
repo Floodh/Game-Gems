@@ -69,11 +69,6 @@ class Mineral : Building
             this.Die();
     }
 
-    public override void UpdateByMouse(Microsoft.Xna.Framework.Input.MouseState mouseState)
-    {
-        Console.WriteLine("Mineral Mouse");
-    }
-
     public override void PlayerInteraction()
     {
         base.PlayerInteraction();

@@ -45,11 +45,6 @@ class Cannon : Building, IUpgradableBuilding
     {
         return new Cannon();
     }
-
-    public override void UpdateByMouse(MouseState mouseState)
-    {
-        Console.WriteLine("Cannon Mouse");
-    }
     
     public override string ToString()
     {

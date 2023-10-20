@@ -71,7 +71,6 @@ class ResourcesUi
 
         this.displaySize = displaySize;
 
-        System.Reflection.PropertyInfo prop = typeof(Resources).GetProperty("Blue");
         int x = this.TopLeftPoint.X;
         int y = 0;
         ResourcesUi.resourceList.Add(
