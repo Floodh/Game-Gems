@@ -15,7 +15,14 @@ public class GameWindow : Game
 
 
     public static bool interactingWithUI = false;
+    public static bool isInside = false;
+
     private bool InteractingWithUI {get{return this.buildingSelector.State != BuildingSelector.EState.NotVisible;}}
+    private bool IsInside { get 
+    {   return this.IsActive
+            && contextMouseState.X >= 0 && contextMouseState.X < base.Window.ClientBounds.Width
+            && contextMouseState.Y >= 0 && contextMouseState.Y < base.Window.ClientBounds.Height;
+    }}
 
     private Map map;
     private Level level;
@@ -87,22 +94,18 @@ public class GameWindow : Game
             Exit();
 
         // TODO: Add your update logic here
+        //Console.WriteLine($"Mouse coords: {contextMouseState.X}, {contextMouseState.Y}");
 
-        Camera.UpdateByMouse(contextMouseState,graphics);
-        Camera.UpdateByKeyboard(contextKeyboardState);
-        this.buildingSelector.UpdateByMouse(contextMouseState);
-        this.buildingSelector.UpdateByKeyboard(contextKeyboardState);
-        Building.UpdateAllByMouse(contextMouseState);
+        if (isInside = IsInside)
+        {
+            //Console.WriteLine("     Is inside!");
+            Camera.UpdateByMouse(contextMouseState,graphics);
+            Camera.UpdateByKeyboard(contextKeyboardState);
+            this.buildingSelector.UpdateByMouse(contextMouseState);
+            this.buildingSelector.UpdateByKeyboard(contextKeyboardState);
+            Building.UpdateAllByMouse(contextMouseState);
+        }
 
-        if (this.buildingSelector.State == BuildingSelector.EState.PlacementPending)
-        {
-            // if (this.map.RenderGrid == false)
-            //     this.map.RenderGrid = true;
-        }
-        else
-        {
-            //this.map.RenderGrid = false;
-        }
 
         interactingWithUI = this.InteractingWithUI;
         level.MayTick();    //  performs all ticks
