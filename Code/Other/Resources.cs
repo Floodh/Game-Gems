@@ -41,7 +41,7 @@ readonly struct Resources
     }
     public static void Gain(int blue, int green, int purple, int orange)
     {
-        Gain(blue, green, purple, orange);
+        Gain(new Resources(blue, green, purple, orange));
     }
 
     public static int GetBlue()
