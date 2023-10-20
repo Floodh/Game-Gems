@@ -106,6 +106,7 @@ public class GameWindow : Game
             this.buildingSelector.UpdateByMouse(contextMouseState);
             this.buildingSelector.UpdateByKeyboard(contextKeyboardState);
             Building.UpdateAllByMouse(contextMouseState);
+            this.contextMenu.Update();
         }
 
 
