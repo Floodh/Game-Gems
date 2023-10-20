@@ -43,7 +43,7 @@ class ContextMenu
                 this.menuTexture, menuRect, null, new Color(Color.White, 1f), 0f, 
                 new Vector2(0, 0), SpriteEffects.None, 0f);
 
-            var cannon = this.building as Cannon;
+            var cannon = this.building as UpgradeableBuilding;
             SpriteFontBase font18 = ResourcesUi.FontSystem.GetFont(18);
             menuVec = menuVec + new Vector2(40, 10);
             GameWindow.spriteBatch.DrawString(font18, cannon.GetBlueUpgradeCost().ToString(), menuVec, Color.Black);

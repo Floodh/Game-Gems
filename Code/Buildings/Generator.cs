@@ -3,38 +3,20 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 
-class Generator : Building
+class Generator : UpgradeableBuilding
 {
 
-    private const string Path_BaseTexture = "Data/Texture/Generator.png";
+    private const int textureSet = 2;
 
-    private Texture2D baseTexture;
-    private HealthBar hpBar;
     private Targetable target;
     private EnergyBeam animation;
-
     private int energyTransfer = 1;
 
 
     public Generator()
-        : base(Faction.Player)
+        : base("Orange", textureSet)
     {
         this.AttackRate = 10;
-
-        this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
-        this.hpBar = new HealthBar(this);
-    }
-
-    public override void Draw()
-    {
-        Rectangle gridArea = this.GridArea;
-        if (gridArea != Rectangle.Empty)
-        {
-            GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
-            hpBar.Update();
-            hpBar.Draw();
-        }
-        base.Draw();
     }
 
     int attackCounter = 0;

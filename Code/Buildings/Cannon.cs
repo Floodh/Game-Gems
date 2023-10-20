@@ -3,38 +3,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-public interface IUpgradableBuilding
-{
-    int GetBlueUpgradeCost();
-    int GetTier();
-    void Upgrade();
-}
 
-class Cannon : Building, IUpgradableBuilding
+class Cannon : UpgradeableBuilding
 {
-
-    private const string Path_BaseTexture = "Data/Texture/Cannon.png";
-    private HealthBar hpBar;
-    Texture2D baseTexture;
+    private const int textureSet = 3;
 
     public Cannon()
-        : base(Faction.Player)
-    {
-        this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
-        hpBar = new HealthBar(this);
-    }
-
-    public override void Draw()
-    {
-        Rectangle gridArea = this.GridArea;
-        if (gridArea != Rectangle.Empty)
-        {
-            GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
-            hpBar.Update();
-            hpBar.Draw();
-        }
-        base.Draw();
-    }
+        : base("Purple", textureSet)
+    {}
 
     public override void Tick()
     {
@@ -51,18 +27,5 @@ class Cannon : Building, IUpgradableBuilding
         return $"Cannon : {this.Hp} / {this.MaxHp}";
     }
 
-    public int GetBlueUpgradeCost()
-    {
-        return 2345;
-    }
 
-    public int GetTier()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Upgrade()
-    {
-        throw new NotImplementedException();
-    }
 }
