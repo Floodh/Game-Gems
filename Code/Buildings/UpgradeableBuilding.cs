@@ -2,10 +2,10 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public interface IUpgradeableBuilding
+interface IUpgradeableBuilding
 {
-    int GetBlueUpgradeCost();
-    int GetTier();
+    Resources GetUpgradeCost();
+    int Tier {get;}
     void Upgrade();
 }
 
@@ -16,6 +16,7 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
     private const int maxTier = 4;
     protected static Texture2D[][] baseTextures;
 
+    public int Tier{get{return this.currentTier;}}
     protected int currentTier = 1;
     private HealthBar hpBar;
     private readonly int textureSet;
@@ -48,9 +49,9 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
         base.Draw();
     }
 
-    public int GetBlueUpgradeCost()
+    public Resources GetUpgradeCost()
     {
-        return 2345;
+        return new Resources(64, 64, 64, 64);
     }
 
     public int GetTier()

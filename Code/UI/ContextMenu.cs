@@ -46,13 +46,13 @@ class ContextMenu
             var cannon = this.building as UpgradeableBuilding;
             SpriteFontBase font18 = ResourcesUi.FontSystem.GetFont(18);
             menuVec = menuVec + new Vector2(40, 10);
-            GameWindow.spriteBatch.DrawString(font18, cannon.GetBlueUpgradeCost().ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatch.DrawString(font18, cannon.GetUpgradeCost().blue.ToString(), menuVec, Color.Black);
             menuVec = menuVec + new Vector2(108, 0);
-            GameWindow.spriteBatch.DrawString(font18, cannon.GetBlueUpgradeCost().ToString(), menuVec, Color.Black); 
+            GameWindow.spriteBatch.DrawString(font18, cannon.GetUpgradeCost().green.ToString(), menuVec, Color.Black); 
             menuVec = menuVec + new Vector2(0, 48);
-            GameWindow.spriteBatch.DrawString(font18, cannon.GetBlueUpgradeCost().ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatch.DrawString(font18, cannon.GetUpgradeCost().purple.ToString(), menuVec, Color.Black);
             menuVec = menuVec + new Vector2(-108, 0);
-            GameWindow.spriteBatch.DrawString(font18, cannon.GetBlueUpgradeCost().ToString(), menuVec, Color.Black); 
+            GameWindow.spriteBatch.DrawString(font18, cannon.GetUpgradeCost().orange.ToString(), menuVec, Color.Black); 
         }
     }
 
