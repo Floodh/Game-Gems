@@ -19,6 +19,7 @@ public class GameWindow : Game
 
     private Map map;
     private Level level;
+    private Background background;
 
     private BuildingSelector buildingSelector;
     private ResourcesUi resourcesUi;
@@ -33,7 +34,8 @@ public class GameWindow : Game
         };
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        
+        Window.AllowUserResizing = true;
+        Window.ClientSizeChanged += this.OnResize;
     }
 
     protected override void Initialize()
@@ -49,6 +51,8 @@ public class GameWindow : Game
         Console.WriteLine("Loading content...");
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
+
+        this.background = new Background(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, graphicsDevice);
 
         this.map = new Map("Data/MapData/TwoSides.png");
         Building.SetGrid(this.map.SourceImage);
@@ -122,6 +126,8 @@ public class GameWindow : Game
         // TODO: Add your drawing code here
         //Console.WriteLine("Drawing...");
         spriteBatch.Begin();
+
+        this.background.Draw();
         
         this.map.Draw();
 
@@ -139,4 +145,14 @@ public class GameWindow : Game
 
         base.Draw(gameTime);
     }
+    
+    
+    public void OnResize(Object sender, EventArgs e)
+    {
+        Console.WriteLine("Updating");
+        if (this.background != null)
+            this.background.windowSize = this.Window.ClientBounds.Size;
+    }
+
+
 }

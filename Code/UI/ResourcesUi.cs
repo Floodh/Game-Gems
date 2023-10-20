@@ -65,32 +65,36 @@ class ResourcesUi
         FontSystem = new FontSystem();
         FontSystem.AddFont(System.IO.File.ReadAllBytes(@"Data/Fonts/PTC55F.ttf"));
 
+        Texture2D[] textures = TextureSource.LoadIcons();
+        if (textures.Length != 4)
+            throw new Exception("Incorrect number of UI textures loaded!");
+
         this.displaySize = displaySize;
 
         System.Reflection.PropertyInfo prop = typeof(Resources).GetProperty("Blue");
         int x = this.TopLeftPoint.X;
         int y = 0;
         ResourcesUi.resourceList.Add(
-            new ResourceTypeUi(Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/BlueGem.png"),
+            new ResourceTypeUi(textures[0],
             Resources.GetBlue,
             new Point(x, y)));
 
         x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding*2;
         ResourcesUi.resourceList.Add(
-            new ResourceTypeUi(Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GreenGem.png"),
+            new ResourceTypeUi(textures[2],
             Resources.GetGreen,
             new Point(x, y)));
 
         x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding*2;
         ResourcesUi.resourceList.Add(
-            new ResourceTypeUi(Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/PurpleGem.png"),
+            new ResourceTypeUi(textures[3],
             Resources.GetPurple,
             new Point(x, y)));
 
         x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding*2;
         ResourcesUi.resourceList.Add(
-            new ResourceTypeUi(Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/RedGem.png"),
-            Resources.GetRed,
+            new ResourceTypeUi(textures[1],
+            Resources.GetOrange,
             new Point(x, y)));
 
     }
