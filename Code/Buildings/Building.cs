@@ -14,7 +14,7 @@ abstract class Building : Targetable
     public static List<Building> allBuildings = new List<Building>();
     public static Grid grid;
     public EState State = EState.Normal;
-
+    
 
     public static void SetGrid(Bitmap sourceImage)
     {
@@ -73,7 +73,14 @@ abstract class Building : Targetable
 
     public virtual void Draw()
     {
-        //  if isSelected draw green outline
+        if(this.State == EState.Selected)
+        {
+            Texture2D _texture;
+            _texture = new Texture2D(GameWindow.graphicsDevice, 1, 1);
+            _texture.SetData(new Color[] { Color.White });
+
+            GameWindow.spriteBatch.Draw(_texture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Color.White * 0.5f);
+        }
     }
 
     // public virtual void Action()
@@ -134,18 +141,20 @@ abstract class Building : Targetable
     {
         if(mouseState.LeftButton == ButtonState.Pressed)
         {
-            Building.selectedBuilding = null;
+            if(Building.selectedBuilding != null)
             {
-                foreach(Building building in Building.GetClickableBuildings())
+                Building.selectedBuilding.State = EState.Normal;
+                Building.selectedBuilding = null;
+            }
+            
+            foreach(Building building in Building.GetClickableBuildings())
+            {
+                Point gridPoint = Building.GetMouseGridPoint(mouseState);
+                if(building.GridArea.Contains(gridPoint))
                 {
-                    Point gridPoint = Building.GetMouseGridPoint(mouseState);
-                    if(building.GridArea.Contains(gridPoint))
-                    {
-                        Building.selectedBuilding = building;
-                        Building.selectedBuilding.State = EState.Normal;
-
-                        // Console.WriteLine("Press on: " + building.ToString());
-                    }
+                    Building.selectedBuilding = building;
+                    Building.selectedBuilding.State = EState.Normal;
+                    // Console.WriteLine("Press on: " + building.ToString());
                 }
             }
         }  
@@ -162,7 +171,16 @@ abstract class Building : Targetable
                     Console.WriteLine("Selected: " + Building.selectedBuilding.ToString());
                 }  
             }  
-        }   
+        }
+
+        if(mouseState.RightButton == ButtonState.Pressed)  
+        {
+            if(Building.selectedBuilding != null)
+            {
+                Building.selectedBuilding.State = EState.Normal;
+                Building.selectedBuilding = null;
+            }
+        }
     }
 
     public enum EState 
@@ -186,7 +204,8 @@ abstract class Building : Targetable
         List<Building>list = new();
         foreach (Building building in Building.allBuildings)
         {
-            if(building.faction == Faction.Neutral && building.GetType() == typeof(Mineral))
+            // TODO Implement IClickable or something
+            if(building.faction == Faction.Player && building.GetType() == typeof(Cannon))
             {
                 list.Add(building);
             }
@@ -206,8 +225,6 @@ abstract class Building : Targetable
     {
         Type type = this.GetType();
         return $"Building| Pos:{this.GridArea.ToString()}, Type:{type.ToString()}, Faction:{this.faction.ToString()}";
-    }
-
-    
+    }  
 }
 

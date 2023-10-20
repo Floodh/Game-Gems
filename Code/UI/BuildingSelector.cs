@@ -72,10 +72,12 @@ class BuildingSelector
                 this.State = EState.NotVisible;
             }
         }
-        else
-        {
-            // Add escape handling
-        }
+        // Currently Escape quites the program
+        // if(this.State == EState.PlacementPending  && keyboardState.IsKeyDown(Keys.Escape))
+        // {
+        //     selectingOption = false;
+        //     this.State = EState.NotVisible;
+        // }
     }
 
     private static bool selectingOption = false;

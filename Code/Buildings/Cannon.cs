@@ -3,7 +3,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-class Cannon : Building
+public interface IUpgradableBuilding
+{
+    int GetBlueUpgradeCost();
+    int GetTier();
+    void Upgrade();
+}
+
+class Cannon : Building, IUpgradableBuilding
 {
 
     private const string Path_BaseTexture = "Data/Texture/Cannon.png";
@@ -47,5 +54,20 @@ class Cannon : Building
     public override string ToString()
     {
         return $"Cannon : {this.Hp} / {this.MaxHp}";
+    }
+
+    public int GetBlueUpgradeCost()
+    {
+        return 2345;
+    }
+
+    public int GetTier()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Upgrade()
+    {
+        throw new NotImplementedException();
     }
 }
