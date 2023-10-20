@@ -17,7 +17,7 @@ class ResourcesUi
         Rectangle gemRect;
         Texture2D bgTexture;
         Rectangle bgRect;
-        private static readonly Size textureSize = new(32, 32);
+        private static readonly Size textureSize = new(24, 24);
         private static readonly Size resourceSize = new(96, 32);
         public static Size ResourceSize => resourceSize;
         public delegate int Callback();
@@ -30,13 +30,13 @@ class ResourcesUi
 
             this.topLeftPoint = topLeftPoint;
             this.gemTexture = texture;
-            this.bgTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/brick3.png");
+            this.bgTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/brick4.png");
 
             this.bgRect = new Rectangle(
                 this.topLeftPoint.X, this.topLeftPoint.Y, ResourceTypeUi.resourceSize.Width, ResourceTypeUi.resourceSize.Height);
 
             this.gemRect = new Rectangle(
-                this.topLeftPoint.X, this.topLeftPoint.Y, ResourceTypeUi.textureSize.Width, ResourceTypeUi.textureSize.Height);            
+                this.topLeftPoint.X + 2, this.topLeftPoint.Y + 2, ResourceTypeUi.textureSize.Width, ResourceTypeUi.textureSize.Height);            
         }
 
         public void Draw()
@@ -49,7 +49,7 @@ class ResourcesUi
                 this.gemTexture, this.gemRect, null, new Color(Color.White, 1f), 0f, 
                 new Vector2(0, 0), SpriteEffects.None, 0f);
 
-            Vector2 vec = this.topLeftPoint.ToVector2() + new Vector2(32, 8);
+            Vector2 vec = this.topLeftPoint.ToVector2() + new Vector2(38, 6);
             SpriteFontBase font18 = ResourcesUi.FontSystem.GetFont(18);
             GameWindow.spriteBatch.DrawString(font18, this._callback().ToString(), vec, Color.Black);   
         }

@@ -9,30 +9,12 @@ static class TextureSource
 
     public static Texture2D[] LoadIcons()
     {
-        int xStart = 24;
-        int yStart = 52;
-        int width = 166 - xStart;
-        int height = width;
-        int xBuffer = 194 - width - xStart;
-        int yBuffer = 244 - height - yStart;
-
-        Point[] selected = new Point[]
-        {
-            new Point(1, 0), new Point(3, 0), new Point(4, 0),
-            new Point(0, 1),
-        };
-        Rectangle[] areas = new Rectangle[selected.Length];
-        for (int i = 0; i < selected.Length; i++)
-        {
-            areas[i] = new Rectangle(
-                xStart + (width + xBuffer) * selected[i].X,
-                yStart + (height + yBuffer) * selected[i].Y,
-                width,
-                height
-            );
-        }
-
-        return Load("Data/TextureSources/Icons.jpg", areas);
+        Texture2D[] textures = new Texture2D[4];
+        textures[0] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/Icon-blue.png");
+        textures[1] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/Icon-green.png");
+        textures[2] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/Icon-purple.png");
+        textures[3] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/Icon-red.png");
+        return textures;
     }
 
     public static Texture2D[] LoadMinerals()

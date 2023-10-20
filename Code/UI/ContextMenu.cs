@@ -11,7 +11,7 @@ using Size = System.Drawing.Size;
 class ContextMenu
 {
     Texture2D menuTexture;
-    private static readonly Size textureSize = new(96, 168);
+    private static readonly Size textureSize = new(450/2, 178/2);
     private Building building;
     public static FontSystem FontSystem { get => _fontSystem; set => _fontSystem = value; }
     internal Building Building { get => building; set => building = value; }
@@ -21,7 +21,7 @@ class ContextMenu
     {
         FontSystem = new FontSystem();
         FontSystem.AddFont(System.IO.File.ReadAllBytes(@"Data/Fonts/PTC55F.ttf"));
-        this.menuTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/context-menu1.png");
+        this.menuTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/context-menu2.png");
     }
 
     public void Update()
@@ -45,11 +45,13 @@ class ContextMenu
 
             var cannon = this.building as Cannon;
             SpriteFontBase font18 = ResourcesUi.FontSystem.GetFont(18);
-            menuVec = menuVec + new Vector2(32, 10);
+            menuVec = menuVec + new Vector2(40, 10);
             GameWindow.spriteBatch.DrawString(font18, cannon.GetBlueUpgradeCost().ToString(), menuVec, Color.Black);
-            menuVec = menuVec + new Vector2(0, 37);
+            menuVec = menuVec + new Vector2(108, 0);
             GameWindow.spriteBatch.DrawString(font18, cannon.GetBlueUpgradeCost().ToString(), menuVec, Color.Black); 
-            menuVec = menuVec + new Vector2(0, 37);
+            menuVec = menuVec + new Vector2(0, 48);
+            GameWindow.spriteBatch.DrawString(font18, cannon.GetBlueUpgradeCost().ToString(), menuVec, Color.Black);
+            menuVec = menuVec + new Vector2(-108, 0);
             GameWindow.spriteBatch.DrawString(font18, cannon.GetBlueUpgradeCost().ToString(), menuVec, Color.Black); 
         }
     }
