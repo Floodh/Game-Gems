@@ -18,7 +18,7 @@ class Mineral : Building
     private static Texture2D[] baseTextures;
 
     public int quantity = 10000;
-
+    
     public Mineral(Type type)
         : base(Faction.Neutral)
     {
@@ -67,11 +67,6 @@ class Mineral : Building
     {
         if (this.quantity == 0)
             this.Die();
-    }
-
-    public override void UpdateByMouse(Microsoft.Xna.Framework.Input.MouseState mouseState)
-    {
-        Console.WriteLine("Mineral Mouse");
     }
 
     public override void PlayerInteraction()

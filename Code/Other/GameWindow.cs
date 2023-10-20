@@ -30,6 +30,7 @@ public class GameWindow : Game
 
     private BuildingSelector buildingSelector;
     private ResourcesUi resourcesUi;
+    private ContextMenu contextMenu;
 
     public GameWindow()
     {
@@ -67,6 +68,7 @@ public class GameWindow : Game
         var displaySize = new Size(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         this.buildingSelector = new BuildingSelector(displaySize);
         this.resourcesUi = new ResourcesUi(displaySize);
+        this.contextMenu = new ContextMenu();
 
 
        // this.bgMap = new Map("Data/MapData/OG.png");
@@ -138,6 +140,7 @@ public class GameWindow : Game
 
         this.buildingSelector.Draw(spriteBatch);
         this.resourcesUi.Draw(spriteBatch);
+        this.contextMenu.Draw();
         
         spriteBatch.End();
 
