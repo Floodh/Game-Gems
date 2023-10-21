@@ -6,7 +6,7 @@ class HealthBar : Bar
 {
 
     public HealthBar(Building building)
-        : base(building, Color.Green, Point.Zero)
+        : base(building, Color.Green, Color.Red, Point.Zero)
     {}
 
 

@@ -6,9 +6,8 @@ class EnergyBar : Bar
 {
 
     public EnergyBar(Building building)
-        : base(building, Color.Purple, new Point(2, 6))
+        : base(building, Color.Purple, Color.Bisque, new Point(0, 16))
     {}
-
 
     protected override double Percentace()
     {

@@ -5,10 +5,10 @@ using Microsoft.Xna.Framework.Graphics;
 abstract class Bar
 {
 
-    private static readonly Color bgColor = Color.Red;
-    private readonly Color fillColor = Color.Green;
+    private readonly Color bgColor;
+    private readonly Color fillColor;
 
-    private Texture2D whitePixelTexture;
+    private static Texture2D whitePixelTexture;
     protected Building building;
 
     private Rectangle bgDrawArea;
@@ -16,13 +16,17 @@ abstract class Bar
 
     private Point offset;
 
-    public Bar(Building building, Color fillColor, Point offset)
+    public Bar(Building building, Color fillColor, Color bgColor, Point offset)
     {
         this.fillColor = fillColor;
+        this.bgColor = bgColor;
         this.building = building;
         this.offset = offset;
-        this.whitePixelTexture = new(GameWindow.graphicsDevice, 1, 1);
-        whitePixelTexture.SetData(new Color[] { Color.White });
+        if (whitePixelTexture == null)
+        {
+            whitePixelTexture = new(GameWindow.graphicsDevice, 1, 1);
+            whitePixelTexture.SetData(new Color[] { Color.White });
+        }
 
     }
     public void Update()
@@ -32,7 +36,7 @@ abstract class Bar
         int barWidth = building.DrawArea.Width;
         int barHeight = 5; // Adjust this value to change the height of the health bar
         int barX = building.DrawArea.X + this.offset.X;
-        int barY = building.DrawArea.Y - barHeight - 2 + this.offset.Y; // Adjust the vertical position as needed
+        int barY = building.DrawArea.Y + this.offset.Y; // Adjust the vertical position as needed
 
         bgDrawArea = new Rectangle(barX, barY, barWidth, barHeight);
 
