@@ -6,7 +6,7 @@ interface IUpgradeableBuilding
 {
     Resources GetUpgradeCost();
     int Tier {get;}
-    void Upgrade();
+    bool TryUpgrade();
 }
 
 abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
@@ -17,6 +17,7 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
     protected static Texture2D[][] baseTextures;
 
     public int Tier{get{return this.currentTier;}}
+    public int MaxTier{get{ return UpgradeableBuilding.maxTier; }}
     protected int currentTier = 1;
     private HealthBar hpBar;
     private readonly int textureSet;
@@ -51,17 +52,23 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
 
     public Resources GetUpgradeCost()
     {
-        return new Resources(64, 64, 64, 64);
+        return new Resources(16, 0, 0, 0);
     }
 
-    public int GetTier()
+    public bool TryUpgrade()
     {
-        throw new NotImplementedException();
-    }
+        bool result = false;
 
-    public void Upgrade()
-    {
-        throw new NotImplementedException();
-    } 
+        if(currentTier < maxTier)
+        {
+            result = Resources.BuyFor(GetUpgradeCost());
+
+            if(result)
+            {
+                currentTier++;
+            }
+        }
+        return result;
+    }
 
 }

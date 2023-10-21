@@ -25,7 +25,7 @@ class Cannon : UpgradeableBuilding
     
     public override string ToString()
     {
-        return $"Cannon : {this.Hp} / {this.MaxHp} / tier:{this.tier}";
+        return $"Cannon : {this.Hp} / {this.MaxHp} / tier:{this.Tier}";
     }
 
 }

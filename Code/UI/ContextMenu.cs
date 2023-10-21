@@ -57,8 +57,8 @@ class ContextMenu
                 {
                     Console.WriteLine("Release ContextMenu");
                     this.mousePressed = false;
-                    var cannon = this.building as Cannon;
-                    bool result = cannon.TryUpgrade();
+                    var upgradableBuilding = this.building as UpgradeableBuilding;
+                    bool result = upgradableBuilding.TryUpgrade();
                 }
                 return true;
             }
@@ -71,8 +71,8 @@ class ContextMenu
     {
         if(this.building != null && this.building.State == Building.EState.Selected)
         {
-            var cannon = this.building as Cannon;
-            if(cannon.Tier >= Cannon.MaxTier)
+            var upgradableBuilding = this.building as UpgradeableBuilding;
+            if(upgradableBuilding.Tier >= upgradableBuilding.MaxTier)
                 return;
 
             Vector2 menuVec = this.menuVec;
@@ -83,13 +83,13 @@ class ContextMenu
 
             SpriteFontBase font18 = ResourcesUi.FontSystem.GetFont(18);
             menuVec = menuVec + new Vector2(40, 10);
-            GameWindow.spriteBatch.DrawString(font18, cannon.GetUpgradeCost().blue.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatch.DrawString(font18, upgradableBuilding.GetUpgradeCost().blue.ToString(), menuVec, Color.Black);
             menuVec = menuVec + new Vector2(108, 0);
-            GameWindow.spriteBatch.DrawString(font18, cannon.GetUpgradeCost().green.ToString(), menuVec, Color.Black); 
+            GameWindow.spriteBatch.DrawString(font18, upgradableBuilding.GetUpgradeCost().green.ToString(), menuVec, Color.Black); 
             menuVec = menuVec + new Vector2(0, 48);
-            GameWindow.spriteBatch.DrawString(font18, cannon.GetUpgradeCost().purple.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatch.DrawString(font18, upgradableBuilding.GetUpgradeCost().purple.ToString(), menuVec, Color.Black);
             menuVec = menuVec + new Vector2(-108, 0);
-            GameWindow.spriteBatch.DrawString(font18, cannon.GetUpgradeCost().orange.ToString(), menuVec, Color.Black); 
+            GameWindow.spriteBatch.DrawString(font18, upgradableBuilding.GetUpgradeCost().orange.ToString(), menuVec, Color.Black); 
         }
     }
 
