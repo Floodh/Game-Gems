@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -6,22 +7,37 @@ using Microsoft.Xna.Framework.Input;
 public interface IUpgradableBuilding
 {
     int GetBlueUpgradeCost();
-    int GetTier();
-    void Upgrade();
+    int GetPurpleUpgradeCost();
+    int GetRedUpgradeCost();
+    int GetGreenUpgradeCost();
+    int Tier { get; }
+    bool TryUpgrade();
 }
 
 class Cannon : Building, IUpgradableBuilding
 {
-
-    private const string Path_BaseTexture = "Data/Texture/Cannon.png";
+    private static List<Texture2D> textureList = new List<Texture2D>();
     private HealthBar hpBar;
-    Texture2D baseTexture;
+    private int tier = 0;
+    public static readonly int MaxTier = 3;
 
     public Cannon()
         : base(Faction.Player)
     {
-        this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
         hpBar = new HealthBar(this);
+    }
+
+    private static List<Texture2D> TextureList
+    {
+        get
+        {
+            if(textureList.Count == 0)
+            {
+                for(int index = 0; index < 4; index++)
+                    textureList.Add(Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/Texture/GemStructure/Purple_{index}.png"));
+            }  
+            return textureList;
+        }
     }
 
     public override void Draw()
@@ -29,7 +45,8 @@ class Cannon : Building, IUpgradableBuilding
         Rectangle gridArea = this.GridArea;
         if (gridArea != Rectangle.Empty)
         {
-            GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
+            Texture2D texture = Cannon.TextureList[this.Tier];
+            GameWindow.spriteBatch.Draw(texture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
             hpBar.Update();
             hpBar.Draw();
         }
@@ -48,21 +65,48 @@ class Cannon : Building, IUpgradableBuilding
     
     public override string ToString()
     {
-        return $"Cannon : {this.Hp} / {this.MaxHp}";
+        return $"Cannon : {this.Hp} / {this.MaxHp} / tier:{this.tier}";
     }
 
     public int GetBlueUpgradeCost()
     {
-        return 2345;
+        return 10;
     }
 
-    public int GetTier()
+    public int GetPurpleUpgradeCost()
     {
-        throw new NotImplementedException();
+        return 0;
     }
 
-    public void Upgrade()
+    public int GetRedUpgradeCost()
     {
-        throw new NotImplementedException();
+        return 0;
+    }
+
+    public int GetGreenUpgradeCost()
+    {
+        return 0;
+    }
+
+    public int Tier => this.tier;
+
+    public bool TryUpgrade()
+    {
+        bool result = false;
+
+        if(this.tier < Cannon.MaxTier)
+        {
+            result = Resources.BuyFor(
+                this.GetBlueUpgradeCost(),
+                this.GetPurpleUpgradeCost(),
+                this.GetRedUpgradeCost(),
+                this.GetGreenUpgradeCost());
+
+            if(result)
+            {
+                this.tier++;
+            }
+        }
+        return result;
     }
 }

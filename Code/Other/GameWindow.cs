@@ -103,10 +103,21 @@ public class GameWindow : Game
             //Console.WriteLine("     Is inside!");
             Camera.UpdateByMouse(contextMouseState,graphics);
             Camera.UpdateByKeyboard(contextKeyboardState);
+
             this.buildingSelector.UpdateByMouse(contextMouseState);
-            this.buildingSelector.UpdateByKeyboard(contextKeyboardState);
-            Building.UpdateAllByMouse(contextMouseState);
-            this.contextMenu.Update();
+            this.buildingSelector.UpdateByKeyboard(contextKeyboardState);   
+
+            if(!InteractingWithUI)
+            {
+                this.contextMenu.Update();
+                bool mouseOnContextMenu = this.contextMenu.UpdateByMouse(contextMouseState);
+
+                if(!mouseOnContextMenu)
+                {
+                    Building.UpdateAllByMouse(contextMouseState);
+                }
+
+            }   
         }
 
 

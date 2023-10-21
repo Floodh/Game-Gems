@@ -186,8 +186,7 @@ class BuildingSelector
         {     
             float intensity = this.canplace?1f:0.5f;
             GameWindow.spriteBatch.Draw(this.BuildingToPlaceTexture, Camera.ModifiedDrawArea(this.worldRect, Camera.zoomLevel), new Color(Color.White, intensity));
-
-            Console.WriteLine($"Rect:{this.worldRect}, Can place:{this.canplace}"); 
+            // Console.WriteLine($"Rect:{this.worldRect}, Can place:{this.canplace}"); 
         }    
     }
 }

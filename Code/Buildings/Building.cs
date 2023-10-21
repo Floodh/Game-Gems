@@ -154,7 +154,7 @@ abstract class Building : Targetable
                 {
                     Building.selectedBuilding = building;
                     Building.selectedBuilding.State = EState.Normal;
-                    // Console.WriteLine("Press on: " + building.ToString());
+                    Console.WriteLine("Press on: " + building.ToString());
                 }
             }
         }  
@@ -191,7 +191,6 @@ abstract class Building : Targetable
         DestroyTransition = 3
     }
 
-    protected bool mousePressed = false;
     public static Building selectedBuilding = null;
 
     public virtual void UpdateByMouse(MouseState mouseState)
