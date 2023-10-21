@@ -204,7 +204,7 @@ abstract class Building : Targetable
         foreach (Building building in Building.allBuildings)
         {
             // TODO Implement IClickable or something
-            if(building.faction == Faction.Player && building.GetType() == typeof(Cannon))
+            if(building.faction == Faction.Player)
             {
                 list.Add(building);
             }

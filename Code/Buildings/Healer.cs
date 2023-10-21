@@ -3,14 +3,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 
-class Healer : Building
+class Healer : UpgradeableBuilding
 {
 
-    private const string Path_BaseTexture = "Data/Texture/Healer.png";
+    private const int textureSet = 1;
 
-    private Texture2D baseTexture;
-    private HealthBar hpBar;
-    private EnergyBar energyBar;
+
     private Targetable target;
     private EnergyBeam animation;
     
@@ -19,29 +17,11 @@ class Healer : Building
 
 
     public Healer()
-        : base(Faction.Player)
+        : base("Green", textureSet)
     {
         this.AttackRate = 10;
-        this.MaxEnergy = 100;
-
-        this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
-        hpBar = new HealthBar(this);
-        energyBar = new EnergyBar(this);     
+        this.MaxEnergy = 100; 
         //animation = new(this.GridArea.Center, new Point(40,50), EnergyBeam.Type.Line);   
-    }
-
-    public override void Draw()
-    {
-        Rectangle gridArea = this.GridArea;
-        if (gridArea != Rectangle.Empty)
-        {
-            GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
-            hpBar.Update();
-            energyBar.Update();
-            hpBar.Draw();
-            energyBar.Draw();
-        }
-        base.Draw();
     }
 
     int attackCounter = 0;

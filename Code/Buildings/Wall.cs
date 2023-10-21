@@ -2,33 +2,17 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 
-class Wall : Building
+class Wall : UpgradeableBuilding
 {
 
-    private const string Path_BaseTexture = "Data/Texture/Wall.png";
+    private const int textureSet = 0;
 
-    Texture2D baseTexture;
-    private HealthBar hpBar;
+
     public Wall()
-        : base(Faction.Player)
+        : base("Blue", textureSet)
     {
         this.MaxHp = 500;
         this.Hp = this.MaxHp;
-
-        this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
-        hpBar = new HealthBar(this);
-    }
-
-    public override void Draw()
-    {
-        Rectangle gridArea = this.GridArea;
-        if (gridArea != Rectangle.Empty)
-        {
-            GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
-            hpBar.Update();
-            hpBar.Draw();
-        }
-        base.Draw();
     }
 
     public override void Tick()
