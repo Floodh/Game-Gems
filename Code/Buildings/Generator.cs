@@ -10,13 +10,18 @@ class Generator : UpgradeableBuilding
 
     private Targetable target;
     private EnergyBeam animation;
-    private int energyTransfer = 1;
+    private EnergyBar energyBar;
 
+    private int energyTransfer = 1;
 
     public Generator()
         : base("Orange", textureSet)
     {
         this.AttackRate = 10;
+        this.energyBar = new EnergyBar(this);
+        this.MaxEnergy = 1;
+        this.Energy = 1;
+        this.Regen_Energy = 0;
     }
 
     int attackCounter = 0;
@@ -41,6 +46,14 @@ class Generator : UpgradeableBuilding
                     this.animation.Play();
             }
         }
+
+        this.energyBar.Update();
+    }
+
+    public override void Draw()
+    {
+        base.Draw();
+        this.energyBar.Draw();
     }
 
     public override Building CreateNew()

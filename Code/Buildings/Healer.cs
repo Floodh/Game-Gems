@@ -11,6 +11,7 @@ class Healer : UpgradeableBuilding
 
     private Targetable target;
     private EnergyBeam animation;
+    private EnergyBar energyBar;
     
     private int dmg = -1;
     
@@ -21,6 +22,7 @@ class Healer : UpgradeableBuilding
     {
         this.AttackRate = 10;
         this.MaxEnergy = 100; 
+        this.energyBar = new EnergyBar(this);
         //animation = new(this.GridArea.Center, new Point(40,50), EnergyBeam.Type.Line);   
     }
 
@@ -48,7 +50,15 @@ class Healer : UpgradeableBuilding
             }
 
         }
+
+        this.energyBar.Update();
         
+    }
+
+    public override void Draw()
+    {
+        base.Draw();
+        this.energyBar.Draw();
     }
 
     public override Building CreateNew()
