@@ -25,26 +25,7 @@ class Mineral : Building
         this.type = type;
         if (baseTextures == null)
         {
-            baseTextures = TextureSource.LoadMinerals();
-
-            //  swap r and g values for one texture
-            Texture2D redTexture = baseTextures[0];
-            Color[] data = new Color[redTexture.Width * redTexture.Height];
-            redTexture.GetData(data);
-            for (int y = 0; y < redTexture.Height; y++)
-            for (int x = 0; x < redTexture.Width; x++)
-            {
-                int index = y * redTexture.Width + x;
-                Color color = data[index];
-                color = new Color(color.G, color.R, color.B, color.A);
-                data[index] = color;
-            }
-            redTexture.SetData(data);
-
-            //  swap green and blue texture
-            Texture2D blueTexture = baseTextures[((int)Type.Green)];
-            baseTextures[((int)Type.Green)] = baseTextures[((int)Type.Blue)];
-            baseTextures[((int)Type.Blue)] = blueTexture;
+            baseTextures = TextureSource.LoadMinerals();       
         }
     }
 

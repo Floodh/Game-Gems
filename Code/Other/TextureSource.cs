@@ -19,32 +19,12 @@ static class TextureSource
 
     public static Texture2D[] LoadMinerals()
     {
-
-        int xStart = 75;
-        int yStart = 78;
-        int width = 337 - xStart;
-        int height = width;
-        int xBuffer = 390 - width - xStart;
-        int yBuffer = 394 - height - yStart;
-
-        Point[] selected = new Point[]
-        {
-            new Point(0, 1), new Point(1, 1),
-            new Point(0, 2), new Point(1, 2),
-        };
-        Rectangle[] areas = new Rectangle[selected.Length];
-        for (int i = 0; i < selected.Length; i++)
-        {
-            areas[i] = new Rectangle(
-                xStart + (width + xBuffer) * selected[i].X,
-                yStart + (height + yBuffer) * selected[i].Y,
-                width,
-                height
-            );
-        }
-
-        return Load("Data/TextureSources/Minerals.jpg", areas);
-
+        Texture2D[] textures = new Texture2D[4];
+        textures[0] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-blue2.png");
+        textures[1] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-green2.png");
+        textures[2] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-purple2.png");
+        textures[3] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-red3.png");
+        return textures;
     }
 
 
