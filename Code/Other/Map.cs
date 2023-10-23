@@ -70,11 +70,12 @@ class Map
         //this.drawTexture = new Texture2D(Game1.graphicsDevice, size.Width, size.Height);
         //this.dirtTextures = TextureSource.LoadDirt();
         this.grassTextures = TextureSource.LoadGrass();
-        this.waterTextures = TextureSource.LoadWater();
+        
         this.dirtTextures = TextureSource.LoadDirt();
         this.stoneTextures = TextureSource.LoadStone();
         this.validTileTexture = Texture2D.FromFile(graphicsDevice, GRID_VALIDTILE_TEXTURE_PATH);
         this.inValidTileTexture = Texture2D.FromFile(graphicsDevice, GRID_INVALIDTILE_TEXTURE_PATH);
+        this.waterTextures = TextureSource.LoadCrystalClearWater();
 
         spriteBatch.Begin();
 

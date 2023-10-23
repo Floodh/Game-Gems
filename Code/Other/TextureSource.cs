@@ -130,7 +130,6 @@ static class TextureSource
 
     }
 
-
     public static Texture2D[] LoadWater()
     {
 
@@ -161,6 +160,38 @@ static class TextureSource
         }
 
         return Load("Data/TextureSources/Water.jpg", areas);
+
+    }
+
+    public static Texture2D[] LoadCrystalClearWater()
+    {
+
+        int xStart = 47;
+        int yStart = 46;
+        int width = 155 - xStart;
+        int height = width;
+        int xBuffer = 10;
+        int yBuffer = 9;
+
+        Point[] selected = new Point[]
+        {
+            new Point(0, 0), new Point(1, 0), new Point(2, 0),
+            new Point(0, 1), new Point(1, 1), new Point(2, 1),
+            new Point(0, 2), new Point(1, 2), new Point(2, 2),
+            new Point(0, 3), new Point(1, 3), new Point(2, 3),
+        };        
+        Rectangle[] areas = new Rectangle[selected.Length];
+        for (int i = 0; i < selected.Length; i++)
+        {
+            areas[i] = new Rectangle(
+                xStart + (width + xBuffer) * selected[i].X,
+                yStart + (height + yBuffer) * selected[i].Y,
+                width,
+                height
+            );
+        }
+
+        return Load("Data/TextureSources/CrystalClearWater.jpg", areas);
 
     }
 
