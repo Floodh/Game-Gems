@@ -34,7 +34,8 @@ class Mineral : Building
         Rectangle gridArea = this.GridArea;
         if (gridArea != Rectangle.Empty)
         {
-            GameWindow.spriteBatch.Draw(baseTextures[((int)this.type)], Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
+            Rectangle mineralRect = new(DrawArea.X+8, DrawArea.Y-4, DrawArea.Width-16, DrawArea.Height-16);
+            GameWindow.spriteBatch.Draw(baseTextures[((int)this.type)], Camera.ModifiedDrawArea(mineralRect, Camera.zoomLevel), Sunlight.Mask);
         }
         base.Draw();
     }

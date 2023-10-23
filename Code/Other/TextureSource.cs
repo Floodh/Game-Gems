@@ -20,10 +20,10 @@ static class TextureSource
     public static Texture2D[] LoadMinerals()
     {
         Texture2D[] textures = new Texture2D[4];
-        textures[0] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-blue2.png");
-        textures[1] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-green2.png");
-        textures[2] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-purple2.png");
-        textures[3] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-red3.png");
+        textures[0] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-blue4.png");
+        textures[1] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-green4.png");
+        textures[2] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-purple4.png");
+        textures[3] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-red4.png");
         return textures;
     }
 
