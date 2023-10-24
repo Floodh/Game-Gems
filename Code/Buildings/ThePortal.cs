@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 class ThePortal : Building
 {
 
-    private const string Path_BaseTexture = "Data/Texture/ThePortal.png";
+    private const string Path_BaseTexture = "Data/Texture/portal2.png";
     private const int MaxSpawnedUnits = 4;
 
     Texture2D baseTexture;

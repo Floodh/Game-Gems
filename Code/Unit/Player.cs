@@ -29,7 +29,8 @@ class Player : Unit
 
     public override void Draw()
     {
-        GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
+        Rectangle playerRect = new(DrawArea.X, DrawArea.Y-8, DrawArea.Width, DrawArea.Height);
+        GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(playerRect, Camera.zoomLevel), Sunlight.Mask);
         base.Draw();
     }
 

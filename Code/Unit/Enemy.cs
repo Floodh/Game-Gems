@@ -24,7 +24,8 @@ class Enemy : Unit
 
     public override void Draw()
     {
-        GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
+        Rectangle enemyRect = new(DrawArea.X, DrawArea.Y-8, DrawArea.Width, DrawArea.Height);
+        GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(enemyRect, Camera.zoomLevel), Sunlight.Mask);
         base.Draw();
     }
 

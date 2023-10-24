@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -15,16 +16,18 @@ static class Camera
     private static Size cameraWindowSize;
     private static Size drawTextureSize;
 
-    public static float zoomLevel = 1.0f; //default zoom level
+    public static float zoomLevel = 1.75f; //default zoom level
     private static float minZoom = 1.0f;
-    private static float maxZoom = 8.0f;
-    private static float zoomSpeed = 0.0003f;
+    private static float maxZoom = 1.75f;
+    private static float zoomSpeed = 0.0009f;
     private static int previousScrollValue = 0;
 
     public static void Init(Size mapsize)
     {
         drawTextureSize = mapsize;
         cameraWindowSize = drawTextureSize;
+
+        offset = new Point(-mapsize.Width/2, -mapsize.Height/2);
     }
 
     //  untested
