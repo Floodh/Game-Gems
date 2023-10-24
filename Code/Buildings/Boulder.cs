@@ -6,14 +6,16 @@ class Boulder : Building
 {
 
     private const string Path_BaseTexture = "Data/Texture/Boulder.png";
-    private HealthBar hpBar;
     private static Texture2D baseTexture;
 
     public Boulder()
         : base(Faction.Neutral)
     {
+        this.MaxHp = 2;
+        this.Hp = 2;
+        this.Regen_Health = 0;
+
         baseTexture ??= Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
-        hpBar = new HealthBar(this);
     }
 
     public override void Draw()
@@ -23,7 +25,6 @@ class Boulder : Building
         {
             Rectangle drawArea = Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel);
             GameWindow.spriteBatch.Draw(baseTexture, drawArea, Sunlight.Mask);
-            hpBar.Update();
             if(this.MaxHp != Hp)
                 hpBar.Draw();
         }
@@ -33,6 +34,13 @@ class Boulder : Building
     public override void Tick()
     {
         base.Tick();
+        this.hpBar.Update();
+    }
+
+    public override void PlayerInteraction()
+    {
+        base.PlayerInteraction();
+        this.Hp--;
     }
 
     public override Building CreateNew()

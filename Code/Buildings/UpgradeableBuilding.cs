@@ -19,7 +19,6 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
     public int Tier{get{return this.currentTier;}}
     public int MaxTier{get{ return UpgradeableBuilding.maxTier; }}
     protected int currentTier = 1;
-    private HealthBar hpBar;
     private readonly int textureSet;
 
     protected UpgradeableBuilding(string colorName, int textureSet)
@@ -35,7 +34,6 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
                 baseTextures[textureSet][i] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/Texture/GemStructure/{colorName}_{i}.png");
         }
 
-        hpBar = new HealthBar(this);
     }
 
     public override void Draw()

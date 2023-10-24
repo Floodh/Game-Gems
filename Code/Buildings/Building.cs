@@ -52,10 +52,12 @@ abstract class Building : Targetable
         }
     }
 
+    protected HealthBar hpBar;
+
     public Building(Faction faction)
         : base(faction)
     {
-        
+        hpBar = new HealthBar(this);
     }
     
     //  can overide this
