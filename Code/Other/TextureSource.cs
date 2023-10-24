@@ -166,9 +166,9 @@ static class TextureSource
     public static Texture2D[] LoadCrystalClearWater()
     {
 
-        int xStart = 47;
+        int xStart = 48;
         int yStart = 46;
-        int width = 155 - xStart;
+        int width = 156 - xStart;
         int height = width;
         int xBuffer = 10;
         int yBuffer = 9;
