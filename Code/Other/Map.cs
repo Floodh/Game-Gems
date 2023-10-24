@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Size = System.Drawing.Size;
 using Bitmap = System.Drawing.Bitmap;
 using System.IO;
+using System.Net.NetworkInformation;
 
 
 
@@ -27,6 +28,7 @@ class Map
 
     public const int mapPixelToGridTile_Multiplier = 1;  //  1 pixel = 2x2 tiles
     public const int mapPixelToTexturePixel_Multiplier = 16 * 2 * 2;
+    public const int mapBorderLinePixelSize = 8;
 
     public static Rectangle hightlightGridArea = Rectangle.Empty;
 
@@ -76,9 +78,6 @@ class Map
         this.validTileTexture = Texture2D.FromFile(graphicsDevice, GRID_VALIDTILE_TEXTURE_PATH);
         this.inValidTileTexture = Texture2D.FromFile(graphicsDevice, GRID_INVALIDTILE_TEXTURE_PATH);
 
-        Rectangle insideRect = new Rectangle(0, 0, this.SourceSize.Width - 2, this.SourceSize.Height - 2);
-        
-
         spriteBatch.Begin();
 
             graphicsDevice.SetRenderTarget(renderTargetIsAOffScreenBuffer);
@@ -110,6 +109,35 @@ class Map
                 
             }
 
+            
+            for (int y = 1; y < this.SourceImage.Width - 1; y++)
+            for (int x = 1; x < this.SourceImage.Height - 1; x++)
+            {
+                TilesRGB argb = (TilesRGB)SourceImage.GetPixel(x, y).ToArgb();
+
+                if (argb == TilesRGB.Water)
+                {
+                    Point[] neighborGridPoints = new Point[4]{new Point(x-1,y), new Point(x+1,y),new Point(x,y-1), new Point(x,y+1)};
+                    foreach (Point neighborGridPoint in neighborGridPoints)
+                    {
+                        argb = (TilesRGB)SourceImage.GetPixel(neighborGridPoint.X, neighborGridPoint.Y).ToArgb();
+                        if (argb != TilesRGB.Water)
+                        {
+                            Rectangle drawRect_0 = DrawRectFromGrid(x, y);
+                            Rectangle drawRect_1 = DrawRectFromGrid(neighborGridPoint);
+                            
+                            drawRect_0 = new Rectangle(drawRect_0.X - mapBorderLinePixelSize / 2, drawRect_0.Y - mapBorderLinePixelSize / 2, drawRect_0.Width + mapBorderLinePixelSize, drawRect_0.Height + mapBorderLinePixelSize);
+                            drawRect_1 = new Rectangle(drawRect_1.X - mapBorderLinePixelSize / 2, drawRect_1.Y - mapBorderLinePixelSize / 2, drawRect_1.Width + mapBorderLinePixelSize, drawRect_1.Height + mapBorderLinePixelSize);
+                            Rectangle lineArea = Rectangle.Intersect(drawRect_0, drawRect_1);
+                            spriteBatch.Draw(stoneTextures[random.Next() % stoneTextures.Length], lineArea, Color.Black);
+                        }
+
+                    }
+
+                }
+                
+                
+            }
         spriteBatch.End();
 
         //  annoying syntax to transfer the data from screenBuffer to the texture
@@ -186,5 +214,13 @@ class Map
 
 
         //Console.WriteLine($"texture size : {this.drawTexture.Width}, {this.drawTexture.Height}");
+    }
+    public static Rectangle DrawRectFromGrid(Point gridPoint)
+    {
+        return DrawRectFromGrid(gridPoint.X, gridPoint.Y);
+    }
+    public static Rectangle DrawRectFromGrid(int x, int y)
+    {
+        return new Rectangle(x * mapPixelToTexturePixel_Multiplier, y * mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier);
     }
 }
