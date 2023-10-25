@@ -6,7 +6,7 @@ class ThePortal : Building
 {
 
     private const string Path_BaseTexture = "Data/Texture/portal2.png";
-    private const int MaxSpawnedUnits = 4;
+    private const int MaxSpawnedUnits = 12;
 
     Texture2D baseTexture;
 
@@ -31,7 +31,7 @@ class ThePortal : Building
 
 
     private int spawnCounter = 0;
-    private const int threshHold = 500;
+    private const int threshHold = 200;
 
     public override void Tick()
     {
@@ -44,7 +44,7 @@ class ThePortal : Building
                 if (!grid.IsTileTaken(spawnLocation))
             {
                 spawnCounter = 0;
-                Enemy spawn = new Enemy(spawnLocation);
+                _ = new Enemy(spawnLocation);
                 break;
             }          
                        
