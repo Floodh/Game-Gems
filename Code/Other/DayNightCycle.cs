@@ -28,11 +28,6 @@ class DayNightCycle
     private Vector2 drawVec_text;
     private Vector2 drawVec_countdownText;
 
-
-    
-
-
-
     public DayNightCycle(Point windowSize)
     {
         this.tick = 0;
@@ -44,6 +39,8 @@ class DayNightCycle
         font ??= ResourcesUi.FontSystem.GetFont(56);
         this.SetWindowSize(windowSize);
 
+
+        Sunlight.dayNightCycle = this;
     }
 
     public void Tick(int currentTick)

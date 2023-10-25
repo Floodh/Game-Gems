@@ -76,6 +76,7 @@ class Player : Unit
                     {
                         this.MoveToFrom(nextPos, this.GridArea.Location);                
                         this.GridArea = new Rectangle(nextPos, new Point(1,1));
+                        Building.grid.CalculateEnemyValue();   
                     }
                 }
             }            
