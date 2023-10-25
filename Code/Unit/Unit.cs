@@ -8,7 +8,7 @@ using Size = System.Drawing.Size;
 
 abstract class Unit : Targetable
 {
-    protected const int movementRate = 86;
+    protected const int movementRate = 46;
 
     public static List<Unit> allUnits = new List<Unit>();
 

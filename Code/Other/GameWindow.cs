@@ -7,6 +7,8 @@ using Size = System.Drawing.Size;
 
 public class GameWindow : Game
 {
+    public static Point windowSize = new Point(1920, 1080);
+
     public static GraphicsDeviceManager graphics;
     public static SpriteBatch spriteBatch;
     public static GraphicsDevice graphicsDevice;
@@ -37,8 +39,8 @@ public class GameWindow : Game
     {
         graphics = new GraphicsDeviceManager(this)
         {
-            PreferredBackBufferWidth = 1920,
-            PreferredBackBufferHeight = 1080
+            PreferredBackBufferWidth = windowSize.X,
+            PreferredBackBufferHeight = windowSize.Y
         };
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
@@ -161,6 +163,7 @@ public class GameWindow : Game
         this.buildingSelector.Draw(spriteBatch);
         this.resourcesUi.Draw(spriteBatch);
         this.contextMenu.Draw();
+        this.level?.dayNightCycle?.Draw();
 
         this.ray.Draw();
         
@@ -174,8 +177,11 @@ public class GameWindow : Game
     public void OnResize(Object sender, EventArgs e)
     {
         Console.WriteLine("Updating");
+        windowSize = this.Window.ClientBounds.Size;
         if (this.background != null)
-            this.background.windowSize = this.Window.ClientBounds.Size;
+            this.background.windowSize = windowSize;
+        this.level?.dayNightCycle.SetWindowSize(windowSize);
+
     }
 
 

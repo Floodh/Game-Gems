@@ -19,17 +19,22 @@ class Level
 
     private readonly Random r = new Random();
 
+    public DayNightCycle dayNightCycle;
+
     public Level(Bitmap bitmap)
     {
 
         this.r = new Random();
 
+        this.startTime_s = DateTimeOffset.Now.ToUnixTimeSeconds();
+        this.currentTime_s = startTime_s;
+        this.dayNightCycle = new(GameWindow.windowSize);
 
         Size size = bitmap.Size * Map.mapPixelToGridTile_Multiplier;
 
-        ThePortal thePortal = new ThePortal();
-        thePortal.Place(size.Width / 2 - 1, size.Height / 2 - 1);
 
+        ThePortal thePortal = new ThePortal(dayNightCycle);
+        thePortal.Place(size.Width / 2 - 1, size.Height / 2 - 1);
         _ = new Player(new Point(thePortal.GridArea.X - 1, thePortal.GridArea.Y));
         
 
@@ -68,8 +73,6 @@ class Level
             }
         }
 
-        this.startTime_s = DateTimeOffset.Now.ToUnixTimeSeconds();
-        this.currentTime_s = startTime_s;
 
         Camera.zoomLevel = 5.0f;
         Building.grid.CalculateEnemyValue();
@@ -78,12 +81,14 @@ class Level
 
     public void Tick()
     {
-                //  First make things take damage
+        //  First make things take damage
         //  then do tick, the tick will check if the unit died
         Projectile.TickAll();
         Building.TickAll();
         Unit.TickAll();
         Animation.TickAll();
+
+        this.dayNightCycle.Tick((int)this.CurrentTick);
 
     }
 
