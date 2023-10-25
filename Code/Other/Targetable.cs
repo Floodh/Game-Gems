@@ -113,7 +113,15 @@ abstract class Targetable
         this.Energy = Math.Min(this.Energy, MaxEnergy);
     }
 
-    protected abstract void Die();
+    protected virtual void Die()
+    {
+
+        Rectangle animationArea = this.GridArea;
+        animationArea = Grid.ToDrawArea(animationArea);
+        Explosion explosion = new Explosion(animationArea);
+        explosion.Play();
+
+    }
 
     public virtual void PlayerInteraction()
     {

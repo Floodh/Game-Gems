@@ -69,6 +69,7 @@ abstract class Unit : Targetable
 
     protected override void Die()
     {
+        base.Die();
         this.IsDead = true;
         allUnits.Remove(this);
         this.MoveFrom(this.GridArea.Location);
