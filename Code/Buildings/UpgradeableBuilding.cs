@@ -13,7 +13,7 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
 {
 
     private const int textureSets = 4;
-    private const int maxTier = 4;
+    protected const int maxTier = 4;
     protected static Texture2D[][] baseTextures;
 
     public int Tier{get{return this.currentTier;}}

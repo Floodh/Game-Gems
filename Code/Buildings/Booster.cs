@@ -5,16 +5,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 
-class Cannon : UpgradeableBuilding
+class Booster : UpgradeableBuilding
 {
     private const int textureSet = 3;
 
-    private EnergyBar energyBar;
 
-    public Cannon()
+    public Booster()
         : base("Purple", textureSet)
     {
-        this.energyBar = new EnergyBar(this);
         this.MaxEnergy = 100;
         this.Energy = 100;
         this.Regen_Energy = 0;
@@ -23,13 +21,12 @@ class Cannon : UpgradeableBuilding
             Console.WriteLine($"textureSet:{textureSet}, tier:{tier}");
 
         for (int tier = 0; tier < maxTier; tier++)
-                baseTextures[textureSet][tier] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/attack-tower1-tier{tier+1}.png");
+                baseTextures[textureSet][tier] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/income-tower3-tier{tier+1}.png");
     }
 
     public override void Tick()
     {
         base.Tick();
-        this.energyBar.Update();
     }
 
     public override void Draw()
@@ -42,19 +39,16 @@ class Cannon : UpgradeableBuilding
             hpBar.Update();
             hpBar.Draw();
         }
-        // base.Draw();
-
-        this.energyBar.Draw();
-    }
+      }
 
     public override Building CreateNew()
     {
-        return new Cannon();
+        return new Booster();
     }
     
     public override string ToString()
     {
-        return $"Cannon : {this.Hp} / {this.MaxHp} / tier:{this.Tier}";
+        return $"Booster : {this.Hp} / {this.MaxHp} / tier:{this.Tier}";
     }
 
 }

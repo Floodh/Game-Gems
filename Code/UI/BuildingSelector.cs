@@ -42,11 +42,12 @@ class BuildingSelector
         this.centerTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3-null.png");
         this.centerTexturePointing = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3.png");
 
-        this.spriteList.Add(new BuildingOption(this, new Cannon(), "Data/Texture/GemStructure/Purple_0.png", -1.7f));
-        this.spriteList.Add(new BuildingOption(this, new Generator(), "Data/Texture/GemStructure/Orange_0.png", -0.85f));
-        this.spriteList.Add(new BuildingOption(this, new Healer(), "Data/Texture/GemStructure/Green_0.png", 0f));
-        this.spriteList.Add(new BuildingOption(this, new Wall(), "Data/Texture/GemStructure/Blue_0.png", 0.85f));
+        this.spriteList.Add(new BuildingOption(this, new Healer(), "Data/TextureSources/healing-tower1-tier1.png", 0f));
+        this.spriteList.Add(new BuildingOption(this, new Generator(), "Data/TextureSources/energy-tower1-tier1.png", -0.85f));
+        this.spriteList.Add(new BuildingOption(this, new Booster(), "Data/TextureSources/income-tower3-tier1.png", 0.85f));
+        this.spriteList.Add(new BuildingOption(this, new Cannon(), "Data/TextureSources/attack-tower1-tier1.png", -1.7f));
         this.spriteList.Add(new BuildingOption(this, new Wall(), "Data/Texture/GemStructure/Blue_0.png", 1.7f));
+        
     }
 
     public Point Center
@@ -135,6 +136,7 @@ class BuildingSelector
             {
                 if(this.canplace)
                 {
+                    Console.WriteLine("Place:" + this.buildingToPlace.ToString());
                     this.buildingToPlace.CreateNew().Place(gridCenterPoint);
                     this.buildingToPlace = null;
                     selectingOption = false;

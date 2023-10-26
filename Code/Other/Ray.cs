@@ -127,19 +127,21 @@ class Ray
 
     public void UpdateByMouse(MouseState mouseState)
     {   
+        if(mouseState.LeftButton == ButtonState.Released && mouseState.RightButton == ButtonState.Released)
+            return;
+
         if(mouseState.LeftButton == ButtonState.Pressed)
         {
             this._source = new Vector2(mouseState.X, mouseState.Y);
-            this._particleEffect.Position = this._source;
         }
 
         if(mouseState.RightButton == ButtonState.Pressed)
         {
-            Vector2 mouse = new Vector2(mouseState.X, mouseState.Y);
-            
-            this._target = this._source - mouse;
-            this._particleEffect.Emitters[0] = Test();
+            Vector2 mouseVec = new(mouseState.X, mouseState.Y);
+            this._target = mouseVec - this._source;
         }
+        this._particleEffect.Position = this._source + this._target/2;
+        this._particleEffect.Emitters[0] = Test();
     }
 
     public void UpdateByKeyboard(KeyboardState keyboardState)

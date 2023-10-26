@@ -23,7 +23,13 @@ class Healer : UpgradeableBuilding
         this.AttackRate = 10;
         this.MaxEnergy = 100; 
         this.energyBar = new EnergyBar(this);
-        //animation = new(this.GridArea.Center, new Point(40,50), EnergyBeam.Type.Line);   
+        //animation = new(this.GridArea.Center, new Point(40,50), EnergyBeam.Type.Line); 
+
+        for (int tier = 0; tier < maxTier; tier++)
+            Console.WriteLine($"textureSet:{textureSet}, tier:{tier}");
+
+        for (int tier = 0; tier < maxTier; tier++)
+                baseTextures[textureSet][tier] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/healing-tower1-tier{tier+1}.png");  
     }
 
     int attackCounter = 0;
@@ -57,7 +63,16 @@ class Healer : UpgradeableBuilding
 
     public override void Draw()
     {
-        base.Draw();
+       Rectangle gridArea = this.GridArea;
+        if (gridArea != Rectangle.Empty)
+        {
+            Rectangle rect = new(DrawArea.X+32, DrawArea.Y-8-64, DrawArea.Width/2, DrawArea.Height/2*3);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTier-1], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
+            hpBar.Update();
+            hpBar.Draw();
+        }
+        // base.Draw();
+
         this.energyBar.Draw();
     }
 

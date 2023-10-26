@@ -97,7 +97,7 @@ class BuildingOption
             this.bgTexture, bgDrawArea, null, state.Colour, this.bgAngle, 
             new Vector2(this.bgTexture.Width / 2, this.bgTexture.Height / 2 + 155), SpriteEffects.None, 0f);
 
-        var fgDrawArea =  new Rectangle(this.Center.X, this.Center.Y, this.fgSize.Width, this.fgSize.Height);
+        var fgDrawArea =  new Rectangle(this.Center.X, this.Center.Y-128, this.fgSize.Width, this.fgSize.Height*3);
         GameWindow.spriteBatch.Draw(
             this.fgTexture, fgDrawArea, null, state.Colour, 0f, 
             new Vector2(this.fgTexture.Width / 2, this.fgTexture.Height / 2), SpriteEffects.None, 0f);

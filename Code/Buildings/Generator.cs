@@ -22,6 +22,12 @@ class Generator : UpgradeableBuilding
         this.MaxEnergy = 1;
         this.Energy = 1;
         this.Regen_Energy = 0;
+
+        for (int tier = 0; tier < maxTier; tier++)
+            Console.WriteLine($"textureSet:{textureSet}, tier:{tier}");
+
+        for (int tier = 0; tier < maxTier; tier++)
+                baseTextures[textureSet][tier] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/energy-tower1-tier{tier+1}.png");
     }
 
     int attackCounter = 0;
@@ -52,7 +58,16 @@ class Generator : UpgradeableBuilding
 
     public override void Draw()
     {
-        base.Draw();
+       Rectangle gridArea = this.GridArea;
+        if (gridArea != Rectangle.Empty)
+        {
+            Rectangle rect = new(DrawArea.X+32, DrawArea.Y-8-64, DrawArea.Width/2, DrawArea.Height/2*3);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTier-1], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
+            hpBar.Update();
+            hpBar.Draw();
+        }
+        // base.Draw();
+
         this.energyBar.Draw();
     }
 
