@@ -27,7 +27,34 @@ static class TextureSource
         return textures;
     }
 
+    public static Texture2D[] LoadExplosion()
+    {
 
+        int xStart = 0;
+        int yStart = 0;
+        int width = 120;
+        int height = 120;
+        int xBuffer = 0;
+        int yBuffer = 0;
+
+        Point[] selected = new Point[]
+        {
+            new Point(0, 0),new Point(1, 0),new Point(2, 0),new Point(3, 0),
+        };
+        Rectangle[] areas = new Rectangle[selected.Length];
+        for (int i = 0; i < selected.Length; i++)
+        {
+            areas[i] = new Rectangle(
+                xStart + (width + xBuffer) * selected[i].X,
+                yStart + (height + yBuffer) * selected[i].Y,
+                width,
+                height
+            );
+        }
+
+        return Load("Data/TextureSources/Explosion.png", areas);
+
+    }
 
     public static Texture2D[] LoadStone()
     {

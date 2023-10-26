@@ -133,6 +133,7 @@ abstract class Building : Targetable
 
     protected override void Die()
     {
+        base.Die();
         this.IsDead = true;
         //Console.WriteLine($"died {}");
         allBuildings.Remove(this);  //  consider delaying the removal of this object from the list for potential death animation

@@ -8,7 +8,7 @@ using Size = System.Drawing.Size;
 
 abstract class Unit : Targetable
 {
-    protected const int movementRate = 86;
+    protected const int movementRate = 46;
 
     public static List<Unit> allUnits = new List<Unit>();
 
@@ -69,6 +69,7 @@ abstract class Unit : Targetable
 
     protected override void Die()
     {
+        base.Die();
         this.IsDead = true;
         allUnits.Remove(this);
         this.MoveFrom(this.GridArea.Location);

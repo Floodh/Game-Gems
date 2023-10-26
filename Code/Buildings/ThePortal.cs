@@ -6,14 +6,17 @@ class ThePortal : Building
 {
 
     private const string Path_BaseTexture = "Data/Texture/portal2.png";
-    private const int MaxSpawnedUnits = 4;
+    private const int MaxSpawnedUnits = 12;
 
     Texture2D baseTexture;
 
-    public ThePortal()
+    private readonly DayNightCycle dayNightCycle;
+
+    public ThePortal(DayNightCycle dayNightCycle)
         : base(Faction.Enemy)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
+        this.dayNightCycle = dayNightCycle;
     }
 
     public override void Draw()
@@ -28,19 +31,20 @@ class ThePortal : Building
 
 
     private int spawnCounter = 0;
-    private const int threshHold = 50000;
+    private const int threshHold = 200;
 
     public override void Tick()
     {
         base.Tick();
         if (spawnCounter++ > threshHold)
         if (Enemy.NumberOfEnemies < MaxSpawnedUnits)
+        if (this.dayNightCycle.IsNight)
         {
             foreach (Point spawnLocation in this.EligibleSpawns()) 
                 if (!grid.IsTileTaken(spawnLocation))
             {
                 spawnCounter = 0;
-                Enemy spawn = new Enemy(spawnLocation);
+                _ = new Enemy(spawnLocation);
                 break;
             }          
                        
@@ -49,7 +53,7 @@ class ThePortal : Building
 
     public override Building CreateNew()
     {
-        return new ThePortal();
+        return new ThePortal(this.dayNightCycle);
     }
     public override string ToString()
     {

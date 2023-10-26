@@ -1,3 +1,4 @@
+using System.Globalization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,9 +63,6 @@ class ResourcesUi
 
     public ResourcesUi(Size displaySize)
     {
-        FontSystem = new FontSystem();
-        FontSystem.AddFont(System.IO.File.ReadAllBytes(@"Data/Fonts/PTC55F.ttf"));
-
         Texture2D[] textures = TextureSource.LoadIcons();
         if (textures.Length != 4)
             throw new Exception("Incorrect number of UI textures loaded!");
@@ -106,7 +104,17 @@ class ResourcesUi
         }
     }
 
-    public static FontSystem FontSystem { get => _fontSystem; set => _fontSystem = value; }
+    public static FontSystem FontSystem 
+    {   get {    //  this is a stupid idea on my part buuuuuuuut, might aswell try new things
+            if (_fontSystem == null)
+            {
+                _fontSystem = new FontSystem();
+                _fontSystem.AddFont(System.IO.File.ReadAllBytes(@"Data/Fonts/PTC55F.ttf"));                
+            }
+            return _fontSystem;
+        }
+        set => _fontSystem = value; 
+    }
 
     public void Draw(SpriteBatch spriteBatch)
     {

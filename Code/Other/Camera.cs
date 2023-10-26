@@ -29,7 +29,12 @@ static class Camera
 
         offset = new Point(-mapsize.Width/2, -mapsize.Height/2);
     }
-
+    public static Vector2 ModifyPoint(Vector2 point)
+    {
+        float x = ((point.X + offset.X) * zoomLevel);
+        float y = ((point.Y + offset.Y) * zoomLevel);  
+        return new Vector2(x, y);      
+    }
     //  untested
     public static Point ModifyPoint(Point point)
     {

@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 class Enemy : Unit
 {
     private const string Path_BaseTexture = "Data/Texture/fighter1.png";
+    private const int sunDmg = 1000;
 
     public static int NumberOfEnemies {get; protected set;}
 
@@ -17,6 +18,10 @@ class Enemy : Unit
     public Enemy(Point spawnGridPosition) 
         : base(Faction.Enemy, spawnGridPosition)
     {
+        this.MaxHp = 100;
+        this.Hp = this.MaxHp;
+        this.Regen_Health = 1;
+
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
         NumberOfEnemies++;
         this.MoveTo(spawnGridPosition);
@@ -35,6 +40,8 @@ class Enemy : Unit
 
     public override void Tick()
     {
+        if (Sunlight.dayNightCycle.IsDay)
+            this.Hp -= sunDmg;
         base.Tick();
         // Calculate the movement
 
@@ -54,7 +61,7 @@ class Enemy : Unit
             opertunityCounter++;
             if (opertunityCounter >= AttackRate)
             {
-                Projectile projectile = new Projectile(10, 0, target, this);
+                Projectile projectile = new Projectile(10, 0, 1f, target, this);
                 opertunityCounter = 0;
             }
                         
