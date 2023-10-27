@@ -51,7 +51,7 @@ class Cannon : UpgradeableBuilding
         }
         else
         {
-            this.target = FindTarget(this, Faction.Enemy, false, false);
+            this.target = FindTargetUnit(this, Faction.Enemy, false, false);
         }
 
         this.energyBar.Update();

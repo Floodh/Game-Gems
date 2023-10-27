@@ -133,23 +133,33 @@ abstract class Targetable
         double distanceSquared = double.MaxValue;
         Targetable target = null;
 
-        foreach (Building building in Building.allBuildings)
-            if (building.faction == targetFaction)
-            if (!inNeed_Health || building.Hp != building.MaxHp)
-            if (!inNeed_Energy || building.Energy != building.MaxEnergy)
+        Tuple<Building, double> infoBuilding = FindTargetBuildingInfo(self, targetFaction, inNeed_Health, inNeed_Energy);
+        if (infoBuilding != null)
         {
-
-            Point diffP = this.TargetPosition - building.TargetPosition;
-            double newDistance = (diffP.X * diffP.X) + (diffP.Y * diffP.Y);
-
-            if (newDistance < distanceSquared)
-            {
-                distanceSquared = newDistance;
-                target = building;
-            }
-
+            target = infoBuilding.Item1;
+            distanceSquared = infoBuilding.Item2;
+        }
+        Tuple<Building, double> infoUnit = FindTargetBuildingInfo(self, targetFaction, inNeed_Health, inNeed_Energy);
+        if (infoUnit != null)
+        {
+            if (infoUnit.Item2 < distanceSquared)
+                target = infoUnit.Item1;
         }
 
+        if (target == self) //  this null check is not needed, but I'll keep it for now
+            return null;
+        return target;
+
+    }
+
+    protected Unit FindTargetUnit(Targetable self, Faction targetFaction, bool inNeed_Health, bool inNeed_Energy)
+    {
+        return FindTargetUnitInfo(self, targetFaction, inNeed_Health, inNeed_Energy).Item1;
+    }
+    private Tuple<Unit, double> FindTargetUnitInfo(Targetable self, Faction targetFaction, bool inNeed_Health, bool inNeed_Energy)
+    {
+        double distanceSquared = double.MaxValue;
+        Unit target = null;        
         foreach (Unit unit in Unit.allUnits)
             if (unit.faction == targetFaction)
             if (!inNeed_Health || unit.Hp != unit.MaxHp)
@@ -169,8 +179,38 @@ abstract class Targetable
 
         if (target == self)
             return null;
-        return target;
+        return new Tuple<Unit, double>(target, distanceSquared);
+    }
 
+    protected Building FindTargetBuilding(Targetable self, Faction targetFaction, bool inNeed_Health, bool inNeed_Energy)
+    {
+        return FindTargetBuildingInfo(self, targetFaction, inNeed_Health, inNeed_Energy).Item1;
+    }
+    private Tuple<Building, double> FindTargetBuildingInfo(Targetable self, Faction targetFaction, bool inNeed_Health, bool inNeed_Energy)
+    {
+        double distanceSquared = double.MaxValue;
+        Building target = null;
+
+        foreach (Building building in Building.allBuildings)
+            if (building.faction == targetFaction)
+            if (!inNeed_Health || building.Hp != building.MaxHp)
+            if (!inNeed_Energy || building.Energy != building.MaxEnergy)
+        {
+
+            Point diffP = this.TargetPosition - building.TargetPosition;
+            double newDistance = (diffP.X * diffP.X) + (diffP.Y * diffP.Y);
+
+            if (newDistance < distanceSquared)
+            {
+                distanceSquared = newDistance;
+                target = building;
+            }
+
+        }
+
+        if (target == self)
+            return null;
+        return new Tuple<Building, double>(target, distanceSquared);
     }
 
     
