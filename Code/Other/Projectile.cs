@@ -1,7 +1,9 @@
+using System.Globalization;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
+using System.IO;
 
 class Projectile
 {
@@ -50,8 +52,13 @@ class Projectile
     Targetable target;
     Targetable sender;
     private bool hasHit = false;
-    private static Texture2D[] projTexture = new Texture2D[2];
+    private static Texture2D[] projTexture;
     private readonly int textureId;
+
+    static Projectile()
+    {
+        projTexture = new Texture2D[Directory.GetFiles("Data/Texture/Projectile/").Length];
+    }
 
     public Projectile(int damage, int energyTransfer, float speed, Targetable target, Targetable sender, int textureId)
     {
