@@ -40,7 +40,7 @@ class Generator : UpgradeableBuilding
             if (attackCounter >= AttackRate)
             {          
                 //Console.WriteLine($"Giving energy to : {target}");
-                Projectile projectile = new Projectile(0, energyTransfer, 100000f, target, this);
+                Projectile projectile = new Projectile(0, energyTransfer, 100000f, target, this, 0);
                 attackCounter = 0;
                 if (this.animation.IsPlaying == false)
                     this.animation.Play();

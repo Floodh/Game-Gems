@@ -128,13 +128,13 @@ abstract class Targetable
         
     }
     
-    protected Targetable FindTarget(Targetable self, Faction faction, bool inNeed_Health, bool inNeed_Energy)
+    protected Targetable FindTarget(Targetable self, Faction targetFaction, bool inNeed_Health, bool inNeed_Energy)
     {
         double distanceSquared = double.MaxValue;
         Targetable target = null;
 
         foreach (Building building in Building.allBuildings)
-            if (building.faction == Faction.Player)
+            if (building.faction == targetFaction)
             if (!inNeed_Health || building.Hp != building.MaxHp)
             if (!inNeed_Energy || building.Energy != building.MaxEnergy)
         {
@@ -151,7 +151,7 @@ abstract class Targetable
         }
 
         foreach (Unit unit in Unit.allUnits)
-            if (unit.faction == Faction.Player)
+            if (unit.faction == targetFaction)
             if (!inNeed_Health || unit.Hp != unit.MaxHp)
             if (!inNeed_Energy || unit.Energy != unit.MaxEnergy)
         {

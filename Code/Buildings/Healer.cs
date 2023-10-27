@@ -43,7 +43,7 @@ class Healer : UpgradeableBuilding
             if (this.Energy >= -dmg)
             {           
                 //Console.WriteLine("Healig");
-                _ = new Projectile(dmg, 0, 100000f, target, this);
+                _ = new Projectile(dmg, 0, 100000f, target, this, 0);
                 attackCounter = 0;
                 if (this.animation.IsPlaying == false)
                     this.animation.Play();

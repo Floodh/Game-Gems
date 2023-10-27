@@ -61,7 +61,7 @@ class Enemy : Unit
             opertunityCounter++;
             if (opertunityCounter >= AttackRate)
             {
-                Projectile projectile = new Projectile(10, 0, 1f, target, this);
+                Projectile projectile = new Projectile(10, 0, 1f, target, this, 1);
                 opertunityCounter = 0;
             }
                         
