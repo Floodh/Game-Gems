@@ -61,6 +61,7 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
 
             if(result)
             {
+                UppdateStats();
                 currentTier++;
             }
         }
