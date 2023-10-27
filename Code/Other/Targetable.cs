@@ -15,7 +15,7 @@ abstract class Targetable
     protected int DmgReduction_Sheild {get; set;} = 0;
 
     protected int Regen_Health {get; set;} = 0; //  per tick
-    protected int Regen_Sheild {get; set;} = 1;
+    protected int Regen_Sheild {get; set;} = 0;
     protected int Regen_Energy {get; set;} = 0;
 
     protected int AttackDmg {get; set;} = 1;

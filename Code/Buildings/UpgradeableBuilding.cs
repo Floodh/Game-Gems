@@ -18,7 +18,8 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
 
     public int Tier{get{return this.currentTier;}}
     public int MaxTier{get{ return UpgradeableBuilding.maxTier; }}
-    protected int currentTier = 1;
+    private int currentTier = 1;
+    protected int currentTierIndex {get {return this.currentTier-1;}}
     private readonly int textureSet;
 
     protected UpgradeableBuilding(string colorName, int textureSet)
@@ -34,6 +35,7 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
                 baseTextures[textureSet][i] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/{colorName}-tier{i+1}.png");
         }
 
+        UppdateStats();
     }
 
     public override void Draw()
@@ -41,19 +43,15 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
         Rectangle gridArea = this.GridArea;
         if (gridArea != Rectangle.Empty)
         {
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTier-1], Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
             hpBar.Update();
             hpBar.Draw();
         }
         base.Draw();
     }
 
-    public virtual Resources GetUpgradeCost()
-    {
-        return new Resources(1000000, 1000000, 1000000, 1000000);
-    }
-
-    public bool TryUpgrade()
+    public abstract Resources GetUpgradeCost();
+    public virtual bool TryUpgrade()
     {
         bool result = false;
 
@@ -68,5 +66,7 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
         }
         return result;
     }
+
+    protected abstract void UppdateStats();
 
 }

@@ -6,23 +6,43 @@ using Microsoft.Xna.Framework.Graphics;
 class Generator : UpgradeableBuilding
 {
 
+    private static readonly Resources[] costs = new Resources[]
+    {
+        new Resources(16,0,0,64),
+        new Resources(32,0,0,128),
+        new Resources(64,0,0,256),
+        new Resources(128,0,0,512),
+        new Resources(256,0,0,1024),
+    };
+    private static readonly int[] maxHealth = new int[]
+    {
+        100,
+        200,
+        400,
+        800,
+        1600,
+    };
+    private static readonly int[] energyTransfer = new int[]
+    {   //  keep in mind that the actual transfered energy is trippled
+        10,
+        20,
+        40,
+        80,
+        160,
+    };
+
     private const int textureSet = 2;
 
     private Targetable target;
     private EnergyBeam animation;
     private EnergyBar energyBar;
 
-    private int energyTransfer = 1;
 
     public Generator()
         : base("energy-tower1", textureSet)
     {
-        this.AttackRate = 10;
         this.energyBar = new EnergyBar(this);
-        this.MaxEnergy = 1;
-        this.Energy = 1;
-        this.Regen_Energy = 0;
-}
+    }
 
     int attackCounter = 0;
     public override void Tick()
@@ -40,7 +60,7 @@ class Generator : UpgradeableBuilding
             if (attackCounter >= AttackRate)
             {          
                 //Console.WriteLine($"Giving energy to : {target}");
-                Projectile projectile = new Projectile(0, energyTransfer, 100000f, target, this, 0);
+                Projectile projectile = new Projectile(0, energyTransfer[currentTierIndex], 100000f, target, this, 0);
                 attackCounter = 0;
                 if (this.animation.IsPlaying == false)
                     this.animation.Play();
@@ -56,7 +76,7 @@ class Generator : UpgradeableBuilding
         if (gridArea != Rectangle.Empty)
         {
             Rectangle rect = new(DrawArea.X+32, DrawArea.Y-8-64, DrawArea.Width/2, DrawArea.Height/2*3);
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTier-1], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
             hpBar.Update();
             hpBar.Draw();
         }
@@ -65,6 +85,15 @@ class Generator : UpgradeableBuilding
         this.energyBar.Draw();
     }
 
+    protected override void UppdateStats()
+    {
+        this.MaxHp = maxHealth[currentTierIndex];
+        this.Hp = this.MaxHp;
+    }
+    public override Resources GetUpgradeCost()
+    {
+        return costs[currentTierIndex];
+    } 
     public static new Building CreateNew()
     {
         return new Generator();

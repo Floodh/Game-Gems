@@ -6,6 +6,40 @@ using Microsoft.Xna.Framework.Graphics;
 class Healer : UpgradeableBuilding
 {
 
+    public static readonly Resources[] costs = new Resources[]
+    {
+        new Resources(16,64,0,0),
+        new Resources(32,128,0,0),
+        new Resources(64,256,0,0),
+        new Resources(128,512,0,0),
+        new Resources(256,1024,0,0),
+    };
+
+    private static readonly int[] healing = new int[]
+    {
+        10,
+        20,
+        40,
+        80,
+        160,
+    };
+    private static readonly int[] maxHealth = new int[]
+    {
+        100,
+        200,
+        400,
+        800,
+        1600,
+    };
+    private static readonly int[] maxEnergy = new int[]
+    {
+        100,
+        200,
+        400,
+        800,
+        1600,
+    };
+
     private const int textureSet = 1;
 
 
@@ -13,15 +47,9 @@ class Healer : UpgradeableBuilding
     private EnergyBeam animation;
     private EnergyBar energyBar;
     
-    private int dmg = -1;
-  
-
-
     public Healer()
         : base("healing-tower1", textureSet)
     {
-        this.AttackRate = 10;
-        this.MaxEnergy = 100; 
         this.energyBar = new EnergyBar(this);
         //animation = new(this.GridArea.Center, new Point(40,50), EnergyBeam.Type.Line); 
     }
@@ -40,10 +68,10 @@ class Healer : UpgradeableBuilding
         {
             attackCounter++;
             if (attackCounter >= AttackRate)
-            if (this.Energy >= -dmg)
+            if (this.Energy >= healing[currentTierIndex])
             {           
                 //Console.WriteLine("Healig");
-                _ = new Projectile(dmg, 0, 100000f, target, this, 0);
+                _ = new Projectile(-healing[currentTierIndex], 0, 100000f, target, this, 0);
                 attackCounter = 0;
                 if (this.animation.IsPlaying == false)
                     this.animation.Play();
@@ -61,7 +89,7 @@ class Healer : UpgradeableBuilding
         if (gridArea != Rectangle.Empty)
         {
             Rectangle rect = new(DrawArea.X+32, DrawArea.Y-8-64, DrawArea.Width/2, DrawArea.Height/2*3);
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTier-1], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
             hpBar.Update();
             hpBar.Draw();
         }
@@ -69,7 +97,17 @@ class Healer : UpgradeableBuilding
 
         this.energyBar.Draw();
     }
-
+    protected override void UppdateStats()
+    {
+        this.MaxEnergy = maxEnergy[currentTierIndex];
+        this.MaxHp = maxHealth[currentTierIndex];
+        this.Hp = this.MaxHp;
+        this.Energy = this.MaxEnergy;
+    }
+    public override Resources GetUpgradeCost()
+    {
+        return costs[currentTierIndex];
+    }        
     public static new Building CreateNew()
     {
         return new Healer();

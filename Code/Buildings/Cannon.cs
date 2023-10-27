@@ -16,7 +16,7 @@ class Cannon : UpgradeableBuilding
         new Resources(128,0,512,0),
         new Resources(256,0,1024,0),
     };
-    public static readonly int[] dmg = new int[]
+    private static readonly int[] dmg = new int[]
     {
         10,
         20,
@@ -24,7 +24,7 @@ class Cannon : UpgradeableBuilding
         80,
         160,
     };
-    public static readonly int[] maxHealth = new int[]
+    private static readonly int[] maxHealth = new int[]
     {
         100,
         200,
@@ -32,7 +32,7 @@ class Cannon : UpgradeableBuilding
         800,
         1600,
     };
-    public static readonly int[] maxEnergy = new int[]
+    private static readonly int[] maxEnergy = new int[]
     {
         100,
         200,
@@ -40,9 +40,6 @@ class Cannon : UpgradeableBuilding
         800,
         1600,
     };
-
-
-
 
     private const int textureSet = 3;
 
@@ -58,9 +55,6 @@ class Cannon : UpgradeableBuilding
         : base("attack-tower1", textureSet)
     {
         this.energyBar = new EnergyBar(this);
-        this.MaxEnergy = 100;
-        this.Energy = 100;
-        this.Regen_Energy = 0;
     }
 
     public override void Tick()
@@ -81,7 +75,7 @@ class Cannon : UpgradeableBuilding
             }
             else
             {
-                _ = new Projectile(dmg[currentTier], 0, 3.13f, this.target, this, 2);
+                _ = new Projectile(dmg[currentTierIndex], 0, 3.13f, this.target, this, 2);
                 initative = 0;
             }
         }
@@ -99,15 +93,33 @@ class Cannon : UpgradeableBuilding
         if (gridArea != Rectangle.Empty)
         {
             Rectangle rect = new(DrawArea.X+32, DrawArea.Y-8-64, DrawArea.Width/2, DrawArea.Height/2*3);
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTier-1], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
             hpBar.Update();
             hpBar.Draw();
         }
-        // base.Draw();
-
         this.energyBar.Draw();
     }
 
+    public override bool TryUpgrade()
+    {
+        bool uppgraded = base.TryUpgrade();
+        if (uppgraded)
+            UppdateStats();
+        return uppgraded;
+    }
+
+    protected override void UppdateStats()
+    {
+        this.MaxEnergy = maxEnergy[currentTierIndex];
+        this.MaxHp = maxHealth[currentTierIndex];
+        this.AttackDmg = dmg[currentTierIndex];
+        this.Hp = this.MaxHp;
+        this.Energy = this.MaxEnergy;        
+    }
+    public override Resources GetUpgradeCost()
+    {
+        return costs[currentTierIndex+1];
+    }    
     public static new Building CreateNew()
     {
         return new Cannon();

@@ -7,16 +7,30 @@ using Microsoft.Xna.Framework.Input;
 
 class Booster : UpgradeableBuilding
 {
+
+    public static readonly Resources[] costs = new Resources[]
+    {
+        new Resources(64,64,64,64),
+        new Resources(128,128,128,128),
+        new Resources(256,256,256,256),
+        new Resources(512,512,512,512),
+        new Resources(1024,1024,1024,1024),
+    };    
+    private static readonly int[] maxHealth = new int[]
+    {
+        100,
+        200,
+        400,
+        800,
+        1600,
+    };
+
     private const int textureSet = 4;
 
 
     public Booster()
         : base("income-tower3", textureSet)
-    {
-        this.MaxEnergy = 100;
-        this.Energy = 100;
-        this.Regen_Energy = 0;
-    }
+    {}
 
     public override void Tick()
     {
@@ -29,12 +43,20 @@ class Booster : UpgradeableBuilding
         if (gridArea != Rectangle.Empty)
         {
             Rectangle rect = new(DrawArea.X+32, DrawArea.Y-8-64, DrawArea.Width/2, DrawArea.Height/2*3);
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTier-1], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
             hpBar.Update();
             hpBar.Draw();
         }
-      }
-
+    }
+    protected override void UppdateStats()
+    {
+        this.MaxHp = maxHealth[currentTierIndex];
+        this.Hp = this.MaxHp;    
+    }
+    public override Resources GetUpgradeCost()
+    {
+        return costs[currentTierIndex];
+    }    
     public static new Building CreateNew()
     {
         return new Booster();
