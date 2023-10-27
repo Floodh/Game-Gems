@@ -1,4 +1,5 @@
 ﻿﻿using System;
+using System.Net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -33,7 +34,6 @@ public class GameWindow : Game
     private BuildingSelector buildingSelector;
     private ResourcesUi resourcesUi;
     private ContextMenu contextMenu;
-    private Ray ray;
 
     public GameWindow()
     {
@@ -87,7 +87,6 @@ public class GameWindow : Game
         Generator generator = new();
         generator.Place(1,5);
 
-        this.ray = new Ray();
 
         // TODO: use this.Content to load your game content here
     }
@@ -105,6 +104,8 @@ public class GameWindow : Game
 
         if (isInside = IsInside)
         {
+            // Console.WriteLine($"Mouse|x:{contextMouseState.X}, y:{contextMouseState.Y}");
+
             //Console.WriteLine("     Is inside!");
             Camera.UpdateByMouse(contextMouseState,graphics);
             Camera.UpdateByKeyboard(contextKeyboardState);
@@ -117,8 +118,6 @@ public class GameWindow : Game
                 this.contextMenu.Update();
                 bool mouseOnContextMenu = this.contextMenu.UpdateByMouse(contextMouseState);
 
-                this.ray.UpdateByKeyboard(contextKeyboardState); 
-                this.ray.UpdateByMouse(contextMouseState);
 
                 if(!mouseOnContextMenu)
                 {
@@ -137,7 +136,6 @@ public class GameWindow : Game
         //     this.map.RenderGrid = true; //  force update
         // }
 
-        this.ray.Update(gameTime);
         
 
         base.Update(gameTime);
@@ -165,7 +163,6 @@ public class GameWindow : Game
         this.contextMenu.Draw();
         this.level?.dayNightCycle?.Draw();
 
-        this.ray.Draw();
         
         spriteBatch.End();
 

@@ -17,19 +17,13 @@ class BuildingSelector
 
     Rectangle worldRect;
     bool canplace = false;
-
     Texture2D centerTexture;
     Texture2D centerTexturePointing;
-
     private Point center;
-
     private Texture2D BuildingToPlaceTexture;
-
-    private Building buildingToPlace;
-
+    private BuildingOption.Callback buildingToPlace;
     private Size displaySize;
 
-    private int? selectedIndex = null;
     private BuildingOption selectedItem = null;
 
     public EState State = EState.NotVisible;
@@ -42,11 +36,11 @@ class BuildingSelector
         this.centerTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3-null.png");
         this.centerTexturePointing = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3.png");
 
-        this.spriteList.Add(new BuildingOption(this, new Healer(), "Data/TextureSources/healing-tower1-tier1.png", 0f));
-        this.spriteList.Add(new BuildingOption(this, new Generator(), "Data/TextureSources/energy-tower1-tier1.png", -0.85f));
-        this.spriteList.Add(new BuildingOption(this, new Booster(), "Data/TextureSources/income-tower3-tier1.png", 0.85f));
-        this.spriteList.Add(new BuildingOption(this, new Cannon(), "Data/TextureSources/attack-tower1-tier1.png", -1.7f));
-        this.spriteList.Add(new BuildingOption(this, new Wall(), "Data/Texture/GemStructure/Blue_0.png", 1.7f));
+        this.spriteList.Add(new BuildingOption(this, Healer.CreateNew, "Data/TextureSources/healing-tower1-tier1.png", 0f));
+        this.spriteList.Add(new BuildingOption(this, Generator.CreateNew, "Data/TextureSources/energy-tower1-tier1.png", -0.85f));
+        this.spriteList.Add(new BuildingOption(this, Booster.CreateNew, "Data/TextureSources/income-tower3-tier1.png", 0.85f));
+        this.spriteList.Add(new BuildingOption(this, Cannon.CreateNew, "Data/TextureSources/attack-tower1-tier1.png", -1.7f));
+        this.spriteList.Add(new BuildingOption(this, Wall.CreateNew, "Data/TextureSources/walls2-menu2.png", 1.7f));
         
     }
 
@@ -57,8 +51,6 @@ class BuildingSelector
             return this.center;
         }
     }
-
-    public int? SelectedIndex { get => selectedIndex; set => selectedIndex = value; }
     internal BuildingOption SelectedItem { get => selectedItem; set => selectedItem = value; }
 
     public void UpdateByKeyboard(KeyboardState keyboardState)
@@ -105,7 +97,7 @@ class BuildingSelector
                 if(this.selectedItem != null)
                 {
                     this.BuildingToPlaceTexture = this.selectedItem.PlacementTexture;
-                    this.buildingToPlace = this.selectedItem.Building;
+                    this.buildingToPlace = this.selectedItem._callback;
                     this.State = EState.PlacementPending;
                 }
                 else
@@ -136,8 +128,8 @@ class BuildingSelector
             {
                 if(this.canplace)
                 {
-                    Console.WriteLine("Place:" + this.buildingToPlace.ToString());
-                    this.buildingToPlace.CreateNew().Place(gridCenterPoint);
+                    Building building = this.buildingToPlace();
+                    building.Place(gridCenterPoint);
                     this.buildingToPlace = null;
                     selectingOption = false;
                     this.selectedItem = null;

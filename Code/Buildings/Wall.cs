@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,7 +10,7 @@ class Wall : UpgradeableBuilding
 
 
     public Wall()
-        : base("Blue", textureSet)
+        : base("walls2", textureSet)
     {
         this.MaxHp = 500;
         this.Hp = this.MaxHp;
@@ -20,7 +21,7 @@ class Wall : UpgradeableBuilding
         base.Tick();
     }
 
-    public override Building CreateNew()
+    public static new Building CreateNew()
     {
         return new Wall();
     }

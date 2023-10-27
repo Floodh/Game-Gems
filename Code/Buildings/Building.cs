@@ -129,7 +129,10 @@ abstract class Building : Targetable
         return this.Hp <= 0;
     }
 
-    public abstract Building CreateNew();
+    public static Building CreateNew()
+    {
+        throw new NotSupportedException();
+    }
 
     protected override void Die()
     {

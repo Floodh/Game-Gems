@@ -18,9 +18,12 @@ class BuildingOption
     Texture2D fgTexture;
     Building building;
 
-    public BuildingOption(BuildingSelector root, Building building, string foregroundTexturePath, float angle)
+    public delegate Building Callback();
+    public Callback _callback;
+
+    public BuildingOption(BuildingSelector root, Callback callback, string foregroundTexturePath, float angle)
     {
-        this.building = building;
+        this._callback = callback;
         this.root = root;
         this.bgAngle = angle;
         this.bgSize = new Size(160, 160);

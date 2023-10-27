@@ -40,9 +40,9 @@ class Mineral : Building
         base.Draw();
     }
 
-    public override Building CreateNew()
+    public static new Building CreateNew()
     {
-        return new Mineral(this.type);
+        throw new NotImplementedException();
     }
 
     public override void Tick()

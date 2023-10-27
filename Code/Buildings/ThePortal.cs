@@ -51,9 +51,9 @@ class ThePortal : Building
         }
     }
 
-    public override Building CreateNew()
+    public static new Building CreateNew()
     {
-        return new ThePortal(this.dayNightCycle);
+        throw new NotImplementedException();
     }
     public override string ToString()
     {

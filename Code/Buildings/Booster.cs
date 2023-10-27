@@ -7,22 +7,16 @@ using Microsoft.Xna.Framework.Input;
 
 class Booster : UpgradeableBuilding
 {
-    private const int textureSet = 3;
+    private const int textureSet = 4;
 
 
     public Booster()
-        : base("Purple", textureSet)
+        : base("income-tower3", textureSet)
     {
         this.MaxEnergy = 100;
         this.Energy = 100;
         this.Regen_Energy = 0;
-
-        for (int tier = 0; tier < maxTier; tier++)
-            Console.WriteLine($"textureSet:{textureSet}, tier:{tier}");
-
-        for (int tier = 0; tier < maxTier; tier++)
-                baseTextures[textureSet][tier] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/income-tower3-tier{tier+1}.png");
-    }
+}
 
     public override void Tick()
     {
@@ -41,7 +35,7 @@ class Booster : UpgradeableBuilding
         }
       }
 
-    public override Building CreateNew()
+    public static new Building CreateNew()
     {
         return new Booster();
     }

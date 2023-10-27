@@ -12,7 +12,7 @@ class Cannon : UpgradeableBuilding
     private EnergyBar energyBar;
 
     public Cannon()
-        : base("Purple", textureSet)
+        : base("attack-tower1", textureSet)
     {
         this.energyBar = new EnergyBar(this);
         this.MaxEnergy = 100;
@@ -47,7 +47,7 @@ class Cannon : UpgradeableBuilding
         this.energyBar.Draw();
     }
 
-    public override Building CreateNew()
+    public static new Building CreateNew()
     {
         return new Cannon();
     }

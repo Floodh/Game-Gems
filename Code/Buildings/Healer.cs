@@ -14,22 +14,16 @@ class Healer : UpgradeableBuilding
     private EnergyBar energyBar;
     
     private int dmg = -1;
-    
+  
 
 
     public Healer()
-        : base("Green", textureSet)
+        : base("healing-tower1", textureSet)
     {
         this.AttackRate = 10;
         this.MaxEnergy = 100; 
         this.energyBar = new EnergyBar(this);
         //animation = new(this.GridArea.Center, new Point(40,50), EnergyBeam.Type.Line); 
-
-        for (int tier = 0; tier < maxTier; tier++)
-            Console.WriteLine($"textureSet:{textureSet}, tier:{tier}");
-
-        for (int tier = 0; tier < maxTier; tier++)
-                baseTextures[textureSet][tier] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/healing-tower1-tier{tier+1}.png");  
     }
 
     int attackCounter = 0;
@@ -37,7 +31,7 @@ class Healer : UpgradeableBuilding
     {
         base.Tick();
         if (this.target == null || this.target.Hp == this.target.MaxHp || this.target.IsDead)
-        {
+                {
             this.target = this.FindTarget(this, Faction.Player, true, false);
             if (this.target != null)
                 animation = new(this.GridArea.Location, target.GridArea.Location, EnergyBeam.Type.Line); 
@@ -76,7 +70,7 @@ class Healer : UpgradeableBuilding
         this.energyBar.Draw();
     }
 
-    public override Building CreateNew()
+    public static new Building CreateNew()
     {
         return new Healer();
     }

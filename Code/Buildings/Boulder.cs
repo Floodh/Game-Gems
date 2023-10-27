@@ -43,7 +43,7 @@ class Boulder : Building
         this.Hp--;
     }
 
-    public override Building CreateNew()
+    public static new Building CreateNew()
     {
         return new Boulder();
     }

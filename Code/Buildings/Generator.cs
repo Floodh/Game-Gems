@@ -15,20 +15,14 @@ class Generator : UpgradeableBuilding
     private int energyTransfer = 1;
 
     public Generator()
-        : base("Orange", textureSet)
+        : base("energy-tower1", textureSet)
     {
         this.AttackRate = 10;
         this.energyBar = new EnergyBar(this);
         this.MaxEnergy = 1;
         this.Energy = 1;
         this.Regen_Energy = 0;
-
-        for (int tier = 0; tier < maxTier; tier++)
-            Console.WriteLine($"textureSet:{textureSet}, tier:{tier}");
-
-        for (int tier = 0; tier < maxTier; tier++)
-                baseTextures[textureSet][tier] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/energy-tower1-tier{tier+1}.png");
-    }
+}
 
     int attackCounter = 0;
     public override void Tick()
@@ -71,7 +65,7 @@ class Generator : UpgradeableBuilding
         this.energyBar.Draw();
     }
 
-    public override Building CreateNew()
+    public static new Building CreateNew()
     {
         return new Generator();
     }
