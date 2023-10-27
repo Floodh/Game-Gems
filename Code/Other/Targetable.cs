@@ -139,17 +139,13 @@ abstract class Targetable
             target = infoBuilding.Item1;
             distanceSquared = infoBuilding.Item2;
         }
-        Tuple<Building, double> infoUnit = FindTargetBuildingInfo(self, targetFaction, inNeed_Health, inNeed_Energy);
-        if (infoUnit != null)
+        Tuple<Unit, double> infoUnit = FindTargetUnitInfo(self, targetFaction, inNeed_Health, inNeed_Energy);
+        if (infoUnit.Item1 != null)
         {
             if (infoUnit.Item2 < distanceSquared)
                 target = infoUnit.Item1;
         }
-
-        if (target == self) //  this null check is not needed, but I'll keep it for now
-            return null;
         return target;
-
     }
 
     protected Unit FindTargetUnit(Targetable self, Faction targetFaction, bool inNeed_Health, bool inNeed_Energy)
@@ -178,7 +174,7 @@ abstract class Targetable
         }
 
         if (target == self)
-            return null;
+            target = null;
         return new Tuple<Unit, double>(target, distanceSquared);
     }
 
@@ -209,7 +205,7 @@ abstract class Targetable
         }
 
         if (target == self)
-            return null;
+            target = null;
         return new Tuple<Building, double>(target, distanceSquared);
     }
 

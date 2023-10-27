@@ -16,7 +16,7 @@ class Booster : UpgradeableBuilding
         this.MaxEnergy = 100;
         this.Energy = 100;
         this.Regen_Energy = 0;
-}
+    }
 
     public override void Tick()
     {

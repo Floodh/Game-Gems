@@ -7,13 +7,49 @@ using Microsoft.Xna.Framework.Input;
 
 class Cannon : UpgradeableBuilding
 {
+
+    public static readonly Resources[] costs = new Resources[]
+    {
+        new Resources(16,0,64,0),
+        new Resources(32,0,128,0),
+        new Resources(64,0,256,0),
+        new Resources(128,0,512,0),
+        new Resources(256,0,1024,0),
+    };
+    public static readonly int[] dmg = new int[]
+    {
+        10,
+        20,
+        40,
+        80,
+        160,
+    };
+    public static readonly int[] maxHealth = new int[]
+    {
+        100,
+        200,
+        400,
+        800,
+        1600,
+    };
+    public static readonly int[] maxEnergy = new int[]
+    {
+        100,
+        200,
+        400,
+        800,
+        1600,
+    };
+
+
+
+
     private const int textureSet = 3;
 
 
     private EnergyBar energyBar;
     private Targetable target = null;
     private readonly int range = 400;
-    private readonly int dmg = 10;
 
     private readonly int requiredInitative = 80;
     private int initative = 0;
@@ -45,7 +81,7 @@ class Cannon : UpgradeableBuilding
             }
             else
             {
-                _ = new Projectile(this.dmg, 0, 3.13f, this.target, this, 2);
+                _ = new Projectile(dmg[currentTier], 0, 3.13f, this.target, this, 2);
                 initative = 0;
             }
         }

@@ -48,9 +48,9 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
         base.Draw();
     }
 
-    public Resources GetUpgradeCost()
+    public virtual Resources GetUpgradeCost()
     {
-        return new Resources(16, 0, 0, 0);
+        return new Resources(1000000, 1000000, 1000000, 1000000);
     }
 
     public bool TryUpgrade()
