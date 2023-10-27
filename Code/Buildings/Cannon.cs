@@ -25,9 +25,6 @@ class Cannon : UpgradeableBuilding
         this.MaxEnergy = 100;
         this.Energy = 100;
         this.Regen_Energy = 0;
-
-        for (int tier = 0; tier < maxTier; tier++)
-            baseTextures[textureSet][tier] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/attack-tower1-tier{tier+1}.png");
     }
 
     public override void Tick()
