@@ -50,18 +50,24 @@ class Projectile
     Targetable target;
     Targetable sender;
     private bool hasHit = false;
-    private static Texture2D projTexture;
+    private static Texture2D[] projTexture = new Texture2D[2];
+    private readonly int textureId;
 
-    public Projectile(int damage, int energyTransfer, float speed, Targetable target, Targetable sender)
+    public Projectile(int damage, int energyTransfer, float speed, Targetable target, Targetable sender, int textureId)
     {
+        if (textureId < 0 || textureId > projTexture.Length)
+            throw new ArgumentException($"Texture id does not match any textures : id={textureId}");
+
         this.damage = damage;
         this.energyTransfer = energyTransfer;
         this.speed = speed;
         this.target = target;
         this.sender = sender;
         this.position = new Vector2(sender.TargetPosition.X, sender.TargetPosition.Y);
+        this.textureId = textureId;
 
-        projTexture ??= Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/Bolt2.png");
+        if (textureId != 0)
+            projTexture[textureId-1] ??= Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/Texture/Projectile/{textureId}.png");
         allProjectiles.Add(this);
     }
 
@@ -93,20 +99,20 @@ class Projectile
     public void Draw()
     {
 
-        float scale = 0.15f;
-
-
-
-        GameWindow.spriteBatch.Draw(
-            projTexture, 
-            Camera.ModifyPoint(this.position), 
-            null, 
-            Color.White, 
-            rotation, 
-            new Vector2(projTexture.Width / 2, projTexture.Height / 2), 
-            scale, 
-            SpriteEffects.None, 
-            0f);
+        if (this.textureId != 0)
+        {
+            float scale = 0.15f;
+            GameWindow.spriteBatch.Draw(
+                projTexture[textureId-1], 
+                Camera.ModifyPoint(this.position), 
+                null, 
+                Color.White, 
+                rotation, 
+                new Vector2(projTexture[textureId-1].Width / 2, projTexture[textureId-1].Height / 2), 
+                scale, 
+                SpriteEffects.None, 
+                0f);
+        }
     }
 
 
