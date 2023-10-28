@@ -34,7 +34,6 @@ class Generator : UpgradeableBuilding
     private const int textureSet = 2;
 
     private Targetable target;
-    private EnergyBeam animation;
     private EnergyBar energyBar;
 
 
@@ -54,8 +53,6 @@ class Generator : UpgradeableBuilding
         if (this.target == null || this.target.Energy == this.target.MaxEnergy)
         {
             this.target = this.FindTarget(this, Faction.Player, false, true);
-            if (this.target != null)
-                animation = new(this.GridArea.Location, target.GridArea.Location, EnergyBeam.Type.Line); 
         }
         else
         {
@@ -68,8 +65,6 @@ class Generator : UpgradeableBuilding
                 projectile.Scale = 0.075f;
 
                 attackCounter = 0;
-                if (this.animation.IsPlaying == false)
-                    this.animation.Play();
             }
         }
 

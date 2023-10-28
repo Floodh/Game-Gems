@@ -44,15 +44,13 @@ class Healer : UpgradeableBuilding
 
 
     private Targetable target;
-    // private EnergyBeam animation;
+
     private EnergyBar energyBar;
     
     public Healer()
         : base("healing-tower1", textureSet)
     {
         this.energyBar = new EnergyBar(this);
-        //animation = new(this.GridArea.Center, new Point(40,50), EnergyBeam.Type.Line); 
-
         this.AttackRate = 10;
     }
 
@@ -61,24 +59,21 @@ class Healer : UpgradeableBuilding
     {
         base.Tick();
         if (this.target == null || this.target.Hp == this.target.MaxHp || this.target.IsDead)
-                {
+        {
             this.target = this.FindTarget(this, Faction.Player, true, false);
-            // if (this.target != null)
-                // animation = new(this.GridArea.Location, target.GridArea.Location, EnergyBeam.Type.Line); 
+
         }
         else
         {
             attackCounter++;
             if (attackCounter >= AttackRate)
             if (this.Energy >= healing[currentTierIndex])
-            {           
+            {      
+                this.Energy -= healing[currentTierIndex]; 
                 Projectile projectile = new(-healing[currentTierIndex], 0, 4f, target, this, 3);
                 projectile.Rotate = false;
                 projectile.Scale = 0.075f;
-
                 attackCounter = 0;
-                // if (this.animation.IsPlaying == false)
-                //     this.animation.Play();
             }
 
         }
