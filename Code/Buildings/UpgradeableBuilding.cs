@@ -56,13 +56,13 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
         bool result = false;
 
         if(currentTier < maxTier)
-        {
+        {   
             result = Resources.BuyFor(GetUpgradeCost());
 
             if(result)
             {
-                UppdateStats();
                 currentTier++;
+                UppdateStats();
             }
         }
         return result;

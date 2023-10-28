@@ -68,6 +68,7 @@ class Cannon : UpgradeableBuilding
             int dy = this.target.TargetPosition.X - this.TargetPosition.X;
             int distanceSquared = dx * dx + dy * dy;
             if (initative++ > requiredInitative)
+            if (this.Energy >= dmg[currentTierIndex])
             if (distanceSquared > this.range * this.range)
             {
                 this.target = null;
@@ -75,6 +76,7 @@ class Cannon : UpgradeableBuilding
             }
             else
             {
+                this.Energy -= dmg[currentTierIndex];
                 _ = new Projectile(dmg[currentTierIndex], 0, 3.13f, this.target, this, 2);
                 initative = 0;
             }

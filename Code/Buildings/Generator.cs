@@ -42,6 +42,8 @@ class Generator : UpgradeableBuilding
         : base("energy-tower1", textureSet)
     {
         this.energyBar = new EnergyBar(this);
+        this.MaxEnergy = 1;
+        this.Energy = 1;
     }
 
     int attackCounter = 0;

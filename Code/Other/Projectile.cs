@@ -126,6 +126,7 @@ class Projectile
                 SpriteEffects.None, 
                 0f);
         }
+        
     }
 
 
