@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 using System;
 using System.IO;
 using MonoGame.Extended;
+using System.Diagnostics;
+using System.ComponentModel;
 
 class Projectile
 {
@@ -56,6 +58,13 @@ class Projectile
     private static Texture2D[] projTexture;
     private readonly int textureId;
 
+    private bool rotate = true;
+    public bool Rotate { get => rotate; set => rotate = value; }
+    private float scale = 0.15f;
+    public float Scale { get => scale; set => scale = value; }
+
+    
+
     static Projectile()
     {
         projTexture = new Texture2D[Directory.GetFiles("Data/Texture/Projectile/").Length];
@@ -86,10 +95,11 @@ class Projectile
         float dx = destination.X - this.position.X;
         float dy = destination.Y - this.position.Y;
         float distance = (float)Math.Sqrt(dx * dx + dy * dy);
-        this.rotation = (float)Math.Atan2(dy, dx);
 
-        float speed = GameWindow.Speed; // TODO remove
-
+        if(this.Rotate)
+            this.rotation = (float)Math.Atan2(dy, dx);
+        else
+            this.rotation = 0;
 
         if (distance < speed)
         {
@@ -108,26 +118,16 @@ class Projectile
 
     public void Draw()
     {
-        int txtId = GameWindow.Key4Active?3:5;// TODO remove
-        if (this.textureId != 0 && this.textureId != txtId) // TODO revert
+        if (this.textureId != 0)
         {
-            float angle;
-            if(this.textureId == 3 || this.textureId == 5)
-                angle = GameWindow.Key1Active ? 0f : this.rotation; // TODO remove
-            else
-                angle = this.rotation;
-
-            Console.WriteLine(angle);
-
-            float scale = 0.15f;
             GameWindow.spriteBatch.Draw(
                 projTexture[textureId-1], 
                 Camera.ModifyPoint(this.position), 
                 null, 
                 Color.White, 
-                angle, 
+                this.rotation, 
                 new Vector2(projTexture[textureId-1].Width / 2, projTexture[textureId-1].Height / 2), 
-                scale, 
+                this.scale, 
                 SpriteEffects.None, 
                 0f);
         }

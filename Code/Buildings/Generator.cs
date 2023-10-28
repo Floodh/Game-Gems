@@ -44,6 +44,7 @@ class Generator : UpgradeableBuilding
         this.energyBar = new EnergyBar(this);
         this.MaxEnergy = 1;
         this.Energy = 1;
+        this.AttackRate = 10;
     }
 
     int attackCounter = 0;
@@ -62,7 +63,10 @@ class Generator : UpgradeableBuilding
             if (attackCounter >= AttackRate)
             {          
                 //Console.WriteLine($"Giving energy to : {target}");
-                Projectile projectile = new Projectile(0, energyTransfer[currentTierIndex], 100000f, target, this, 0);
+                Projectile projectile = new Projectile(0, energyTransfer[currentTierIndex], 4f, target, this, 4);
+                projectile.Rotate = false;
+                projectile.Scale = 0.075f;
+
                 attackCounter = 0;
                 if (this.animation.IsPlaying == false)
                     this.animation.Play();

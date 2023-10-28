@@ -52,6 +52,8 @@ class Healer : UpgradeableBuilding
     {
         this.energyBar = new EnergyBar(this);
         //animation = new(this.GridArea.Center, new Point(40,50), EnergyBeam.Type.Line); 
+
+        this.AttackRate = 10;
     }
 
     int attackCounter = 0;
@@ -70,9 +72,10 @@ class Healer : UpgradeableBuilding
             if (attackCounter >= AttackRate)
             if (this.Energy >= healing[currentTierIndex])
             {           
-                //Console.WriteLine("Healig");
-                _ = new Projectile(-healing[currentTierIndex], 0, 3f, target, this, 3);
-                _ = new Projectile(-healing[currentTierIndex], 0, 3f, target, this, 5); // TODO rremove
+                Projectile projectile = new(-healing[currentTierIndex], 0, 4f, target, this, 3);
+                projectile.Rotate = false;
+                projectile.Scale = 0.075f;
+
                 attackCounter = 0;
                 // if (this.animation.IsPlaying == false)
                 //     this.animation.Play();
