@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
 using System.IO;
+using MonoGame.Extended;
 
 class Projectile
 {
@@ -110,8 +111,12 @@ class Projectile
         int txtId = GameWindow.Key4Active?3:5;// TODO remove
         if (this.textureId != 0 && this.textureId != txtId) // TODO revert
         {
+            float angle;
+            if(this.textureId == 3 || this.textureId == 5)
+                angle = GameWindow.Key1Active ? 0f : this.rotation; // TODO remove
+            else
+                angle = this.rotation;
 
-            float angle = GameWindow.Key1Active ? 0f : this.rotation; // TODO remove
             Console.WriteLine(angle);
 
             float scale = 0.15f;
