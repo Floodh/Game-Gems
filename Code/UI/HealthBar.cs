@@ -6,12 +6,12 @@ class HealthBar : Bar
 {
 
     public HealthBar(Building building)
-        : base(building, Color.Green, Color.Red, Point.Zero)
+        : base(building, Color.Green, Color.Red, Color.Black, Point.Zero)
     {}
 
 
     protected override double Percentace()
     {
-        return (double)building.Hp / building.MaxHp;
+        return (double)entity.Hp / entity.MaxHp;
     }
 }

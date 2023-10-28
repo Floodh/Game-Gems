@@ -6,12 +6,12 @@ class EnergyBar : Bar
 {
 
     public EnergyBar(Building building)
-        : base(building, Color.Purple, Color.Bisque, new Point(0, 16))
+        : base(building, Color.Purple, Color.Gray, Color.Black, new Point(0, 16))
     {}
 
     protected override double Percentace()
     {
-        return (double)building.Energy / building.MaxEnergy;
+        return (double)entity.Energy / entity.MaxEnergy;
     }
 
 }
