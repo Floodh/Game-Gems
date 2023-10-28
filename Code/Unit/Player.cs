@@ -45,11 +45,9 @@ class Player : Unit
             int currentValue = Building.grid.GetPlayerValue(GridArea.X, GridArea.Y);
             if (opertunityCounter++ > movementRate)
             {
-                Console.WriteLine($"     value : {currentValue}");
                 opertunityCounter = 0;
                 if (this.currentTarget != null && currentValue == int.MaxValue)
                 {
-                    Console.WriteLine("     MINERALZ :D");
                     this.currentTarget.PlayerInteraction();
                 }
                 else

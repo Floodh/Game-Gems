@@ -5,21 +5,22 @@ using Microsoft.Xna.Framework.Graphics;
 abstract class Bar
 {
 
-    private const int baseYoffset = Map.mapPixelToTexturePixel_Multiplier / 2;
-    private const int barSectionWidth = Map.mapPixelToTexturePixel_Multiplier / 8;
-    private const int barHeight = Map.mapPixelToTexturePixel_Multiplier / 8;
-    private const int barBorderSize = 2;
-    private const int barSectionHp = 100;
-    //private const int barSize
+    protected const int baseYoffset = -Map.mapPixelToTexturePixel_Multiplier / 2;
+    protected const int barSectionWidth = Map.mapPixelToTexturePixel_Multiplier / 8;
+    protected const int barHeight = Map.mapPixelToTexturePixel_Multiplier / 8;
+    protected const int barBorderSize = 2;
+    protected const int barSectionHp = 100;
     
 
     private readonly Color borderColor;
+    private readonly Color emptyColor;
     private readonly Color fillColor;
 
     private static Texture2D whitePixelTexture;
     protected Targetable entity;
 
     private Rectangle borderDrawArea;
+    private Rectangle emptyDrawArea;
     private Rectangle fillDrawArea;
 
     private Point offset;
@@ -29,6 +30,7 @@ abstract class Bar
     public Bar(Targetable building, Color fillColor, Color emptyColor, Color borderColor, Point offset)
     {
         this.fillColor = fillColor;
+        this.emptyColor = emptyColor;
         this.borderColor = borderColor;
         this.entity = building;
         this.offset = offset;
@@ -42,22 +44,28 @@ abstract class Bar
     public void Update()
     {
         Point center = this.entity.TargetPosition;
-        center.Y += baseYoffset;
+        center.X += this.offset.X;
+        center.Y += baseYoffset + this.offset.Y;
 
         sections = entity.MaxHp / barSectionHp;
+        sections = Math.Max(1, sections);
         int width = barBorderSize * (sections + 1) + barSectionWidth * sections;
         borderDrawArea = new Rectangle(center.X - width / 2, center.Y, width, barHeight);
 
         // Calculate the position and size of the filled portion of the health bar
         double percentace = this.Percentace();
-        int fillWidth = (int)((borderDrawArea.Width - barBorderSize * 2) * percentace);
-        fillDrawArea = new Rectangle(borderDrawArea.X + barBorderSize, borderDrawArea.Y + barBorderSize, fillWidth, barHeight - barBorderSize * 2);
+        int internalWidth = (borderDrawArea.Width - barBorderSize * 2);
+        int fillWidth = (int)(internalWidth * percentace);
+        this.emptyDrawArea = new Rectangle(borderDrawArea.X + barBorderSize, borderDrawArea.Y + barBorderSize, internalWidth, barHeight - barBorderSize * 2);
+        this.fillDrawArea = new Rectangle(borderDrawArea.X + barBorderSize, borderDrawArea.Y + barBorderSize, fillWidth, barHeight - barBorderSize * 2);
     }
     public void Draw()
     {
         Rectangle transformedBorderDrawArea = Camera.ModifiedDrawArea(borderDrawArea, Camera.zoomLevel);
+        Rectangle transformedEmptyDrawArea = Camera.ModifiedDrawArea(emptyDrawArea, Camera.zoomLevel);
         Rectangle transformedFillDrawArea = Camera.ModifiedDrawArea(fillDrawArea, Camera.zoomLevel);
         GameWindow.spriteBatch.Draw(whitePixelTexture, transformedBorderDrawArea, borderColor);
+        GameWindow.spriteBatch.Draw(whitePixelTexture, transformedEmptyDrawArea, emptyColor);
         GameWindow.spriteBatch.Draw(whitePixelTexture, transformedFillDrawArea, fillColor);
         for (int section = 1; section < this.sections; section++)
         {

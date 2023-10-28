@@ -71,6 +71,7 @@ class Healer : UpgradeableBuilding
             if (this.Energy >= healing[currentTierIndex])
             {           
                 //Console.WriteLine("Healig");
+                this.Energy -= healing[currentTierIndex];
                 _ = new Projectile(-healing[currentTierIndex], 0, 100000f, target, this, 0);
                 attackCounter = 0;
                 if (this.animation.IsPlaying == false)

@@ -11,8 +11,8 @@ class Boulder : Building
     public Boulder()
         : base(Faction.Neutral)
     {
-        this.MaxHp = 2;
-        this.Hp = 2;
+        this.MaxHp = 200;
+        this.Hp = this.MaxHp;
         this.Regen_Health = 0;
 
         baseTexture ??= Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
@@ -40,7 +40,7 @@ class Boulder : Building
     public override void PlayerInteraction()
     {
         base.PlayerInteraction();
-        this.Hp--;
+        this.Hp -= 120;
     }
 
     public static new Building CreateNew()
