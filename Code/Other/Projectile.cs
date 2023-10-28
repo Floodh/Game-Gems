@@ -87,6 +87,8 @@ class Projectile
         float distance = (float)Math.Sqrt(dx * dx + dy * dy);
         this.rotation = (float)Math.Atan2(dy, dx);
 
+        float speed = GameWindow.Speed; // TODO remove
+
 
         if (distance < speed)
         {
@@ -105,16 +107,20 @@ class Projectile
 
     public void Draw()
     {
-
-        if (this.textureId != 0)
+        int txtId = GameWindow.Key4Active?3:5;// TODO remove
+        if (this.textureId != 0 && this.textureId != txtId) // TODO revert
         {
+
+            float angle = GameWindow.Key1Active ? 0f : this.rotation; // TODO remove
+            Console.WriteLine(angle);
+
             float scale = 0.15f;
             GameWindow.spriteBatch.Draw(
                 projTexture[textureId-1], 
                 Camera.ModifyPoint(this.position), 
                 null, 
                 Color.White, 
-                rotation, 
+                angle, 
                 new Vector2(projTexture[textureId-1].Width / 2, projTexture[textureId-1].Height / 2), 
                 scale, 
                 SpriteEffects.None, 

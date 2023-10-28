@@ -93,6 +93,8 @@ public class GameWindow : Game
 
     protected override void Update(GameTime gameTime)
     {
+        this.KeyCheck(contextKeyboardState);
+
         contextKeyboardState = Keyboard.GetState();
         contextMouseState = Mouse.GetState();
 
@@ -140,6 +142,54 @@ public class GameWindow : Game
 
         base.Update(gameTime);
     }
+
+    // TODO remove
+    public static bool Key1Pressed = false;
+    public static bool Key1Active = false;
+
+    public static bool Key2Pressed = false;
+     public static bool Key3Pressed = false;
+    public static float Speed = 1f;
+
+    public static bool Key4Pressed = false;
+    public static bool Key4Active = false;
+
+    protected void KeyCheck(KeyboardState keyboardState)
+    {
+        if (keyboardState.IsKeyDown(Keys.D1))
+            Key1Pressed = true;
+        else if(keyboardState.IsKeyUp(Keys.D1) && Key1Pressed)
+        {
+            Key1Active = !Key1Active;
+            Key1Pressed = false;
+        }
+
+        if (keyboardState.IsKeyDown(Keys.D2))
+            Key2Pressed = true;
+        else if(keyboardState.IsKeyUp(Keys.D2) && Key2Pressed)
+        {
+            Speed--;
+            Key2Pressed = false;
+        }
+
+        if (keyboardState.IsKeyDown(Keys.D3))
+            Key3Pressed = true;
+        else if(keyboardState.IsKeyUp(Keys.D3) && Key3Pressed)
+        {
+            Speed++;
+            Key3Pressed = false;
+        }
+
+        if (keyboardState.IsKeyDown(Keys.D4))
+            Key4Pressed = true;
+        else if(keyboardState.IsKeyUp(Keys.D4) && Key4Pressed)
+        {
+            Key4Active = !Key4Active;
+            Key4Pressed = false;
+        }
+    }
+
+    // End TODO
 
     protected override void Draw(GameTime gameTime)
     {
