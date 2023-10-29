@@ -149,43 +149,6 @@ class Map
 
     }
 
-    private void RenderGridStatus()
-    {
-        
-        //  graphic libary stuff
-        GraphicsDevice graphicsDevice = GameWindow.graphicsDevice;
-        using RenderTarget2D renderTargetIsAOffScreenBuffer = new RenderTarget2D(graphicsDevice, drawTextureSize.Width, drawTextureSize.Height, false, SurfaceFormat.Color, DepthFormat.None);
-        SpriteBatch spriteBatch = GameWindow.spriteBatch;
-
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            graphicsDevice.SetRenderTarget(renderTargetIsAOffScreenBuffer);
-            graphicsDevice.Clear(Color.Transparent);
-            for (int y = 0; y < this.SourceImage.Width; y++)
-            for (int x = 0; x < this.SourceImage.Height; x++)
-            {
-                bool isTaken = Building.grid.IsTileTaken(x, y);
-                Rectangle drawRect = new Rectangle(x * mapPixelToTexturePixel_Multiplier, y * mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier);
-                if (isTaken)
-                {
-                    spriteBatch.Draw(inValidTileTexture, drawRect, Color.White);
-                }
-                // else
-                // {
-                //     spriteBatch.Draw(validTileTexture, drawRect, Color.White);
-                // }
-            }
-        spriteBatch.End();
-
-        //  annoying syntax to transfer the data from screenBuffer to the texture
-        using System.IO.MemoryStream stream = new System.IO.MemoryStream();
-        renderTargetIsAOffScreenBuffer.SaveAsPng(stream, drawTextureSize.Width, drawTextureSize.Height);
-        this.gridDrawTexture = Texture2D.FromStream(graphicsDevice, stream);
-        File.WriteAllBytes("test.png",stream.ToArray());
-        graphicsDevice.SetRenderTarget(null);   //  give back the rendering target
-
-    }
-
-
     public void Draw()
     {
         Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height); 
