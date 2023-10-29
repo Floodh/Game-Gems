@@ -34,6 +34,19 @@ class Wall : UpgradeableBuilding
     {
         base.Tick();
     }
+
+    public override void Draw()
+    {
+        Rectangle gridArea = this.GridArea;
+        if (gridArea != Rectangle.Empty)
+        {
+            Rectangle rect = new(DrawArea.Location, DrawArea.Size);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
+            hpBar.Update();
+            hpBar.Draw();
+        }
+    }
+
     protected override void UppdateStats()
     {
         this.MaxHp = maxHealth[currentTierIndex];
@@ -47,6 +60,18 @@ class Wall : UpgradeableBuilding
     {
         return new Wall();
     }
+
+    public static new Texture2D[] GetTextures()
+    {
+        return baseTextures[textureSet];
+    }
+
+    public static new Rectangle GetRectangle(Point point)
+    {
+        int mapPixelToTexturePixel_Multiplier = Map.mapPixelToTexturePixel_Multiplier;
+        return new Rectangle(point.X+32, point.Y-0, mapPixelToTexturePixel_Multiplier*2, mapPixelToTexturePixel_Multiplier*2);
+    }
+
     public override string ToString()
     {
         return $"Wall : {this.Hp} / {this.MaxHp}";

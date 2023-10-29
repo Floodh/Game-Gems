@@ -143,8 +143,10 @@ abstract class Building : Targetable
         grid.RemoveBuilding(this);
     }
 
-    public static void UpdateAllByMouse(MouseState mouseState)
+    public static bool UpdateAllByMouse(MouseState mouseState)
     {
+        bool mouseOnSelectableBuilding = false;
+
         if(mouseState.LeftButton == ButtonState.Pressed)
         {
             if(Building.selectedBuilding != null)
@@ -161,6 +163,7 @@ abstract class Building : Targetable
                     Building.selectedBuilding = building;
                     Building.selectedBuilding.State = EState.Normal;
                     Console.WriteLine("Press on: " + building.ToString());
+                    mouseOnSelectableBuilding = true;
                 }
             }
         }  
@@ -187,6 +190,8 @@ abstract class Building : Targetable
                 Building.selectedBuilding = null;
             }
         }
+
+        return mouseOnSelectableBuilding;
     }
 
     public enum EState 

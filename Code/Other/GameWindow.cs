@@ -18,6 +18,8 @@ public class GameWindow : Game
 
 
     public static bool interactingWithUI = false;
+    public static bool interactingWithSelectableBuilding = false;
+    public static bool interactingWithContextMenu = false;
     public static bool isInside = false;
 
     private bool InteractingWithUI {get{return this.buildingSelector.State != BuildingSelector.EState.NotVisible;}}
@@ -86,6 +88,8 @@ public class GameWindow : Game
         healer.Place(3,1);
         Generator generator = new();
         generator.Place(1,5);
+        Booster booster = new();
+        booster.Place(1,4);
 
 
         // TODO: use this.Content to load your game content here
@@ -118,12 +122,11 @@ public class GameWindow : Game
             if(!InteractingWithUI)
             {
                 this.contextMenu.Update();
-                bool mouseOnContextMenu = this.contextMenu.UpdateByMouse(contextMouseState);
+                interactingWithContextMenu = this.contextMenu.UpdateByMouse(contextMouseState);
 
-
-                if(!mouseOnContextMenu)
+                if(!interactingWithContextMenu)
                 {
-                    Building.UpdateAllByMouse(contextMouseState);
+                    interactingWithSelectableBuilding = Building.UpdateAllByMouse(contextMouseState);
                 }
 
             }   

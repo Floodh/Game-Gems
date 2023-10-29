@@ -185,34 +185,11 @@ class Map
 
     }
 
-
     public void Draw()
     {
         Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height); 
         drawArea = Camera.ModifiedDrawArea(drawArea, Camera.zoomLevel);
         GameWindow.spriteBatch.Draw(drawTexture, drawArea, Sunlight.Mask);
-        if (hightlightGridArea != Rectangle.Empty)
-        {
-            for (int y = hightlightGridArea.Y; y < hightlightGridArea.Bottom; y++)
-            for (int x = hightlightGridArea.X; x < hightlightGridArea.Right; x++)
-            {
-                
-                Rectangle tileArea = new Rectangle(x * mapPixelToTexturePixel_Multiplier, y * mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier);
-                tileArea = Camera.ModifiedDrawArea(tileArea, Camera.zoomLevel);
-                if (Building.grid.IsTileTaken(x, y))
-                {
-                    GameWindow.spriteBatch.Draw(inValidTileTexture, tileArea, Color.White);
-                }
-                else
-                {
-                    GameWindow.spriteBatch.Draw(validTileTexture, tileArea, Color.White);
-                }
-
-            }
-            //GameWindow.spriteBatch.Draw(gridDrawTexture, drawArea, Color.White);
-        }
-
-
         //Console.WriteLine($"texture size : {this.drawTexture.Width}, {this.drawTexture.Height}");
     }
     public static Rectangle DrawRectFromGrid(Point gridPoint)

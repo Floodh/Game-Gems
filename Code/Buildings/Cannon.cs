@@ -126,6 +126,17 @@ class Cannon : UpgradeableBuilding
     {
         return new Cannon();
     }
+
+    public static new Texture2D[] GetTextures()
+    {
+        return baseTextures[textureSet];
+    }
+
+    public static new Rectangle GetRectangle(Point point)
+    {
+        int mapPixelToTexturePixel_Multiplier = Map.mapPixelToTexturePixel_Multiplier;
+        return new Rectangle(point.X+32, point.Y-8-64, mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier*3);
+    }
     
     public override string ToString()
     {

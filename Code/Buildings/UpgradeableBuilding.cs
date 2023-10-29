@@ -27,15 +27,25 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
     {
         this.textureSet = textureSet;
         baseTextures ??= new Texture2D[textureSets][];
-
+        
         if (baseTextures[textureSet] == null)
         {
-            baseTextures[textureSet] = new Texture2D[4];
+                        baseTextures[textureSet] = new Texture2D[4];
             for (int i = 0; i < maxTier; i++)
-                baseTextures[textureSet][i] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/{colorName}-tier{i+1}.png");
-        }
-
+                            baseTextures[textureSet][i] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/{colorName}-tier{i+1}.png");
+            }
+        
         UppdateStats();
+    }
+
+    public static Texture2D[] GetTextures()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static Rectangle GetRectangle(Point point)
+    {
+        throw new NotImplementedException();
     }
 
     public override void Draw()

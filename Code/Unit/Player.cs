@@ -39,7 +39,11 @@ class Player : Unit
     {
         base.Tick();
 
-        this.HandleMouse(GameWindow.contextMouseState, GameWindow.interactingWithUI);
+        this.HandleMouse(
+            GameWindow.contextMouseState, 
+            GameWindow.interactingWithUI, 
+            GameWindow.interactingWithContextMenu,
+             GameWindow.interactingWithSelectableBuilding);
         if (this.IsMoving)
         {
             int currentValue = Building.grid.GetPlayerValue(GridArea.X, GridArea.Y);
@@ -80,10 +84,10 @@ class Player : Unit
             }            
         }
     }
-    private void HandleMouse(MouseState mouseState, bool interactingWithUI)
+    private void HandleMouse(MouseState mouseState, bool interactingWithUI, bool interactingWithContextMenu, bool interactingWithSelectableBuilding)
     {
 
-        if (!interactingWithUI)
+        if (!interactingWithUI && !interactingWithContextMenu && !interactingWithSelectableBuilding)
         {
             Point mousePosition = mouseState.Position;
             if (mouseState.LeftButton == ButtonState.Pressed)
