@@ -1,3 +1,5 @@
+#define SAVEPREVIEW
+
 using System.Runtime.CompilerServices;
 using System.Globalization;
 using System;
@@ -25,6 +27,8 @@ class Map
     }
     private const string GRID_VALIDTILE_TEXTURE_PATH = "Data/Texture/Grid_ValidTile.png";
     private const string GRID_INVALIDTILE_TEXTURE_PATH = "Data/Texture/Grid_InValidTile.png";
+    public const string PATH_MAPDATA_PREVIEW = MainMenu.PATH_MAPDATA_PREVIEW;
+    public const string PATH_MAPDATA_IMAGE = MainMenu.PATH_MAPDATA;
 
     public const int mapPixelToGridTile_Multiplier = 1;  //  1 pixel = 2x2 tiles
     public const int mapPixelToTexturePixel_Multiplier = 16 * 2 * 2;
@@ -141,47 +145,15 @@ class Map
         spriteBatch.End();
 
         //  annoying syntax to transfer the data from screenBuffer to the texture
-        using System.IO.Stream stream = new System.IO.MemoryStream();
+        using System.IO.MemoryStream stream = new System.IO.MemoryStream();
         renderTargetIsAOffScreenBuffer.SaveAsPng(stream, drawTextureSize.Width, drawTextureSize.Height);
+        #if SAVEPREVIEW
+            string previewPath = PATH_MAPDATA_PREVIEW + path.Substring(path.LastIndexOf('/') + 1);
+            File.WriteAllBytes(previewPath, stream.ToArray());
+        #endif
         this.drawTexture = Texture2D.FromStream(graphicsDevice, stream);
         graphicsDevice.SetRenderTarget(null);   //  give back the rendering target
         Camera.Init(drawTextureSize);
-
-    }
-
-    private void RenderGridStatus()
-    {
-        
-        //  graphic libary stuff
-        GraphicsDevice graphicsDevice = GameWindow.graphicsDevice;
-        using RenderTarget2D renderTargetIsAOffScreenBuffer = new RenderTarget2D(graphicsDevice, drawTextureSize.Width, drawTextureSize.Height, false, SurfaceFormat.Color, DepthFormat.None);
-        SpriteBatch spriteBatch = GameWindow.spriteBatch;
-
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            graphicsDevice.SetRenderTarget(renderTargetIsAOffScreenBuffer);
-            graphicsDevice.Clear(Color.Transparent);
-            for (int y = 0; y < this.SourceImage.Width; y++)
-            for (int x = 0; x < this.SourceImage.Height; x++)
-            {
-                bool isTaken = Building.grid.IsTileTaken(x, y);
-                Rectangle drawRect = new Rectangle(x * mapPixelToTexturePixel_Multiplier, y * mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier);
-                if (isTaken)
-                {
-                    spriteBatch.Draw(inValidTileTexture, drawRect, Color.White);
-                }
-                // else
-                // {
-                //     spriteBatch.Draw(validTileTexture, drawRect, Color.White);
-                // }
-            }
-        spriteBatch.End();
-
-        //  annoying syntax to transfer the data from screenBuffer to the texture
-        using System.IO.MemoryStream stream = new System.IO.MemoryStream();
-        renderTargetIsAOffScreenBuffer.SaveAsPng(stream, drawTextureSize.Width, drawTextureSize.Height);
-        this.gridDrawTexture = Texture2D.FromStream(graphicsDevice, stream);
-        File.WriteAllBytes("test.png",stream.ToArray());
-        graphicsDevice.SetRenderTarget(null);   //  give back the rendering target
 
     }
 
@@ -190,6 +162,28 @@ class Map
         Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height); 
         drawArea = Camera.ModifiedDrawArea(drawArea, Camera.zoomLevel);
         GameWindow.spriteBatch.Draw(drawTexture, drawArea, Sunlight.Mask);
+        if (hightlightGridArea != Rectangle.Empty)
+        {
+            for (int y = hightlightGridArea.Y; y < hightlightGridArea.Bottom; y++)
+            for (int x = hightlightGridArea.X; x < hightlightGridArea.Right; x++)
+            {
+                
+                Rectangle tileArea = new Rectangle(x * mapPixelToTexturePixel_Multiplier, y * mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier);
+                tileArea = Camera.ModifiedDrawArea(tileArea, Camera.zoomLevel);
+                if (Building.grid.IsTileTaken(x, y))
+                {
+                    GameWindow.spriteBatch.Draw(inValidTileTexture, tileArea, Color.White);
+                }
+                else
+                {
+                    GameWindow.spriteBatch.Draw(validTileTexture, tileArea, Color.White);
+                }
+
+            }
+            //GameWindow.spriteBatch.Draw(gridDrawTexture, drawArea, Color.White);
+        }
+
+
         //Console.WriteLine($"texture size : {this.drawTexture.Width}, {this.drawTexture.Height}");
     }
     public static Rectangle DrawRectFromGrid(Point gridPoint)

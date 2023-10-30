@@ -102,7 +102,7 @@ public class GameWindow : Game
         contextKeyboardState = Keyboard.GetState();
         contextMouseState = Mouse.GetState();
 
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || contextKeyboardState.IsKeyDown(Keys.Escape))
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
             Exit();
 
         // TODO: Add your update logic here

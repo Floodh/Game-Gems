@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,6 +10,7 @@ class MainMenu_Option
     private const double BufferPercantage = 0.025;
     private const double WidthPercentage = 0.10;
     private const double HeightPercentage = WidthPercentage;
+    private const double InnerBufferPercentage = WidthPercentage / 4;
 
     private static Texture2D frameTexture;
 
@@ -20,7 +22,10 @@ class MainMenu_Option
     public readonly int index;
 
     Rectangle drawArea;
+    Rectangle textureDrawArea;
     private int numberOfOptions;
+
+    private Texture2D optionTexture;
 
     
 
@@ -31,21 +36,37 @@ class MainMenu_Option
         frameTexture ??= Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/frame2.png");
         this.AdjustDrawArea(windowSize);
     }
-    public MainMenu_Option(Point windowSize, GameArguments.Map map)
+    public MainMenu_Option(Point windowSize, GameArguments.Map map, string texturePath)
         : this(windowSize, (int)GameArguments.Map.Length, (int)map)
-    {}
+    {
+        if (File.Exists(texturePath))
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, texturePath);
+        else
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, MainMenu.PATH_MAPDATA_PREVIEW + "Placeholder.jpg");
+        
+    }
     public MainMenu_Option(Point windowSize, GameArguments.Avatar avatar)
         : this(windowSize, (int)GameArguments.Avatar.Length, (int)avatar)
-    {}
+    {
+        if (avatar == GameArguments.Avatar.Wizard)
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Player.Path_BaseTexture);
+        if (avatar == GameArguments.Avatar.Orb)
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, MainMenu.PATH_MAPDATA_PREVIEW + "Placeholder.jpg");            
+    }
     public MainMenu_Option(Point windowSize, GameArguments.CollectionBonus collectionBonus)
         : this(windowSize, (int)GameArguments.CollectionBonus.Length, (int)collectionBonus)
-    {}
+    {
+        this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, MainMenu.PATH_MAPDATA_PREVIEW + "Placeholder.jpg");    
+
+    }
 
     public void AdjustDrawArea(Point windowSize)
     {
         int bufferPxSize = (int)(windowSize.X * BufferPercantage);
         int widthPxSize = (int)(windowSize.X * WidthPercentage);
         int heightPxSize = (int)(windowSize.Y * HeightPercentage);
+        int innerWidthBufferPxSize = (int)(windowSize.X * InnerBufferPercentage);
+        int innerHeightBufferPxSize = (int)(windowSize.Y * InnerBufferPercentage);
 
         int combinedWidth = bufferPxSize * (numberOfOptions - 1) + widthPxSize * numberOfOptions;
         int startX = (windowSize.X - combinedWidth) / 2;
@@ -58,11 +79,21 @@ class MainMenu_Option
             widthPxSize,
             heightPxSize
         );
+
+        this.textureDrawArea = new Rectangle
+        (
+            drawArea.X + innerWidthBufferPxSize,
+            drawArea.Y + innerHeightBufferPxSize,
+            drawArea.Width - innerWidthBufferPxSize * 2,
+            drawArea.Height - innerHeightBufferPxSize * 2
+        );
+
     }
 
     public void Draw()
     {
         GameWindow.spriteBatch.Draw(frameTexture, this.drawArea, Color.White);
+        GameWindow.spriteBatch.Draw(optionTexture, this.textureDrawArea, Color.White);
     }
 
     // public T GetValue()

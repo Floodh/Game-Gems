@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -13,7 +14,8 @@ class MainMenu
         SelectMap,
         SelectAvatar,
         SelectCollcectionBonus,
-        Loading
+        Loading,
+        InActive,
     }
     private State state = State.SelectMap;
 
@@ -23,12 +25,40 @@ class MainMenu
 
 
     
-    public MainMenu()
+    public MainMenu(Point windowSize)
     {
+        //
         mainMenu_Options[0] = new MainMenu_Option[0];   //  will use special case buttons for this
+        //
+
+        //
         mainMenu_Options[1] = new MainMenu_Option[((int)GameArguments.Map.Length)];
+            string[] mapImagePaths = Directory.GetFiles(Map.PATH_MAPDATA_IMAGE);
+            if (mainMenu_Options.Length != mapImagePaths.Length)
+                throw new Exception("Number of map images does not match the Length of the Map enum!");
+            for (int i = 0; i < mapImagePaths.Length; i++)
+            {
+                string previewMapPath = Map.PATH_MAPDATA_PREVIEW + mapImagePaths[i].Substring(mapImagePaths[i].LastIndexOf('/') + 1);
+                mainMenu_Options[1][i] = new MainMenu_Option(windowSize, (GameArguments.Map)i, previewMapPath);
+            }
+        //
+
+        //
         mainMenu_Options[2] = new MainMenu_Option[((int)GameArguments.Avatar.Length)];
+            mainMenu_Options[2][0] = new MainMenu_Option(windowSize, GameArguments.Avatar.Wizard);
+            mainMenu_Options[2][0] = new MainMenu_Option(windowSize, GameArguments.Avatar.Orb);
+        //
+
+        //
         mainMenu_Options[3] = new MainMenu_Option[((int)GameArguments.CollectionBonus.Length)];
+            mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.None);
+            mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Blue);
+            mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Green);
+            mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Purple);
+            mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Orange);
+            mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.All);
+        //
+
         this.gameArguments = new GameArguments();
     }
 
