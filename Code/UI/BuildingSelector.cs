@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Size = System.Drawing.Size;
+using FontStashSharp;
 
 class BuildingSelector
 {
@@ -18,12 +19,14 @@ class BuildingSelector
     Rectangle worldRect;
     bool canplace = false;
     Texture2D centerTexture;
+    Texture2D centerTextureInfo;
     Texture2D centerTexturePointing;
     Texture2D blankTexture;
     private Point center;
     private Texture2D BuildingToPlaceTexture;
     private BuildingOption.BuildingDelegate buildingToPlace;
     private Size displaySize;
+    private readonly int fonstSize = 18;
 
     private BuildingOption selectedItem = null;
 
@@ -35,21 +38,22 @@ class BuildingSelector
         this.displaySize = displaySize;
         this.center = new Point(this.displaySize.Width/2, this.displaySize.Height/2);
         this.centerTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3-null.png");
+        this.centerTextureInfo = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/build-menu-info-1.png");
         this.centerTexturePointing = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3.png");
 
         this.blankTexture = new Texture2D(GameWindow.graphicsDevice, 1, 1);
         this.blankTexture.SetData(new Color[] { Color.White });
 
         this.spriteList.Add(new BuildingOption(
-            this, Healer.CreateNew, Healer.GetTextures, Healer.GetRectangle, 0f, "Data/TextureSources/healing-tower1-tier1.png"));
+            this, Healer.CreateNew, Healer.GetTextures, Healer.GetRectangle, 0f, "Healer", "Data/TextureSources/healing-tower1-tier1.png"));
         this.spriteList.Add(new BuildingOption(
-            this, Generator.CreateNew, Generator.GetTextures, Generator.GetRectangle, -0.85f, "Data/TextureSources/energy-tower1-tier1.png"));
+            this, Generator.CreateNew, Generator.GetTextures, Generator.GetRectangle, -0.85f, "Generator", "Data/TextureSources/energy-tower1-tier1.png"));
         this.spriteList.Add(new BuildingOption(
-            this, Booster.CreateNew, Booster.GetTextures, Booster.GetRectangle, 0.85f, "Data/TextureSources/income-tower3-tier1.png"));
+            this, Booster.CreateNew, Booster.GetTextures, Booster.GetRectangle, 0.85f, "Upgrades", "Data/TextureSources/income-tower3-tier1.png"));
         this.spriteList.Add(new BuildingOption(
-            this, Cannon.CreateNew, Cannon.GetTextures, Cannon.GetRectangle, -1.7f, "Data/TextureSources/attack-tower1-tier1.png"));
+            this, Cannon.CreateNew, Cannon.GetTextures, Cannon.GetRectangle, -1.7f, "Cannon", "Data/TextureSources/attack-tower1-tier1.png"));
         this.spriteList.Add(new BuildingOption(
-            this, Wall.CreateNew, Wall.GetTextures, Wall.GetRectangle, 1.7f, "Data/TextureSources/walls2-menu2.png"));       
+            this, Wall.CreateNew, Wall.GetTextures, Wall.GetRectangle, 1.7f, "Wall", "Data/TextureSources/walls2-menu2.png"));       
     }
 
     public Point Center
@@ -185,6 +189,19 @@ class BuildingSelector
                 GameWindow.spriteBatch.Draw(
                     this.centerTexturePointing, drawArea, null, new Color(Color.White, 0.9f), this.selectedItem.Angle, 
                     new Vector2(this.centerTexturePointing.Width / 2, this.centerTexturePointing.Height / 2), SpriteEffects.None, 0f);
+
+                // Building information
+                Rectangle infoRect = new(this.Center.X, this.Center.Y, (int)(this.centerTextureInfo.Width*0.4), (int)(this.centerTextureInfo.Height*0.4));
+                Vector2 infoVec = new(this.centerTextureInfo.Width / 2, this.centerTextureInfo.Height / 2 -80);
+                GameWindow.spriteBatch.Draw(this.centerTextureInfo, infoRect, null, Color.White, 0f, infoVec, SpriteEffects.None, 0f);
+                
+                Vector2 textVec = this.Center.ToVector2();
+                SpriteFontBase font = ResourcesUi.FontSystem.GetFont(fonstSize);
+                String text = this.selectedItem.BuildingName;
+                Vector2 fontVec = new(font.MeasureString(text).Length() / 2, fonstSize / 2);
+                textVec = textVec - fontVec;
+                GameWindow.spriteBatch.DrawString(font, text, textVec, Color.Black);
+                // End Building information
             }
             this.selectedItem = null; // Otherwise the last selected item will be pointed at forever
         }

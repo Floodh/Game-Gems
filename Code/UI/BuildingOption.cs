@@ -16,6 +16,7 @@ class BuildingOption
     private Size fgSize;
     Texture2D bgTexture;
     Texture2D fgTexture;
+    String buildingName = String.Empty;
 
     public delegate Building BuildingDelegate();
     public BuildingDelegate _buildingCallback;
@@ -26,7 +27,7 @@ class BuildingOption
 
     public BuildingOption(
         BuildingSelector root, BuildingDelegate buildingCallback, TextureDelegate textureCallback, RectangleDelegate rectCallback,
-         float angle, string foregroundTexturePath = null)
+         float angle, string buildingName, string foregroundTexturePath = null)
     {
         this._buildingCallback = buildingCallback;
         this._textureCallback = textureCallback;
@@ -35,6 +36,7 @@ class BuildingOption
         this.bgAngle = angle;
         this.bgSize = new Size(160, 160);
         this.fgSize = new Size(128, 128);
+        this.BuildingName = buildingName;
 
         this.fgAngle = this.bgAngle - floatPI/2;
         var vec = new Vector2((float)Math.Cos(this.fgAngle), (float)Math.Sin(this.fgAngle))*185;
@@ -125,4 +127,6 @@ class BuildingOption
             return 70;
         }
     }
+
+    public string BuildingName { get => buildingName; set => buildingName = value; }
 }
