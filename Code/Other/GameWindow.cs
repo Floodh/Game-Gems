@@ -66,6 +66,9 @@ public class GameWindow : Game
 
         this.background = new Background(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, graphicsDevice);
 
+        Texture2D cursorTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/cursor2.png");
+        Mouse.SetCursor(MouseCursor.FromTexture2D(cursorTexture, 0, 0));
+
         this.map = new Map("Data/MapData/TwoSides.png");
         Building.SetGrid(this.map.SourceImage);
         this.level = new Level(this.map.SourceImage);
@@ -129,7 +132,9 @@ public class GameWindow : Game
                     interactingWithSelectableBuilding = Building.UpdateAllByMouse(contextMouseState);
                 }
 
-            }   
+            }
+
+            this.IsMouseVisible = buildingSelector.State != BuildingSelector.EState.PlacementPending;
         }
 
 
