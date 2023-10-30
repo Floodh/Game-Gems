@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 class Wall : UpgradeableBuilding
 {
 
-    private static readonly Resources[] costs = new Resources[]
+    public static readonly Resources[] costs = new Resources[]
     {
         new Resources(64,0,0,0),
         new Resources(128,0,0,0),

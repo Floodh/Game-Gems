@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 class Generator : UpgradeableBuilding
 {
 
-    private static readonly Resources[] costs = new Resources[]
+    public static readonly Resources[] costs = new Resources[]
     {
         new Resources(16,0,0,64),
         new Resources(32,0,0,128),
