@@ -18,7 +18,7 @@ class Explosion : Animation
     private static Tuple<Texture2D[], Rectangle> RenderFrames(Point worldPosition, int size)
     {
         if(textures == null)
-            textures = TextureSource.LoadClickConfirm();
+            textures = TextureSource.LoadExplosion();
         Rectangle drawArea = new Rectangle(worldPosition.X, worldPosition.Y, size, size);
         return new Tuple<Texture2D[], Rectangle>(textures, drawArea);
     }
