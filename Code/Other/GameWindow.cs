@@ -29,6 +29,7 @@ public class GameWindow : Game
             && contextMouseState.Y >= 0 && contextMouseState.Y < base.Window.ClientBounds.Height;
     }}
 
+    private Cursor cursor;
     private Map map;
     private Level level;
     private Background background;
@@ -36,7 +37,7 @@ public class GameWindow : Game
     private BuildingSelector buildingSelector;
     private ResourcesUi resourcesUi;
     private ContextMenu contextMenu;
-
+    
     public GameWindow()
     {
         graphics = new GraphicsDeviceManager(this)
@@ -45,7 +46,6 @@ public class GameWindow : Game
             PreferredBackBufferHeight = windowSize.Y
         };
         Content.RootDirectory = "Content";
-        IsMouseVisible = true;
         Window.AllowUserResizing = true;
         Window.ClientSizeChanged += this.OnResize;
     }
@@ -64,10 +64,8 @@ public class GameWindow : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
 
+        this.cursor = new(this);
         this.background = new Background(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, graphicsDevice);
-
-        Texture2D cursorTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/cursor2.png");
-        Mouse.SetCursor(MouseCursor.FromTexture2D(cursorTexture, 0, 0));
 
         this.map = new Map("Data/MapData/TwoSides.png");
         Building.SetGrid(this.map.SourceImage);
@@ -134,7 +132,8 @@ public class GameWindow : Game
 
             }
 
-            this.IsMouseVisible = buildingSelector.State != BuildingSelector.EState.PlacementPending;
+            // Update Cursor
+            this.cursor.Update(contextMouseState, buildingSelector.State);      
         }
 
 
@@ -221,7 +220,12 @@ public class GameWindow : Game
         this.contextMenu.Draw();
         this.level?.dayNightCycle?.Draw();
 
-        
+
+        // Click confirm
+        if (!interactingWithUI && !interactingWithContextMenu && !interactingWithSelectableBuilding)
+            if(contextMouseState.LeftButton == ButtonState.Pressed)
+                this.cursor.DrawClickConfirm();
+
         spriteBatch.End();
 
 

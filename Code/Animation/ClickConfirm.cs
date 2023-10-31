@@ -2,16 +2,16 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-class Explosion : Animation
+class ClickConfirm : Animation
 {
     private static Texture2D[] textures;
-    public Explosion(Rectangle worldArea)
+    public ClickConfirm(Rectangle worldArea)
         : this(worldArea.Location, worldArea.Width)
     {
         if (worldArea.Width != worldArea.Height)
-            throw new Exception("Explosion area width and height can not be different when using this constructor.");
+            throw new Exception("ClickConfirm area width and height can not be different when using this constructor.");
     }
-    public Explosion(Point worldPosition, int size)
+    public ClickConfirm(Point worldPosition, int size)
         : base(RenderFrames(worldPosition, size), 3)
     {}
 

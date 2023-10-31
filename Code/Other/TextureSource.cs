@@ -27,6 +27,15 @@ static class TextureSource
         return textures;
     }
 
+    public static Texture2D[] LoadClickConfirm()
+    {
+        int numTextures = 7;
+        Texture2D[] textures = new Texture2D[numTextures];
+        for(int i = 0; i < numTextures; i++)
+            textures[i] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/ClickConfirm/click-confirmation2-{i+1}.png");
+        return textures;
+    }
+
     public static Texture2D[] LoadExplosion()
     {
 
