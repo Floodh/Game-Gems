@@ -29,10 +29,8 @@ class Cursor
     public void DrawClickConfirm()
     {
         Rectangle rect = this.clickRect;
-        // rect = Grid.ToDrawArea(this.clickRect);
         ClickConfirm animation = new(rect);
         animation.Play();
-        GameWindow.spriteBatch.Draw(this.clickTexture, this.clickRect, Color.White); // TODO remove   
     }
 
 }

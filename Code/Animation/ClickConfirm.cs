@@ -12,7 +12,7 @@ class ClickConfirm : Animation
             throw new Exception("ClickConfirm area width and height can not be different when using this constructor.");
     }
     public ClickConfirm(Point worldPosition, int size)
-        : base(RenderFrames(worldPosition, size), 3)
+        : base(RenderFrames(worldPosition, size), 3, false)
     {}
 
     private static Tuple<Texture2D[], Rectangle> RenderFrames(Point worldPosition, int size)
