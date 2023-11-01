@@ -26,7 +26,7 @@ class Cursor
         this.clickRect = new(mouseVec.ToPoint(), new Point(32, 32));
     }
 
-    public void DrawClickConfirm()
+    public void Play()
     {
         Rectangle rect = this.clickRect;
         ClickConfirm animation = new(rect);
