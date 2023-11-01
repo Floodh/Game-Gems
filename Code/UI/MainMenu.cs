@@ -17,7 +17,7 @@ class MainMenu
         Loading,
         InActive,
     }
-    private State state = State.SelectMap;
+    public State state = State.SelectMap;
 
     private GameArguments gameArguments;
 
@@ -32,31 +32,37 @@ class MainMenu
         //
 
         //
-        mainMenu_Options[1] = new MainMenu_Option[((int)GameArguments.Map.Length)];
+        
             string[] mapImagePaths = Directory.GetFiles(Map.PATH_MAPDATA_IMAGE);
-            if (mainMenu_Options.Length != mapImagePaths.Length)
-                throw new Exception("Number of map images does not match the Length of the Map enum!");
-            for (int i = 0; i < mapImagePaths.Length; i++)
+            int numberOfMaps = 0;
+            foreach (string mapPath in mapImagePaths)
+                if (mapPath.EndsWith(".png"))
+                    numberOfMaps++;
+        mainMenu_Options[1] = new MainMenu_Option[numberOfMaps];
+            int mapNumber = 0;
+            foreach (string mapPath in mapImagePaths)
+                if (mapPath.EndsWith(".png"))
             {
-                string previewMapPath = Map.PATH_MAPDATA_PREVIEW + mapImagePaths[i].Substring(mapImagePaths[i].LastIndexOf('/') + 1);
-                mainMenu_Options[1][i] = new MainMenu_Option(windowSize, (GameArguments.Map)i, previewMapPath);
+                string previewMapPath = Map.PATH_MAPDATA_PREVIEW + mapPath.Substring(mapPath.LastIndexOf('/') + 1);
+                mainMenu_Options[1][mapNumber] = new MainMenu_Option(windowSize, numberOfMaps, mapNumber, mapPath, previewMapPath);
+                mapNumber++;
             }
         //
 
         //
         mainMenu_Options[2] = new MainMenu_Option[((int)GameArguments.Avatar.Length)];
             mainMenu_Options[2][0] = new MainMenu_Option(windowSize, GameArguments.Avatar.Wizard);
-            mainMenu_Options[2][0] = new MainMenu_Option(windowSize, GameArguments.Avatar.Orb);
+            mainMenu_Options[2][1] = new MainMenu_Option(windowSize, GameArguments.Avatar.Orb);
         //
 
         //
         mainMenu_Options[3] = new MainMenu_Option[((int)GameArguments.CollectionBonus.Length)];
             mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.None);
-            mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Blue);
-            mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Green);
-            mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Purple);
-            mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Orange);
-            mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.All);
+            mainMenu_Options[3][1] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Blue);
+            mainMenu_Options[3][2] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Green);
+            mainMenu_Options[3][3] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Purple);
+            mainMenu_Options[3][4] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Orange);
+            mainMenu_Options[3][5] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.All);
         //
 
         this.gameArguments = new GameArguments();
@@ -85,12 +91,20 @@ class MainMenu
     }
 
 
-
+    bool blockGoBack = false;
     public void UpdateByKeyboard(KeyboardState keyboardState)
     {
-        if (keyboardState.IsKeyDown(Keys.Escape))
-            if (this.state != State.Start)
-                this.EnterState(state - 1);
+        if (!blockGoBack)
+        {
+            if (keyboardState.IsKeyDown(Keys.Escape))
+                if (this.state != State.Start)
+                {
+                    this.EnterState(state - 1);
+                    blockGoBack = true;
+                }
+        }
+        else if (keyboardState.IsKeyUp(Keys.Escape))
+            blockGoBack = false;
     }
 
     MainMenu_Option possibleOption = null;
@@ -138,7 +152,7 @@ class MainMenu
             case State.Start:
                 break;
             case State.SelectMap:
-                this.gameArguments.map = (GameArguments.Map)index;
+                this.gameArguments.mapPath = this.mainMenu_Options[((int)State.SelectMap)][index].path;
                 break;
             case State.SelectAvatar:
                 this.gameArguments.avatar = (GameArguments.Avatar)index;
@@ -159,13 +173,23 @@ class MainMenu
     {
         if (this.state == State.Loading)
             return this.gameArguments;
+        else if (this.state == State.InActive)
+            throw new Exception("Don't retrive game argument from an inactive menu. Keep it in the loading state please.");
         
         throw new Exception("Tried to retrive value from Main menu without it being picked!");
     }
 
+    public void OnResize(Point windowSize)
+    {
+        foreach (MainMenu_Option[] options in this.mainMenu_Options)
+            foreach (MainMenu_Option option in options)
+                option.AdjustDrawArea(windowSize);
+    }
+
     public void Draw()
     {
-        foreach (MainMenu_Option option in this.mainMenu_Options[((int)this.state)])
+        if (this.state != State.Loading && this.state != State.InActive)
+        foreach (MainMenu_Option option in this.mainMenu_Options[(int)this.state])
         {
             option.Draw();
         }

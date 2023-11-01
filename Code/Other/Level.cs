@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework;
 
 using Size = System.Drawing.Size;
 using Bitmap = System.Drawing.Bitmap;
-using System.Data;
-using System.Diagnostics.CodeAnalysis;
 
 class Level
 {
@@ -21,8 +19,10 @@ class Level
 
     public DayNightCycle dayNightCycle;
 
-    public Level(Bitmap bitmap)
+    public Level(GameArguments gameArguments)
     {
+
+        Bitmap bitmap = new Bitmap(gameArguments.mapPath);
 
         this.r = new Random();
 

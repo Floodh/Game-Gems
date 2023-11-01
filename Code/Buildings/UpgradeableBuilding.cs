@@ -30,10 +30,10 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
         
         if (baseTextures[textureSet] == null)
         {
-                        baseTextures[textureSet] = new Texture2D[4];
+            baseTextures[textureSet] = new Texture2D[4];
             for (int i = 0; i < maxTier; i++)
-                            baseTextures[textureSet][i] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/{colorName}-tier{i+1}.png");
-            }
+                baseTextures[textureSet][i] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/{colorName}-tier{i+1}.png");
+        }
         
         UppdateStats();
     }

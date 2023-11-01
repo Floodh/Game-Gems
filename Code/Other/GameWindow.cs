@@ -8,6 +8,14 @@ using Size = System.Drawing.Size;
 
 public class GameWindow : Game
 {
+    public enum State
+    {
+        MainMenu,
+        InGame,
+        GameOver
+    }
+    private State state;
+
     public static Point windowSize = new Point(1920, 1080);
 
     public static GraphicsDeviceManager graphics;
@@ -36,6 +44,9 @@ public class GameWindow : Game
     private BuildingSelector buildingSelector;
     private ResourcesUi resourcesUi;
     private ContextMenu contextMenu;
+    private MainMenu mainMenu;
+
+    
 
     public GameWindow()
     {
@@ -66,39 +77,30 @@ public class GameWindow : Game
 
         this.background = new Background(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, graphicsDevice);
 
-        this.map = new Map("Data/MapData/TwoSides.png");
-        Building.SetGrid(this.map.SourceImage);
-        this.level = new Level(this.map.SourceImage);
+        //this.map = new Map("Data/MapData/TwoSides.png");
+        //Building.SetGrid(this.map.SourceImage);
+        //this.level = new Level(this.map.SourceImage);
         //this.map.RenderGrid = true;
         var displaySize = new Size(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         this.buildingSelector = new BuildingSelector(displaySize);
         this.resourcesUi = new ResourcesUi(displaySize);
         this.contextMenu = new ContextMenu();
+        this.mainMenu = new MainMenu(new Point(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight));
 
+        this.state = State.MainMenu;
+        this.mainMenu.state = MainMenu.State.SelectMap;
 
-       // this.bgMap = new Map("Data/MapData/OG.png");
-        //  test
-        Boulder boulder = new Boulder();
-        boulder.Place(new Point(1, 0));
-        Wall wall = new Wall();
-        wall.Place(new Point(5,3));
-        Cannon cannon = new Cannon();
-        cannon.Place(new Point(3,3));
-        Healer healer = new Healer();
-        healer.Place(3,1);
-        Generator generator = new();
-        generator.Place(1,5);
-        Booster booster = new();
-        booster.Place(1,4);
-
+        _ = new Booster();
+        _ = new Cannon();
+        _ = new Generator();
+        _ = new Healer();
+        _ = new Wall();
 
         // TODO: use this.Content to load your game content here
     }
 
     protected override void Update(GameTime gameTime)
     {
-        this.KeyCheck(contextKeyboardState);
-
         contextKeyboardState = Keyboard.GetState();
         contextMouseState = Mouse.GetState();
 
@@ -108,33 +110,52 @@ public class GameWindow : Game
         // TODO: Add your update logic here
         //Console.WriteLine($"Mouse coords: {contextMouseState.X}, {contextMouseState.Y}");
 
-        if (isInside = IsInside)
+        if (this.state == State.MainMenu)
         {
-            // Console.WriteLine($"Mouse|x:{contextMouseState.X}, y:{contextMouseState.Y}");
-
-            //Console.WriteLine("     Is inside!");
-            Camera.UpdateByMouse(contextMouseState,graphics);
-            Camera.UpdateByKeyboard(contextKeyboardState);
-
-            this.buildingSelector.UpdateByMouse(contextMouseState);
-            this.buildingSelector.UpdateByKeyboard(contextKeyboardState);   
-
-            if(!InteractingWithUI)
+            if (mainMenu.state == MainMenu.State.Loading)
             {
-                this.contextMenu.Update();
-                interactingWithContextMenu = this.contextMenu.UpdateByMouse(contextMouseState);
+                this.state = State.InGame;
+                GameArguments arguments = this.mainMenu.GetGameArguments();
+                this.map = new Map(arguments.mapPath);
+                Building.SetGrid(this.map.SourceImage);
+                this.level = new Level(arguments);
+                this.mainMenu.state = MainMenu.State.InActive;
+            }
+            this.mainMenu.UpdateByMouse(contextMouseState);
+            this.mainMenu.UpdateByKeyboard(contextKeyboardState);
+            
+        }
+        else if (this.state == State.InGame)
+        {
+            if (isInside = IsInside)
+            {
+                // Console.WriteLine($"Mouse|x:{contextMouseState.X}, y:{contextMouseState.Y}");
 
-                if(!interactingWithContextMenu)
+                //Console.WriteLine("     Is inside!");
+                Camera.UpdateByMouse(contextMouseState,graphics);
+                Camera.UpdateByKeyboard(contextKeyboardState);
+
+                this.buildingSelector.UpdateByMouse(contextMouseState);
+                this.buildingSelector.UpdateByKeyboard(contextKeyboardState);   
+
+                if(!InteractingWithUI)
                 {
-                    interactingWithSelectableBuilding = Building.UpdateAllByMouse(contextMouseState);
-                }
+                    this.contextMenu.Update();
+                    interactingWithContextMenu = this.contextMenu.UpdateByMouse(contextMouseState);
 
-            }   
+                    if(!interactingWithContextMenu)
+                    {
+                        interactingWithSelectableBuilding = Building.UpdateAllByMouse(contextMouseState);
+                    }
+
+                }   
+            }
+            interactingWithUI = this.InteractingWithUI;
+            level.MayTick();    //  performs all ticks            
         }
 
 
-        interactingWithUI = this.InteractingWithUI;
-        level.MayTick();    //  performs all ticks
+
         // if (Building.grid.hasUpdated && this.map.RenderGrid)    //  this is ugly, but it works
         // {
         //     Building.grid.hasUpdated = false;
@@ -146,51 +167,7 @@ public class GameWindow : Game
         base.Update(gameTime);
     }
 
-    // TODO remove
-    public static bool Key1Pressed = false;
-    public static bool Key1Active = false;
 
-    public static bool Key2Pressed = false;
-     public static bool Key3Pressed = false;
-    public static float Speed = 1f;
-
-    public static bool Key4Pressed = false;
-    public static bool Key4Active = false;
-
-    protected void KeyCheck(KeyboardState keyboardState)
-    {
-        if (keyboardState.IsKeyDown(Keys.D1))
-            Key1Pressed = true;
-        else if(keyboardState.IsKeyUp(Keys.D1) && Key1Pressed)
-        {
-            Key1Active = !Key1Active;
-            Key1Pressed = false;
-        }
-
-        if (keyboardState.IsKeyDown(Keys.D2))
-            Key2Pressed = true;
-        else if(keyboardState.IsKeyUp(Keys.D2) && Key2Pressed)
-        {
-            Speed--;
-            Key2Pressed = false;
-        }
-
-        if (keyboardState.IsKeyDown(Keys.D3))
-            Key3Pressed = true;
-        else if(keyboardState.IsKeyUp(Keys.D3) && Key3Pressed)
-        {
-            Speed++;
-            Key3Pressed = false;
-        }
-
-        if (keyboardState.IsKeyDown(Keys.D4))
-            Key4Pressed = true;
-        else if(keyboardState.IsKeyUp(Keys.D4) && Key4Pressed)
-        {
-            Key4Active = !Key4Active;
-            Key4Pressed = false;
-        }
-    }
 
     // End TODO
 
@@ -203,18 +180,26 @@ public class GameWindow : Game
         spriteBatch.Begin();
 
         this.background.Draw();
-        
-        this.map.Draw();
+        this.map?.Draw();
 
         Building.DrawAll();
         Unit.DrawAll();
         Projectile.DrawAll();
         Animation.DrawAll();
 
-        this.buildingSelector.Draw(spriteBatch);
-        this.resourcesUi.Draw(spriteBatch);
-        this.contextMenu.Draw();
-        this.level?.dayNightCycle?.Draw();
+        if (this.state == State.MainMenu)
+        {
+            this.mainMenu.Draw();
+        }
+        else if (this.state == State.InGame)
+        {
+            this.buildingSelector.Draw(spriteBatch);
+            this.resourcesUi.Draw(spriteBatch);
+            this.contextMenu.Draw();
+            this.level?.dayNightCycle?.Draw();            
+        }
+        
+
 
         
         spriteBatch.End();
@@ -231,6 +216,7 @@ public class GameWindow : Game
         if (this.background != null)
             this.background.windowSize = windowSize;
         this.level?.dayNightCycle.SetWindowSize(windowSize);
+        this.mainMenu.OnResize(windowSize);
 
     }
 

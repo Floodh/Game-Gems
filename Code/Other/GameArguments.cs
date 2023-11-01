@@ -1,11 +1,7 @@
+using System;
+
 struct GameArguments
 {
-    public enum Map
-    {
-        TwoSides,
-        Circle,
-        Length
-    }
 
     public enum Avatar
     {
@@ -24,7 +20,18 @@ struct GameArguments
         Length
     }
 
-    public Map map;
+    public string mapPath;
     public Avatar avatar;
     public CollectionBonus collectionBonus;
+
+    // public string GetPathMap()
+    // {
+    //     switch (this.map)
+    //     {
+    //         case Map.TwoSides:
+    //             return $"Data/MapDataPreview/{Map.TwoSides}.png";
+    //         default:
+    //             throw new Exception($"Can't get map path from map enum : {this.map}");
+    //     }
+    // }
 }

@@ -8,7 +8,7 @@ class MainMenu_Option
 
     private const double StartYPercentage = 0.25;
     private const double BufferPercantage = 0.025;
-    private const double WidthPercentage = 0.10;
+    private const double WidthPercentage = 0.155;
     private const double HeightPercentage = WidthPercentage;
     private const double InnerBufferPercentage = WidthPercentage / 4;
 
@@ -20,6 +20,7 @@ class MainMenu_Option
     //public bool IsPicked {get; private set;} = false;
     public Rectangle Bounds {get {return this.drawArea;}}
     public readonly int index;
+    public readonly string path = null;
 
     Rectangle drawArea;
     Rectangle textureDrawArea;
@@ -36,9 +37,10 @@ class MainMenu_Option
         frameTexture ??= Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/frame2.png");
         this.AdjustDrawArea(windowSize);
     }
-    public MainMenu_Option(Point windowSize, GameArguments.Map map, string texturePath)
-        : this(windowSize, (int)GameArguments.Map.Length, (int)map)
+    public MainMenu_Option(Point windowSize, int numberOfMaps, int index, string mapImagePath,string texturePath)
+        : this(windowSize, numberOfMaps, index)
     {
+        this.path = mapImagePath;
         if (File.Exists(texturePath))
             this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, texturePath);
         else
@@ -68,6 +70,9 @@ class MainMenu_Option
         int innerWidthBufferPxSize = (int)(windowSize.X * InnerBufferPercentage);
         int innerHeightBufferPxSize = (int)(windowSize.Y * InnerBufferPercentage);
 
+        heightPxSize = widthPxSize;
+        innerHeightBufferPxSize = innerWidthBufferPxSize;
+
         int combinedWidth = bufferPxSize * (numberOfOptions - 1) + widthPxSize * numberOfOptions;
         int startX = (windowSize.X - combinedWidth) / 2;
         int startY = (int)(windowSize.Y * StartYPercentage);
@@ -92,8 +97,8 @@ class MainMenu_Option
 
     public void Draw()
     {
-        GameWindow.spriteBatch.Draw(frameTexture, this.drawArea, Color.White);
         GameWindow.spriteBatch.Draw(optionTexture, this.textureDrawArea, Color.White);
+        GameWindow.spriteBatch.Draw(frameTexture, this.drawArea, Color.White);
     }
 
     // public T GetValue()
