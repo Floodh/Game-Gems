@@ -41,6 +41,14 @@ class Cannon : UpgradeableBuilding
         1600,
     };
 
+    private static readonly int[] emitterOffset = new int[]
+    {
+        29,
+        50,
+        81,
+        114,
+    };
+
     private const int textureSet = 3;
 
 
@@ -76,8 +84,9 @@ class Cannon : UpgradeableBuilding
             }
             else
             {
+                Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
                 this.Energy -= dmg[currentTierIndex];
-                _ = new Projectile(dmg[currentTierIndex], 0, 3.13f, this.target, this, 2);
+                _ = new Projectile(dmg[currentTierIndex], 0, 3.13f, this.target, sourceVec, 2);
                 initative = 0;
             }
         }

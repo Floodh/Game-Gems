@@ -53,7 +53,6 @@ class Projectile
     private readonly float speed;
     private float rotation;
     Targetable target;
-    Targetable sender;
     private bool hasHit = false;
     private static Texture2D[] projTexture;
     private readonly int textureId;
@@ -70,7 +69,7 @@ class Projectile
         projTexture = new Texture2D[Directory.GetFiles("Data/Texture/Projectile/").Length];
     }
 
-    public Projectile(int damage, int energyTransfer, float speed, Targetable target, Targetable sender, int textureId)
+    public Projectile(int damage, int energyTransfer, float speed, Targetable target, Vector2 senderPosition, int textureId)
     {
         if (textureId < 0 || textureId > projTexture.Length)
             throw new ArgumentException($"Texture id does not match any textures : id={textureId}");
@@ -79,8 +78,7 @@ class Projectile
         this.energyTransfer = energyTransfer;
         this.speed = speed;
         this.target = target;
-        this.sender = sender;
-        this.position = new Vector2(sender.TargetPosition.X, sender.TargetPosition.Y);
+        this.position = senderPosition;
         this.textureId = textureId;
 
         if (textureId != 0)

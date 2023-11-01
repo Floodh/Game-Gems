@@ -31,6 +31,14 @@ class Generator : UpgradeableBuilding
         160,
     };
 
+    private static readonly int[] emitterOffset = new int[]
+    {
+        29,
+        50,
+        81,
+        114,
+    };
+
     private const int textureSet = 2;
 
     private Targetable target;
@@ -60,7 +68,8 @@ class Generator : UpgradeableBuilding
             if (attackCounter >= AttackRate)
             {          
                 //Console.WriteLine($"Giving energy to : {target}");
-                Projectile projectile = new Projectile(0, energyTransfer[currentTierIndex], 4f, target, this, 4);
+                Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
+                Projectile projectile = new Projectile(0, energyTransfer[currentTierIndex], 4f, target, sourceVec, 4);
                 projectile.Rotate = false;
                 projectile.Scale = 0.075f;
 
