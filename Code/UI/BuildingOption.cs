@@ -89,6 +89,9 @@ class BuildingOption
 
     public void UpdateByMouse(MouseState mouseState)
     {
+        if(root.State != BuildingSelector.EState.Visible)
+            return;
+            
         if(GetDistance(this.center.X, this.center.Y, mouseState.X, mouseState.Y) < this.Radius )
         {
             this.root.SelectedItem = this;
