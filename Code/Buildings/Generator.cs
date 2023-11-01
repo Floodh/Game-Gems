@@ -69,7 +69,7 @@ class Generator : UpgradeableBuilding
             {          
                 //Console.WriteLine($"Giving energy to : {target}");
                 Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
-                Projectile projectile = new Projectile(0, energyTransfer[currentTierIndex], 4f, target, sourceVec, 4);
+                Projectile projectile = new Projectile(0, energyTransfer[currentTierIndex], 4f, target, sourceVec, 4, 5);
                 projectile.Rotate = false;
                 projectile.Scale = 0.075f;
 

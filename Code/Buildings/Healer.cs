@@ -79,7 +79,7 @@ class Healer : UpgradeableBuilding
             {   
                 Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
                 this.Energy -= healing[currentTierIndex]; 
-                Projectile projectile = new(-healing[currentTierIndex], 0, 4f, target, sourceVec, 3);
+                Projectile projectile = new(-healing[currentTierIndex], 0, 4f, target, sourceVec, 3, 5);
                 projectile.Rotate = false;
                 projectile.Scale = 0.075f;
                 attackCounter = 0;

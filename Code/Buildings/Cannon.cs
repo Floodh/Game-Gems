@@ -86,7 +86,7 @@ class Cannon : UpgradeableBuilding
             {
                 Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
                 this.Energy -= dmg[currentTierIndex];
-                _ = new Projectile(dmg[currentTierIndex], 0, 3.13f, this.target, sourceVec, 2);
+                _ = new Projectile(dmg[currentTierIndex], 0, 3.13f, this.target, sourceVec, 2, 5);
                 initative = 0;
             }
         }

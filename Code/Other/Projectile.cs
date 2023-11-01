@@ -20,7 +20,7 @@ class Projectile
         foreach (Projectile projectile in allProjectiles)
         {
             //  this will make a projectile hit instantly
-            if (projectile.MoveToTarget())
+            if (projectile.MoveToTarget(projectile.speed))
             {
                 projectile.target.TakeDmg(projectile);
                 projectile.hasHit = true;
@@ -69,7 +69,7 @@ class Projectile
         projTexture = new Texture2D[Directory.GetFiles("Data/Texture/Projectile/").Length];
     }
 
-    public Projectile(int damage, int energyTransfer, float speed, Targetable target, Vector2 senderPosition, int textureId)
+    public Projectile(int damage, int energyTransfer, float speed, Targetable target, Vector2 senderPosition, int textureId, int preMoveTicks = 0)
     {
         if (textureId < 0 || textureId > projTexture.Length)
             throw new ArgumentException($"Texture id does not match any textures : id={textureId}");
@@ -84,10 +84,12 @@ class Projectile
         if (textureId != 0)
             projTexture[textureId-1] ??= Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/Texture/Projectile/{textureId}.png");
         allProjectiles.Add(this);
+
+        MoveToTarget(this.speed * preMoveTicks);
     }
 
     //  returns true if its a hit
-    private bool MoveToTarget()
+    private bool MoveToTarget(float speed)
     {
         Vector2 destination = new(target.TargetPosition.X, target.TargetPosition.Y);
         float dx = destination.X - this.position.X;
