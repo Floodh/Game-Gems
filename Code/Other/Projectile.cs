@@ -24,6 +24,8 @@ class Projectile
             {
                 projectile.target.TakeDmg(projectile);
                 projectile.hasHit = true;
+                if(projectile.onHit != null)
+                    projectile.onHit(projectile.position);
             }
 
         }
@@ -62,14 +64,17 @@ class Projectile
     private float scale = 0.15f;
     public float Scale { get => scale; set => scale = value; }
 
-    
+     public delegate void HitDelegate(Vector2 impactLocation);
+     public HitDelegate onHit;
 
     static Projectile()
     {
         projTexture = new Texture2D[Directory.GetFiles("Data/Texture/Projectile/").Length];
     }
 
-    public Projectile(int damage, int energyTransfer, float speed, Targetable target, Vector2 senderPosition, int textureId, int preMoveTicks = 0)
+    public Projectile(
+        int damage, int energyTransfer, float speed, Targetable target, Vector2 senderPosition, 
+        int textureId, int preMoveTicks = 0, HitDelegate onHit = null)
     {
         if (textureId < 0 || textureId > projTexture.Length)
             throw new ArgumentException($"Texture id does not match any textures : id={textureId}");
@@ -80,6 +85,7 @@ class Projectile
         this.target = target;
         this.position = senderPosition;
         this.textureId = textureId;
+        this.onHit = onHit;
 
         if (textureId != 0)
             projTexture[textureId-1] ??= Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/Texture/Projectile/{textureId}.png");
@@ -87,6 +93,16 @@ class Projectile
 
         MoveToTarget(this.speed * preMoveTicks);
     }
+
+    // protected virtual void Hit()
+    // {
+
+    //     Rectangle animationArea = this.GridArea;
+    //     animationArea = Grid.ToDrawArea(animationArea);
+    //     Explosion explosion = new Explosion(animationArea);
+    //     explosion.Play();
+
+    // }
 
     //  returns true if its a hit
     private bool MoveToTarget(float speed)
