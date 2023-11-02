@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Size = System.Drawing.Size;
+using FontStashSharp;
+// using System.Numerics;
 
 class BuildingSelector
 {
@@ -18,12 +20,14 @@ class BuildingSelector
     Rectangle worldRect;
     bool canplace = false;
     Texture2D centerTexture;
+    Texture2D centerTextureInfo;
     Texture2D centerTexturePointing;
     Texture2D blankTexture;
     private Point center;
     private Texture2D BuildingToPlaceTexture;
     private BuildingOption.BuildingDelegate buildingToPlace;
     private Size displaySize;
+    private readonly int fonstSize = 18;
 
     private BuildingOption selectedItem = null;
 
@@ -35,21 +39,27 @@ class BuildingSelector
         this.displaySize = displaySize;
         this.center = new Point(this.displaySize.Width/2, this.displaySize.Height/2);
         this.centerTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3-null.png");
+        this.centerTextureInfo = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/build-menu-info-1.png");
         this.centerTexturePointing = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3.png");
 
         this.blankTexture = new Texture2D(GameWindow.graphicsDevice, 1, 1);
         this.blankTexture.SetData(new Color[] { Color.White });
 
         this.spriteList.Add(new BuildingOption(
-            this, Healer.CreateNew, Healer.GetTextures, Healer.GetRectangle, 0f, "Data/TextureSources/healing-tower1-tier1.png"));
+            this, Healer.CreateNew, Healer.GetTextures, Healer.GetRectangle, 0f,
+            Healer.costs[0], "Healer", "Data/TextureSources/healing-tower1-tier1.png"));
         this.spriteList.Add(new BuildingOption(
-            this, Generator.CreateNew, Generator.GetTextures, Generator.GetRectangle, -0.85f, "Data/TextureSources/energy-tower1-tier1.png"));
+            this, Generator.CreateNew, Generator.GetTextures, Generator.GetRectangle, -0.85f,
+            Generator.costs[0], "Generator", "Data/TextureSources/energy-tower1-tier1.png"));
         this.spriteList.Add(new BuildingOption(
-            this, Booster.CreateNew, Booster.GetTextures, Booster.GetRectangle, 0.85f, "Data/TextureSources/income-tower3-tier1.png"));
+            this, Booster.CreateNew, Booster.GetTextures, Booster.GetRectangle, 0.85f,
+            Booster.costs[0], "Upgrades", "Data/TextureSources/income-tower3-tier1.png"));
         this.spriteList.Add(new BuildingOption(
-            this, Cannon.CreateNew, Cannon.GetTextures, Cannon.GetRectangle, -1.7f, "Data/TextureSources/attack-tower1-tier1.png"));
+            this, Cannon.CreateNew, Cannon.GetTextures, Cannon.GetRectangle, -1.7f,
+            Cannon.costs[0], "Cannon", "Data/TextureSources/attack-tower1-tier1.png"));
         this.spriteList.Add(new BuildingOption(
-            this, Wall.CreateNew, Wall.GetTextures, Wall.GetRectangle, 1.7f, "Data/TextureSources/walls2-menu2.png"));       
+            this, Wall.CreateNew, Wall.GetTextures, Wall.GetRectangle, 1.7f,
+            Wall.costs[0], "Wall", "Data/TextureSources/walls2-menu2.png"));       
     }
 
     public Point Center
@@ -185,6 +195,41 @@ class BuildingSelector
                 GameWindow.spriteBatch.Draw(
                     this.centerTexturePointing, drawArea, null, new Color(Color.White, 0.9f), this.selectedItem.Angle, 
                     new Vector2(this.centerTexturePointing.Width / 2, this.centerTexturePointing.Height / 2), SpriteEffects.None, 0f);
+
+                // Building information
+                Rectangle infoRect = new(this.Center.X, this.Center.Y, (int)(this.centerTextureInfo.Width*0.4), (int)(this.centerTextureInfo.Height*0.4));
+                Vector2 infoVec = new(this.centerTextureInfo.Width / 2, this.centerTextureInfo.Height / 2 -77);
+                GameWindow.spriteBatch.Draw(this.centerTextureInfo, infoRect, null, Color.White, 0f, infoVec, SpriteEffects.None, 0f);
+                
+                Vector2 textVec = this.Center.ToVector2();
+                SpriteFontBase font = ResourcesUi.FontSystem.GetFont(fonstSize);
+                Vector2 fontVec = new(font.MeasureString(this.selectedItem.BuildingName).Length() / 2, fonstSize / 2);
+                textVec = textVec - fontVec;
+                GameWindow.spriteBatch.DrawString(font, this.selectedItem.BuildingName, textVec, Color.Black);
+
+
+                Vector2 costVec;
+                Vector2 topLeftVec = new(-30, 30);
+                Vector2 bottomLeftVec = new(-30, 60);
+                Vector2 topRightVec = new(30, 30);
+                Vector2 bottomRightVec = new(30, 60);
+                
+                fontVec = new(font.MeasureString(this.selectedItem.Cost.blue.ToString()).Length() / 2, fonstSize / 2);
+                costVec = this.center.ToVector2() + topLeftVec - fontVec;
+                GameWindow.spriteBatch.DrawString(font, this.selectedItem.Cost.blue.ToString(), costVec, Color.Black);
+
+                fontVec = new(font.MeasureString(this.selectedItem.Cost.purple.ToString()).Length() / 2, fonstSize / 2);
+                costVec = this.center.ToVector2() + bottomLeftVec - fontVec;
+                GameWindow.spriteBatch.DrawString(font, this.selectedItem.Cost.purple.ToString(), costVec, Color.Black);
+
+                fontVec = new(font.MeasureString(this.selectedItem.Cost.green.ToString()).Length() / 2, fonstSize / 2);
+                costVec = this.center.ToVector2() + topRightVec - fontVec;
+                GameWindow.spriteBatch.DrawString(font, this.selectedItem.Cost.green.ToString(), costVec, Color.Black);
+
+                fontVec = new(font.MeasureString(this.selectedItem.Cost.orange.ToString()).Length() / 2, fonstSize / 2);
+                costVec = this.center.ToVector2() + bottomRightVec - fontVec;
+                GameWindow.spriteBatch.DrawString(font, this.selectedItem.Cost.orange.ToString(), costVec, Color.Black);
+                // End Building information
             }
             this.selectedItem = null; // Otherwise the last selected item will be pointed at forever
         }

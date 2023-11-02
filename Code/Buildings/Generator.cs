@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 class Generator : UpgradeableBuilding
 {
 
-    private static readonly Resources[] costs = new Resources[]
+    public static readonly Resources[] costs = new Resources[]
     {
         new Resources(16,0,0,64),
         new Resources(32,0,0,128),
@@ -29,6 +29,14 @@ class Generator : UpgradeableBuilding
         40,
         80,
         160,
+    };
+
+    private static readonly int[] emitterOffset = new int[]
+    {
+        29,
+        50,
+        81,
+        114,
     };
 
     private const int textureSet = 2;
@@ -60,7 +68,8 @@ class Generator : UpgradeableBuilding
             if (attackCounter >= AttackRate)
             {          
                 //Console.WriteLine($"Giving energy to : {target}");
-                Projectile projectile = new Projectile(0, energyTransfer[currentTierIndex], 4f, target, this, 4);
+                Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
+                Projectile projectile = new Projectile(0, energyTransfer[currentTierIndex], 4f, target, sourceVec, 4, 5);
                 projectile.Rotate = false;
                 projectile.Scale = 0.075f;
 
@@ -107,8 +116,7 @@ class Generator : UpgradeableBuilding
 
     public static new Rectangle GetRectangle(Point point)
     {
-        int mapPixelToTexturePixel_Multiplier = Map.mapPixelToTexturePixel_Multiplier;
-        return new Rectangle(point.X+32, point.Y-8-64, mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier*3);
+        return new Rectangle(point.X+32, point.Y-8-64, Map.mapPixelToTexturePixel_Multiplier, Map.mapPixelToTexturePixel_Multiplier*3);
     }
 
     public override string ToString()

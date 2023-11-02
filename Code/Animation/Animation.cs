@@ -42,20 +42,22 @@ class Animation
     readonly Texture2D[] frames;
     Rectangle drawArea;
     readonly int frameDuration;
+    private bool useModifiedDrawArea = true;
 
     int Duration {get {return this.frames.Length;}}
 
     public bool IsPlaying{get; private set;}
 
-    public Animation(Tuple<Texture2D[], Rectangle> data, int frameDuration)
-        :   this(data.Item1, data.Item2, frameDuration)
+    public Animation(Tuple<Texture2D[], Rectangle> data, int frameDuration, bool useModifiedDrawArea = true)
+        :   this(data.Item1, data.Item2, frameDuration, useModifiedDrawArea)
     {}
 
-    public Animation(Texture2D[] frames, Rectangle drawArea, int frameDuration)
+    public Animation(Texture2D[] frames, Rectangle drawArea, int frameDuration, bool useModifiedDrawArea = true)
     {
         this.frames = frames;
         this.drawArea = drawArea;
         this.frameDuration = frameDuration;
+        this.useModifiedDrawArea = useModifiedDrawArea;
 
         for (int i = 0; i < Duration; i++)
             if (frames[i] == null)
@@ -75,7 +77,8 @@ class Animation
 
         if (currentFrame/frameDuration < Duration)
         {
-            GameWindow.spriteBatch.Draw(this.frames[currentFrame++ / frameDuration], Camera.ModifiedDrawArea(drawArea, Camera.zoomLevel), Color.White);
+            Rectangle rect = useModifiedDrawArea ? Camera.ModifiedDrawArea(drawArea, Camera.zoomLevel) : drawArea;
+            GameWindow.spriteBatch.Draw(this.frames[currentFrame++ / frameDuration], rect, Color.White);
         }
         else
         {

@@ -41,6 +41,14 @@ class Cannon : UpgradeableBuilding
         1600,
     };
 
+    private static readonly int[] emitterOffset = new int[]
+    {
+        29,
+        50,
+        81,
+        114,
+    };
+
     private const int textureSet = 3;
 
 
@@ -76,8 +84,9 @@ class Cannon : UpgradeableBuilding
             }
             else
             {
+                Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
                 this.Energy -= dmg[currentTierIndex];
-                _ = new Projectile(dmg[currentTierIndex], 0, 3.13f, this.target, this, 2);
+                _ = new Projectile(dmg[currentTierIndex], 0, 3.13f, this.target, sourceVec, 2, 5);
                 initative = 0;
             }
         }
@@ -134,8 +143,7 @@ class Cannon : UpgradeableBuilding
 
     public static new Rectangle GetRectangle(Point point)
     {
-        int mapPixelToTexturePixel_Multiplier = Map.mapPixelToTexturePixel_Multiplier;
-        return new Rectangle(point.X+32, point.Y-8-64, mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier*3);
+        return new Rectangle(point.X+32, point.Y-8-64, Map.mapPixelToTexturePixel_Multiplier, Map.mapPixelToTexturePixel_Multiplier*3);
     }
     
     public override string ToString()

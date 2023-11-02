@@ -37,6 +37,7 @@ public class GameWindow : Game
             && contextMouseState.Y >= 0 && contextMouseState.Y < base.Window.ClientBounds.Height;
     }}
 
+    private Cursor cursor;
     private Map map;
     private Level level;
     private Background background;
@@ -46,8 +47,6 @@ public class GameWindow : Game
     private ContextMenu contextMenu;
     private MainMenu mainMenu;
 
-    
-
     public GameWindow()
     {
         graphics = new GraphicsDeviceManager(this)
@@ -56,7 +55,6 @@ public class GameWindow : Game
             PreferredBackBufferHeight = windowSize.Y
         };
         Content.RootDirectory = "Content";
-        IsMouseVisible = true;
         Window.AllowUserResizing = true;
         Window.ClientSizeChanged += this.OnResize;
     }
@@ -75,6 +73,7 @@ public class GameWindow : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
 
+        this.cursor = new(this);
         this.background = new Background(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, graphicsDevice);
 
         //this.map = new Map("Data/MapData/TwoSides.png");
@@ -148,10 +147,18 @@ public class GameWindow : Game
                         interactingWithSelectableBuilding = Building.UpdateAllByMouse(contextMouseState);
                     }
 
-                }   
+                } 
+                interactingWithSelectableBuilding = Building.UpdateAllByMouse(contextMouseState);  
             }
             interactingWithUI = this.InteractingWithUI;
             level.MayTick();    //  performs all ticks            
+
+            // Click confirm
+            this.cursor.Update(contextMouseState, buildingSelector.State);
+            if (!interactingWithUI && !interactingWithContextMenu && !interactingWithSelectableBuilding)
+                if(contextMouseState.LeftButton == ButtonState.Pressed)
+                    this.cursor.Play();    
+
         }
 
 
@@ -166,11 +173,6 @@ public class GameWindow : Game
 
         base.Update(gameTime);
     }
-
-
-
-    // End TODO
-
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -201,10 +203,7 @@ public class GameWindow : Game
         
 
 
-        
         spriteBatch.End();
-
-
         base.Draw(gameTime);
     }
     

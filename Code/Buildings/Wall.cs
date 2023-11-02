@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 class Wall : UpgradeableBuilding
 {
 
-    private static readonly Resources[] costs = new Resources[]
+    public static readonly Resources[] costs = new Resources[]
     {
         new Resources(64,0,0,0),
         new Resources(128,0,0,0),
@@ -68,8 +68,7 @@ class Wall : UpgradeableBuilding
 
     public static new Rectangle GetRectangle(Point point)
     {
-        int mapPixelToTexturePixel_Multiplier = Map.mapPixelToTexturePixel_Multiplier;
-        return new Rectangle(point.X+32, point.Y-0, mapPixelToTexturePixel_Multiplier*2, mapPixelToTexturePixel_Multiplier*2);
+        return new Rectangle(point.X, point.Y, Map.mapPixelToTexturePixel_Multiplier*2, Map.mapPixelToTexturePixel_Multiplier*2);
     }
 
     public override string ToString()

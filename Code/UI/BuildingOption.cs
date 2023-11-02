@@ -17,6 +17,9 @@ class BuildingOption
     Texture2D bgTexture;
     Texture2D fgTexture;
 
+    Resources cost;
+    String buildingName = String.Empty;
+
     public delegate Building BuildingDelegate();
     public BuildingDelegate _buildingCallback;
     public delegate Texture2D[] TextureDelegate();
@@ -26,7 +29,7 @@ class BuildingOption
 
     public BuildingOption(
         BuildingSelector root, BuildingDelegate buildingCallback, TextureDelegate textureCallback, RectangleDelegate rectCallback,
-         float angle, string foregroundTexturePath = null)
+         float angle, Resources cost, string buildingName, string foregroundTexturePath = null)
     {
         this._buildingCallback = buildingCallback;
         this._textureCallback = textureCallback;
@@ -35,6 +38,8 @@ class BuildingOption
         this.bgAngle = angle;
         this.bgSize = new Size(160, 160);
         this.fgSize = new Size(128, 128);
+        this.cost = cost;
+        this.buildingName = buildingName;
 
         this.fgAngle = this.bgAngle - floatPI/2;
         var vec = new Vector2((float)Math.Cos(this.fgAngle), (float)Math.Sin(this.fgAngle))*185;
@@ -84,6 +89,9 @@ class BuildingOption
 
     public void UpdateByMouse(MouseState mouseState)
     {
+        if(root.State != BuildingSelector.EState.Visible)
+            return;
+            
         if(GetDistance(this.center.X, this.center.Y, mouseState.X, mouseState.Y) < this.Radius )
         {
             this.root.SelectedItem = this;
@@ -125,4 +133,7 @@ class BuildingOption
             return 70;
         }
     }
+
+    public string BuildingName { get => buildingName; }
+    internal Resources Cost { get => cost; }
 }

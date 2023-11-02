@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 class Explosion : Animation
 {
+    private static Texture2D[] textures;
     public Explosion(Rectangle worldArea)
         : this(worldArea.Location, worldArea.Width)
     {
@@ -16,7 +17,8 @@ class Explosion : Animation
 
     private static Tuple<Texture2D[], Rectangle> RenderFrames(Point worldPosition, int size)
     {
-        Texture2D[] textures = TextureSource.LoadExplosion();
+        if(textures == null)
+            textures = TextureSource.LoadExplosion();
         Rectangle drawArea = new Rectangle(worldPosition.X, worldPosition.Y, size, size);
         return new Tuple<Texture2D[], Rectangle>(textures, drawArea);
     }

@@ -40,6 +40,14 @@ class Healer : UpgradeableBuilding
         1600,
     };
 
+    private static readonly int[] emitterOffset = new int[]
+    {
+        29,
+        50,
+        81,
+        114,
+    };
+
     private const int textureSet = 1;
 
 
@@ -68,9 +76,10 @@ class Healer : UpgradeableBuilding
             attackCounter++;
             if (attackCounter >= AttackRate)
             if (this.Energy >= healing[currentTierIndex])
-            {      
+            {   
+                Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
                 this.Energy -= healing[currentTierIndex]; 
-                Projectile projectile = new(-healing[currentTierIndex], 0, 4f, target, this, 3);
+                Projectile projectile = new(-healing[currentTierIndex], 0, 4f, target, sourceVec, 3, 5);
                 projectile.Rotate = false;
                 projectile.Scale = 0.075f;
                 attackCounter = 0;
@@ -120,8 +129,7 @@ class Healer : UpgradeableBuilding
 
     public static new Rectangle GetRectangle(Point point)
     {
-        int mapPixelToTexturePixel_Multiplier = Map.mapPixelToTexturePixel_Multiplier;
-        return new Rectangle(point.X+32, point.Y-8-64, mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier*3);
+        return new Rectangle(point.X+32, point.Y-8-64, Map.mapPixelToTexturePixel_Multiplier, Map.mapPixelToTexturePixel_Multiplier*3);
     }
     public override string ToString()
     {
