@@ -7,6 +7,7 @@ class Cursor
 {
     private Rectangle clickRect;
     private GameWindow gameWin;
+    private ClickConfirm animation = null;
 
     public Cursor(GameWindow gameWin)
     {
@@ -25,9 +26,9 @@ class Cursor
 
     public void Play()
     {
+        // Animation.Remove(this.animation);
         Rectangle rect = this.clickRect;
-        ClickConfirm animation = new(rect);
-        animation.Play();
+        this.animation = new(rect);
+        this.animation.Play();
     }
-
 }

@@ -29,6 +29,11 @@ class Animation
 
     }
 
+    public static void Remove(Animation animation)
+    {
+        allAnimations.Remove(animation);
+    }
+
 
     public static void PlayAnimation(Animation animation)
     {
