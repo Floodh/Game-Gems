@@ -100,7 +100,9 @@ class Cannon : UpgradeableBuilding
 
     private void OnHit(Vector2 impactLocation)
     {
-        new Explosion(impactLocation.ToPoint(), 20).Play();
+        float radius = 10;
+        Vector2 vec = impactLocation - new Vector2(radius, radius);
+        new Explosion(vec.ToPoint(), Convert.ToInt16(radius)).Play();
     }
 
     public override void Draw()
