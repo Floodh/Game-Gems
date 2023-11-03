@@ -22,6 +22,8 @@ class BuildingSelector
     Texture2D centerTexture;
     Texture2D centerTextureInfo;
     Texture2D centerTexturePointing;
+    Texture2D gridValidTexture;
+    Texture2D gridInvalidTexture;
     Texture2D blankTexture;
     private Point center;
     private Texture2D BuildingToPlaceTexture;
@@ -41,7 +43,8 @@ class BuildingSelector
         this.centerTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/center3-null.png");
         this.centerTextureInfo = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/build-menu-info-1.png");
         this.centerTexturePointing = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/center3.png");
-
+        this.gridValidTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/Grid_ValidTile.png");
+        this.gridInvalidTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/Grid_InValidTile.png");
         this.blankTexture = new Texture2D(GameWindow.graphicsDevice, 1, 1);
         this.blankTexture.SetData(new Color[] { Color.White });
 
@@ -260,11 +263,13 @@ class BuildingSelector
                 tileArea = Camera.ModifiedDrawArea(tileArea, Camera.zoomLevel);
                 if (Building.grid.IsTileTaken(x, y))
                 {
-                    GameWindow.spriteBatch.Draw(this.blankTexture, tileArea, Color.Red * 0.4f);
+                    // GameWindow.spriteBatch.Draw(this.blankTexture, tileArea, Color.Red * 0.4f);
+                    GameWindow.spriteBatch.Draw(this.gridInvalidTexture, tileArea, Color.Red * 0.4f);
                 }
                 else
                 {
-                    GameWindow.spriteBatch.Draw(this.blankTexture, tileArea, Color.Green * 0.4f);
+                    // GameWindow.spriteBatch.Draw(this.blankTexture, tileArea, Color.Green * 0.4f);
+                    GameWindow.spriteBatch.Draw(this.gridValidTexture, tileArea, Color.Green * 0.4f);
                 }
             }
         }
