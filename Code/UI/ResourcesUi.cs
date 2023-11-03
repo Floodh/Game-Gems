@@ -31,7 +31,7 @@ class ResourcesUi
 
             this.topLeftPoint = topLeftPoint;
             this.gemTexture = texture;
-            this.bgTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/brick4.png");
+            this.bgTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/brick4.png");
 
             this.bgRect = new Rectangle(
                 this.topLeftPoint.X, this.topLeftPoint.Y, ResourceTypeUi.resourceSize.Width, ResourceTypeUi.resourceSize.Height);

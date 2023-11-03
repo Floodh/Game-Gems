@@ -11,7 +11,7 @@ class Cursor
 
     public Cursor(GameWindow gameWin)
     {
-        Texture2D cursorTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/cursor2.png");
+        Texture2D cursorTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/cursor2.png");
         Mouse.SetCursor(MouseCursor.FromTexture2D(cursorTexture, 0, 0));
         this.gameWin = gameWin;
         this.gameWin.IsMouseVisible = true;

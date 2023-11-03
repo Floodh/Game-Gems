@@ -38,28 +38,28 @@ class BuildingSelector
     {
         this.displaySize = displaySize;
         this.center = new Point(this.displaySize.Width/2, this.displaySize.Height/2);
-        this.centerTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3-null.png");
-        this.centerTextureInfo = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/build-menu-info-1.png");
-        this.centerTexturePointing = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/center3.png");
+        this.centerTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/center3-null.png");
+        this.centerTextureInfo = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/build-menu-info-1.png");
+        this.centerTexturePointing = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/center3.png");
 
         this.blankTexture = new Texture2D(GameWindow.graphicsDevice, 1, 1);
         this.blankTexture.SetData(new Color[] { Color.White });
 
         this.spriteList.Add(new BuildingOption(
             this, Healer.CreateNew, Healer.GetTextures, Healer.GetRectangle, 0f,
-            Healer.costs[0], "Healer", "Data/TextureSources/healing-tower1-tier1.png"));
+            Healer.costs[0], "Healer", "Data/Texture/Buildings/healing-tower1-tier1.png"));
         this.spriteList.Add(new BuildingOption(
             this, Generator.CreateNew, Generator.GetTextures, Generator.GetRectangle, -0.85f,
-            Generator.costs[0], "Generator", "Data/TextureSources/energy-tower1-tier1.png"));
+            Generator.costs[0], "Generator", "Data/Texture/Buildings/energy-tower1-tier1.png"));
         this.spriteList.Add(new BuildingOption(
             this, Booster.CreateNew, Booster.GetTextures, Booster.GetRectangle, 0.85f,
-            Booster.costs[0], "Upgrades", "Data/TextureSources/income-tower3-tier1.png"));
+            Booster.costs[0], "Upgrades", "Data/Texture/Buildings/income-tower3-tier1.png"));
         this.spriteList.Add(new BuildingOption(
             this, Cannon.CreateNew, Cannon.GetTextures, Cannon.GetRectangle, -1.7f,
-            Cannon.costs[0], "Cannon", "Data/TextureSources/attack-tower1-tier1.png"));
+            Cannon.costs[0], "Cannon", "Data/Texture/Buildings/attack-tower1-tier1.png"));
         this.spriteList.Add(new BuildingOption(
             this, Wall.CreateNew, Wall.GetTextures, Wall.GetRectangle, 1.7f,
-            Wall.costs[0], "Wall", "Data/TextureSources/walls2-menu2.png"));       
+            Wall.costs[0], "Wall", "Data/Texture/UI/walls2-menu2.png"));       
     }
 
     public Point Center

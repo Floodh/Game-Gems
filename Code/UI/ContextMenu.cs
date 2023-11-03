@@ -24,7 +24,7 @@ class ContextMenu
     {
         FontSystem = new FontSystem();
         FontSystem.AddFont(System.IO.File.ReadAllBytes(@"Data/Fonts/PTC55F.ttf"));
-        this.menuTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/context-menu2.png");
+        this.menuTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/context-menu2.png");
     }
 
     public void Update()

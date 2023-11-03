@@ -10,20 +10,20 @@ static class TextureSource
     public static Texture2D[] LoadIcons()
     {
         Texture2D[] textures = new Texture2D[4];
-        textures[0] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/Icon-blue.png");
-        textures[1] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/Icon-green.png");
-        textures[2] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/Icon-purple.png");
-        textures[3] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/Icon-red.png");
+        textures[0] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/Icon-blue.png");
+        textures[1] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/Icon-green.png");
+        textures[2] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/Icon-purple.png");
+        textures[3] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/Icon-red.png");
         return textures;
     }
 
     public static Texture2D[] LoadMinerals()
     {
         Texture2D[] textures = new Texture2D[4];
-        textures[0] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-blue4.png");
-        textures[1] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-green4.png");
-        textures[2] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-purple4.png");
-        textures[3] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/TextureSources/gem-mine-red4.png");
+        textures[0] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-blue4.png");
+        textures[1] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-green4.png");
+        textures[2] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-purple4.png");
+        textures[3] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-red4.png");
         return textures;
     }
 
@@ -32,7 +32,7 @@ static class TextureSource
         int numTextures = 4;
         Texture2D[] textures = new Texture2D[numTextures];
         for(int i = 0; i < numTextures; i++)
-            textures[i] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/TextureSources/ClickConfirm/click-confirmation3-{i+1}.png");
+            textures[i] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/Texture/UI/ClickConfirm/click-confirmation3-{i+1}.png");
         return textures;
     }
 

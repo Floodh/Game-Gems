@@ -46,7 +46,7 @@ class BuildingOption
         this.center = root.Center + vec.ToPoint();
 
         // TODO replace by using ref to building texture
-        this.bgTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/pentagon3_128.png");
+        this.bgTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/pentagon3_128.png");
         if(foregroundTexturePath == null)
             this.fgTexture = textureCallback()[0];
         else

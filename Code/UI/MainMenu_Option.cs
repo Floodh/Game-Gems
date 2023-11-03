@@ -34,7 +34,7 @@ class MainMenu_Option
     {
         this.numberOfOptions = numberOfOptions;
         this.index = index;
-        frameTexture ??= Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/frame2.png");
+        frameTexture ??= Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/frame2.png");
         this.AdjustDrawArea(windowSize);
     }
     public MainMenu_Option(Point windowSize, int numberOfMaps, int index, string mapImagePath,string texturePath)

@@ -25,8 +25,8 @@ class Map
         Water = 0xFF5b6ee1,
         Stone = 0xFF595652
     }
-    private const string GRID_VALIDTILE_TEXTURE_PATH = "Data/Texture/Grid_ValidTile.png";
-    private const string GRID_INVALIDTILE_TEXTURE_PATH = "Data/Texture/Grid_InValidTile.png";
+    private const string GRID_VALIDTILE_TEXTURE_PATH = "Data/Texture/UI/Grid_ValidTile.png";
+    private const string GRID_INVALIDTILE_TEXTURE_PATH = "Data/Texture/UI/Grid_InValidTile.png";
     public const string PATH_MAPDATA_PREVIEW = MainMenu.PATH_MAPDATA_PREVIEW;
     public const string PATH_MAPDATA_IMAGE = MainMenu.PATH_MAPDATA;
 
