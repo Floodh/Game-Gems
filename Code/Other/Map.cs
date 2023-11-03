@@ -142,11 +142,12 @@ class Map
         spriteBatch.End();
 
         //  annoying syntax to transfer the data from screenBuffer to the texture
-        using System.IO.MemoryStream stream = new System.IO.MemoryStream();
+        using MemoryStream stream = new MemoryStream();
         renderTargetIsAOffScreenBuffer.SaveAsPng(stream, drawTextureSize.Width, drawTextureSize.Height);
         #if SAVEPREVIEW
             string previewPath = PATH_MAPDATA_PREVIEW + path.Substring(path.LastIndexOf('/') + 1);
-            File.WriteAllBytes(previewPath, stream.ToArray());
+            if (!File.Exists(previewPath))
+                File.WriteAllBytes(previewPath, stream.ToArray());
         #endif
         this.drawTexture = Texture2D.FromStream(graphicsDevice, stream);
         graphicsDevice.SetRenderTarget(null);   //  give back the rendering target
