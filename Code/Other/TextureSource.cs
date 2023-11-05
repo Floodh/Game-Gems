@@ -13,7 +13,7 @@ static class TextureSource
         textures[0] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/Icon-blue.png");
         textures[1] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/Icon-green.png");
         textures[2] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/Icon-purple.png");
-        textures[3] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/Icon-red.png");
+        textures[3] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/Icon-orange.png");
         return textures;
     }
 
@@ -23,7 +23,7 @@ static class TextureSource
         textures[0] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-blue4.png");
         textures[1] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-green4.png");
         textures[2] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-purple4.png");
-        textures[3] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-red4.png");
+        textures[3] = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-orange4.png");
         return textures;
     }
 

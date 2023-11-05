@@ -90,7 +90,6 @@ class Generator : UpgradeableBuilding
             hpBar.Update();
             hpBar.Draw();
         }
-        // base.Draw();
 
         this.energyBar.Draw();
     }

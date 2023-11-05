@@ -128,9 +128,7 @@ public class GameWindow : Game
         {
             if (isInside = IsInside)
             {
-                // Console.WriteLine($"Mouse|x:{contextMouseState.X}, y:{contextMouseState.Y}");
 
-                //Console.WriteLine("     Is inside!");
                 Camera.UpdateByMouse(contextMouseState,graphics);
                 Camera.UpdateByKeyboard(contextKeyboardState);
 
@@ -139,8 +137,7 @@ public class GameWindow : Game
 
                 if(!InteractingWithUI)
                 {
-                    this.contextMenu.Update();
-                    interactingWithContextMenu = this.contextMenu.UpdateByMouse(contextMouseState);
+                    interactingWithContextMenu = this.contextMenu.Update(contextMouseState);
 
                     if(!interactingWithContextMenu)
                     {
@@ -148,7 +145,7 @@ public class GameWindow : Game
                     }
 
                 } 
-                interactingWithSelectableBuilding = Building.UpdateAllByMouse(contextMouseState);  
+ 
             }
             interactingWithUI = this.InteractingWithUI;
             level.MayTick();    //  performs all ticks            
