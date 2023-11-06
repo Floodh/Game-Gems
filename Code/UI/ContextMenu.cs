@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
 using FontStashSharp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Size = System.Drawing.Size;
+
 
 class ContextMenu
 {
@@ -18,7 +16,6 @@ class ContextMenu
     internal Building Building { get => _building; set => _building = value; }
     private static FontSystem _fontSystem;
     Vector2 menuVec;
-    Vector2 topMiddleVec;
     Rectangle menuRect;
     protected bool mousePressed = false;
     private Resources _cost;
@@ -35,27 +32,32 @@ class ContextMenu
         this.menuTextureBoost = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/UpgradeBuilding/upgrade-boost-building.png");
 
         UpgradeButton button;
-        button = this.AddButton(new Vector2(0, 0));
+        button = this.AddButton(new Vector2(0, -26));
         button.OnClick += UpgradeBuilding;
         button.OnOver += OverBuilding;
 
-        button = this.AddBoostButton(new Vector2(0, 390/2));
+        int offset = -88;
+        button = this.AddBoostButton(new Vector2(0, offset));
+        button.OnClick += UpgradeBuilding;
+        button.OnOver += OverBuilding;
+
+        button = this.AddBoostButton(new Vector2(0, 390/2+offset));
         button.OnClick += UpgradeAllGems;
         button.OnOver += OverAllGems;
 
-        button = this.AddBoostButton(new Vector2(-154/2, 298/2));
+        button = this.AddBoostButton(new Vector2(-154/2, 298/2+offset));
         button.OnClick += UpgradeBlueGem;
         button.OnOver += OverBlueGems;
 
-        button = this.AddBoostButton(new Vector2(-51/2, 298/2));
+        button = this.AddBoostButton(new Vector2(-51/2, 298/2+offset));
         button.OnClick += UpgradeGreenGem;
         button.OnOver += OverGreenGems;
 
-        button = this.AddBoostButton(new Vector2(52/2, 298/2));
+        button = this.AddBoostButton(new Vector2(52/2, 298/2+offset));
         button.OnClick += UpgradePurpleGem;
         button.OnOver += OverPurpleGems;
 
-        button = this.AddBoostButton(new Vector2(157/2, 298/2));
+        button = this.AddBoostButton(new Vector2(157/2, 298/2+offset));
         button.OnClick += UpgradeOrangeGem;
         button.OnOver += OverOrangeGems;
     }
@@ -145,44 +147,27 @@ class ContextMenu
             _boosterBuilding = this._building as Booster;
             _cost = new Resources(0, 0, 0, 0);
             
-            int yMenuOffset;
-            int yButtonOffset;
-            Size textureSize;
-            if(_boosterBuilding == null)
-            {
-                yMenuOffset = 0;
-                yButtonOffset = 48;
-                textureSize = new Size(this.menuTexture.Width/2, this.menuTexture.Height/2);
-            }
-            else
-            {
-                yMenuOffset = 0;
-                yButtonOffset = 16+1-3;
-                textureSize = new Size(this.menuTextureBoost.Width/2, this.menuTextureBoost.Height/2);
-            }
+            // Position of menu image
+            Point textureSize = _boosterBuilding == null? new Point(this.menuTexture.Width/2, this.menuTexture.Height/2) : new Point(this.menuTextureBoost.Width/2, this.menuTextureBoost.Height/2);
+            Vector2 vec = _building.TargetPosition.ToVector2() + new Vector2(0, 0);
+            vec = Camera.ModifyPoint(vec);
+            this.menuVec = vec - new Vector2(textureSize.X/2, textureSize.Y/2);
+            this.menuRect = new Rectangle(this.menuVec.ToPoint(), textureSize);
 
-            Rectangle menuRect = new(_building.DrawArea.X +64, _building.DrawArea.Y +64 +yMenuOffset, 1, 1);
-            menuRect = Camera.ModifiedDrawArea(menuRect, Camera.zoomLevel);
-
-            this.menuVec = new(menuRect.Left - textureSize.Width/2, menuRect.Top - textureSize.Height/2);
-            this.menuRect = new(menuVec.ToPoint().X, menuVec.ToPoint().Y, textureSize.Width, textureSize.Height);
-
+            // Position of buttons
             if(this.menuRect.Contains(mouseState.Position))
             {   
-                Rectangle buttonOriginRect = new(_building.DrawArea.X + 64, _building.DrawArea.Y +yButtonOffset, 1, 1);
-                buttonOriginRect = Camera.ModifiedDrawArea(buttonOriginRect, Camera.zoomLevel);
+                Vector2 buttonVec = _building.TargetPosition.ToVector2();
 
-                foreach(UpgradeButton button in _buttons)
+                if(_boosterBuilding == null)
                 {
-                    button.Update(mouseState, buttonOriginRect.Location.ToVector2());               
-                } 
-
-                if(_boosterBuilding != null)
+                    foreach(UpgradeButton button in _buttons)
+                        button.Update(mouseState, buttonVec);           
+                }
+                else
                 {
                     foreach(UpgradeButton button in _buttons_boost)
-                    {
-                        button.Update(mouseState, buttonOriginRect.Location.ToVector2());               
-                    }
+                        button.Update(mouseState, buttonVec);               
                 }
 
                 return true;
@@ -199,43 +184,43 @@ class ContextMenu
             if(upgradableBuilding.Tier >= upgradableBuilding.MaxTier)
                 return;
 
-            Vector2 menuVec = this.menuVec;
-            Texture2D texture = _boosterBuilding == null?this.menuTexture:this.menuTextureBoost;
-
+            // Draw marking of grid
             var blankTexture = new Texture2D(GameWindow.graphicsDevice, 1, 1);
                 blankTexture.SetData(new Color[] { Color.White });
                 GameWindow.spriteBatch.Draw(
                     blankTexture, this.menuRect, null, new Color(Color.White, 1f)*0.5f, 0f, 
                     new Vector2(0, 0), SpriteEffects.None, 0f);
 
+            // Draw menu image
+            Texture2D texture = _boosterBuilding == null?this.menuTexture:this.menuTextureBoost;
             GameWindow.spriteBatch.Draw(
                 texture, this.menuRect, null, new Color(Color.White, 1f), 0f, 
                 new Vector2(0, 0), SpriteEffects.None, 0f);
 
 
+            // Draw cost text
             SpriteFontBase font18 = ResourcesUi.FontSystem.GetFont(18);
-            menuVec = menuVec + new Vector2(40, 79);
+            Vector2 menuVec = this.menuVec;
+            menuVec += new Vector2(40, 79);
             GameWindow.spriteBatch.DrawString(font18, _cost.blue.ToString(), menuVec, Color.Black);
-            menuVec = menuVec + new Vector2(108, 0);
+            menuVec += new Vector2(108, 0);
             GameWindow.spriteBatch.DrawString(font18, _cost.green.ToString(), menuVec, Color.Black); 
-
-            menuVec = menuVec + new Vector2(-108, 42);
+            menuVec += new Vector2(-108, 42);
             GameWindow.spriteBatch.DrawString(font18, _cost.purple.ToString(), menuVec, Color.Black);
-            menuVec = menuVec + new Vector2(108, 0);
+            menuVec += new Vector2(108, 0);
             GameWindow.spriteBatch.DrawString(font18, _cost.orange.ToString(), menuVec, Color.Black);
 
-            foreach(UpgradeButton button in _buttons)
-            {
-                button.Draw();
-            }
-
-            if(_boosterBuilding != null)
-            {
-                foreach(UpgradeButton button in _buttons_boost)
+            // Draw buttons
+            if(_boosterBuilding == null)
                 {
-                    button.Draw();
+                    foreach(UpgradeButton button in _buttons)
+                        button.Draw();          
                 }
-            }
+                else
+                {
+                    foreach(UpgradeButton button in _buttons_boost)
+                        button.Draw();               
+                }
         }
     }
 
