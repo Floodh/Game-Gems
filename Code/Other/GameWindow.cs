@@ -191,7 +191,8 @@ public class GameWindow : Game
         else if (this.state == State.InGame)
         {
             this.resourcesUi.Draw(spriteBatch);
-            this.contextMenu.Draw();
+            if(!InteractingWithUI)
+                this.contextMenu.Draw();
              this.buildingSelector.Draw(spriteBatch);
             this.level?.dayNightCycle?.Draw();            
         }
