@@ -15,9 +15,7 @@ public class GameWindow : Game
         GameOver
     }
     private State state;
-
     public static Point windowSize = new Point(1920, 1080);
-
     public static GraphicsDeviceManager graphics;
     public static SpriteBatch spriteBatch;
     public static GraphicsDevice graphicsDevice;
@@ -192,13 +190,11 @@ public class GameWindow : Game
         }
         else if (this.state == State.InGame)
         {
-            this.buildingSelector.Draw(spriteBatch);
             this.resourcesUi.Draw(spriteBatch);
             this.contextMenu.Draw();
+             this.buildingSelector.Draw(spriteBatch);
             this.level?.dayNightCycle?.Draw();            
         }
-        
-
 
         spriteBatch.End();
         base.Draw(gameTime);
