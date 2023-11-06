@@ -88,9 +88,10 @@ class Cannon : UpgradeableBuilding
                 this.Energy -= dmg[currentTierIndex];
                 _ = new Projectile(dmg[currentTierIndex], 0, 3.13f, this.target, sourceVec, 2, 5, this.OnHit);
                 initative = 0;
+                if (this.target.IsDead)
+                    this.target = null;
             }
-            if (this.target.IsDead)
-                this.target = null;
+
         }
         else
         {
