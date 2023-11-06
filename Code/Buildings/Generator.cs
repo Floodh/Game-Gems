@@ -94,7 +94,7 @@ class Generator : UpgradeableBuilding
         this.energyBar.Draw();
     }
 
-    protected override void UppdateStats()
+    protected override void UpdateStats()
     {
         this.MaxHp = maxHealth[currentTierIndex];
         this.Hp = this.MaxHp;
@@ -106,6 +106,14 @@ class Generator : UpgradeableBuilding
     public static new Building CreateNew()
     {
         return new Generator();
+    }
+
+    public static new Building Buy()
+    {
+        if(Resources.BuyFor(costs[0]))
+            return CreateNew();
+        else
+            return null;
     }
 
     public static new Texture2D[] GetTextures()

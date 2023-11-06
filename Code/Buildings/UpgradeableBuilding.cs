@@ -35,7 +35,7 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
                 baseTextures[textureSet][i] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/Texture/Buildings/{colorName}-tier{i+1}.png");
         }
         
-        UppdateStats();
+        UpdateStats();
     }
 
     public static Texture2D[] GetTextures()
@@ -72,12 +72,17 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
             if(result)
             {
                 currentTier++;
-                UppdateStats();
+                UpdateStats();
             }
         }
         return result;
     }
 
-    protected abstract void UppdateStats();
+    public static void Buy()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected abstract void UpdateStats();
 
 }

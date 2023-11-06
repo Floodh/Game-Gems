@@ -124,11 +124,11 @@ class Cannon : UpgradeableBuilding
     {
         bool uppgraded = base.TryUpgrade();
         if (uppgraded)
-            UppdateStats();
+            UpdateStats();
         return uppgraded;
     }
 
-    protected override void UppdateStats()
+    protected override void UpdateStats()
     {
         this.MaxEnergy = maxEnergy[currentTierIndex];
         this.MaxHp = maxHealth[currentTierIndex];
@@ -143,6 +143,14 @@ class Cannon : UpgradeableBuilding
     public static new Building CreateNew()
     {
         return new Cannon();
+    }
+
+    public static new Building Buy()
+    {
+        if(Resources.BuyFor(costs[0]))
+            return CreateNew();
+        else
+            return null;
     }
 
     public static new Texture2D[] GetTextures()

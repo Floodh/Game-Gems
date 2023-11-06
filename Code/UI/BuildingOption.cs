@@ -26,6 +26,7 @@ class BuildingOption
     public TextureDelegate _textureCallback;
     public delegate Rectangle RectangleDelegate(Point point);
     public RectangleDelegate _rectCallback;
+    public event Action<BuildingOption> OnOver;
 
     public BuildingOption(
         BuildingSelector root, BuildingDelegate buildingCallback, TextureDelegate textureCallback, RectangleDelegate rectCallback,
@@ -39,6 +40,7 @@ class BuildingOption
         this.bgSize = new Size(160, 160);
         this.fgSize = new Size(128, 128);
         this.cost = cost;
+        this.state = new State(this.cost);
         this.buildingName = buildingName;
 
         this.fgAngle = this.bgAngle - floatPI/2;
@@ -63,7 +65,7 @@ class BuildingOption
 
     public Point Center { get => center; set => center = value; }
 
-    private State state = new();
+    private State state;
 
     public float Angle{
         get{
@@ -71,29 +73,54 @@ class BuildingOption
         }
     }
 
+    private void Over()
+    {
+        OnOver?.Invoke(this);
+    }
+
     private class State
     {
-        private bool highlight = false;
+        private bool _highlight = false;
 
-        public bool Highlight { get => highlight; set => highlight = value; }
+        public bool Highlight { get => _highlight; set => _highlight = value; }
+
+        private Resources _cost;
+        // internal Resources Cost { get => _cost; set => _cost = value; }
+
+        public State(Resources cost)
+        {
+            _cost = cost;
+        }
+
 
         public Color Colour{
             get{
-                if(!this.highlight)
+                if(!Resources.CanBuy(_cost))
+                    return new Color(Color.DimGray, 0.7f);
+                else if(!this._highlight)
                     return new Color(Color.White, 0.7f);
                 else
                     return new Color(Color.White, 1f);
+                
             }
         }
+
+        
     }
 
-    public void UpdateByMouse(MouseState mouseState)
+    public void Update(MouseState mouseState)
     {
         if(root.State != BuildingSelector.EState.Visible)
             return;
+
+        
             
         if(GetDistance(this.center.X, this.center.Y, mouseState.X, mouseState.Y) < this.Radius )
         {
+            OnOver(this);
+            if(!Resources.CanBuy(this.Cost))
+                return;
+
             this.root.SelectedItem = this;
             state.Highlight = true;
             if (mouseState.LeftButton == ButtonState.Pressed)
@@ -108,7 +135,7 @@ class BuildingOption
         }
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public void Draw()
     {
         var bgDrawArea =  new Rectangle(this.root.Center.X, this.root.Center.Y, this.bgSize.Width, this.bgSize.Height);
         GameWindow.spriteBatch.Draw(
