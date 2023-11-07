@@ -198,7 +198,7 @@ public class GameWindow : Game
             this.resourcesUi.Draw(spriteBatch);
             if(!InteractingWithUI)
                 this.contextMenu.Draw();
-             this.buildingSelector.Draw(spriteBatch);
+             this.buildingSelector.Draw();
             this.level?.dayNightCycle?.Draw();            
         }
 
