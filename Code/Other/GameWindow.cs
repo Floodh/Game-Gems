@@ -8,6 +8,8 @@ using Size = System.Drawing.Size;
 
 public class GameWindow : Game
 {
+    public static Texture2D whitePixelTexture;
+
     public enum State
     {
         MainMenu,
@@ -70,6 +72,9 @@ public class GameWindow : Game
         Console.WriteLine("Loading content...");
         spriteBatch = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
+        
+        whitePixelTexture = new Texture2D(base.GraphicsDevice, 1, 1);
+        whitePixelTexture.SetData( new Color[] { Color.White });
 
         this.cursor = new(this);
         this.background = new Background(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, graphicsDevice);
@@ -85,7 +90,7 @@ public class GameWindow : Game
         this.mainMenu = new MainMenu(new Point(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight));
 
         this.state = State.MainMenu;
-        this.mainMenu.state = MainMenu.State.SelectMap;
+        this.mainMenu.state = MainMenu.State.Start;
 
         _ = new Booster();
         _ = new Cannon();

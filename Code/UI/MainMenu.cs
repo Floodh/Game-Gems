@@ -17,17 +17,25 @@ class MainMenu
         Loading,
         InActive,
     }
-    public State state = State.SelectMap;
+    public State state = State.Start;
 
     private GameArguments gameArguments;
 
     private readonly MainMenu_Option[][] mainMenu_Options = new MainMenu_Option[((int)State.Loading)][];
+    private readonly MainMenu_Button startButton;
+    private readonly MainMenu_Button exitButton;
+
+    public bool shouldQuit = false;
+
 
 
     
     public MainMenu(Point windowSize)
     {
+
         //
+        startButton = new MainMenu_Button(windowSize, 0);
+        exitButton = new MainMenu_Button(windowSize, 1);
         mainMenu_Options[0] = new MainMenu_Option[0];   //  will use special case buttons for this
         //
 
@@ -108,29 +116,63 @@ class MainMenu
     }
 
     MainMenu_Option possibleOption = null;
+    MainMenu_Button possibleButton = null;
 
     public void UpdateByMouse(MouseState mouseState)
     {
-        if (possibleOption == null)
+        if (this.state == State.Start)
         {
-            if (mouseState.LeftButton == ButtonState.Pressed)
+            if (possibleButton == null)
             {
-                possibleOption = FromBounds(mouseState.Position);
+                if (mouseState.LeftButton == ButtonState.Pressed)
+                {
+                    possibleButton = FromBounds_Button(mouseState.Position);
+                }
             }
+            else
+            {
+                if (mouseState.LeftButton == ButtonState.Released)
+                {
+                    if (possibleButton == FromBounds_Button(mouseState.Position))
+                    if (possibleButton.valid)
+                    {
+                        if (possibleButton == this.startButton)
+                        {
+                            this.EnterState(this.state + 1);
+                            possibleButton = null;
+                        }
+                        else
+                        {
+                            shouldQuit = true;
+                        }
+                    }
+                }
+            }  
         }
         else
         {
-            if (mouseState.LeftButton == ButtonState.Released)
+            if (possibleOption == null)
             {
-                if (possibleOption == FromBounds(mouseState.Position))
-                if (possibleOption.valid)
+                if (mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    SetGameArgument(possibleOption.index);
-                    this.EnterState(this.state + 1);
-                    possibleOption = null;
+                    possibleOption = FromBounds(mouseState.Position);
                 }
             }
-        }   
+            else
+            {
+                if (mouseState.LeftButton == ButtonState.Released)
+                {
+                    if (possibleOption == FromBounds(mouseState.Position))
+                    if (possibleOption.valid)
+                    {
+                        SetGameArgument(possibleOption.index);
+                        this.EnterState(this.state + 1);
+                        possibleOption = null;
+                    }
+                }
+            }  
+        }
+ 
 
     }
 
@@ -144,6 +186,14 @@ class MainMenu
         }   
         return null;       
     }
+    private MainMenu_Button FromBounds_Button(Point position)
+    {
+        if (this.startButton.Bounds.Contains(position))
+            return startButton;
+        if (this.exitButton.Bounds.Contains(position))
+            return exitButton;
+        return null;
+    }    
 
     private void SetGameArgument(int index)
     {
@@ -184,14 +234,23 @@ class MainMenu
         foreach (MainMenu_Option[] options in this.mainMenu_Options)
             foreach (MainMenu_Option option in options)
                 option.AdjustDrawArea(windowSize);
+
+        this.startButton.AdjustDrawArea(windowSize);
+        this.exitButton.AdjustDrawArea(windowSize);
     }
 
     public void Draw()
     {
         if (this.state != State.Loading && this.state != State.InActive)
-        foreach (MainMenu_Option option in this.mainMenu_Options[(int)this.state])
+        if (this.state != State.Start)
+            foreach (MainMenu_Option option in this.mainMenu_Options[(int)this.state])
+            {
+                option.Draw();
+            }
+        else
         {
-            option.Draw();
+            this.startButton.Draw();
+            this.exitButton.Draw();
         }
     }
 
