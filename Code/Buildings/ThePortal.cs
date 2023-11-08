@@ -44,7 +44,7 @@ class ThePortal : Building
                 if (!grid.IsTileTaken(spawnLocation))
             {
                 spawnCounter = 0;
-                _ = new Enemy(spawnLocation);
+                Enemy.CreateNewEnemy(spawnLocation);
                 break;
             }          
                        
