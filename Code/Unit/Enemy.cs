@@ -6,30 +6,35 @@ using Microsoft.Xna.Framework.Input;
 
 class Enemy : Unit
 {
-    private const string Path_BaseTexture = "Data/Texture/Units/fighter1.png";
-    private const int sunDmg = 1000;
-
+    protected const int sunDmg = 1000;
     public static int NumberOfEnemies {get; protected set;}
+    protected Texture2D baseTexture;
+    protected int projectileTextureId;
+    protected Targetable target = null;
 
-
-    Texture2D baseTexture;
-    Targetable target = null;
-
-    public Enemy(Point spawnGridPosition) 
+    protected Enemy(Point spawnGridPosition, string Path_BaseTexture) 
         : base(Faction.Enemy, spawnGridPosition)
     {
-        this.MaxHp = 100;
-        this.Hp = this.MaxHp;
-        this.Regen_Health = 1;
-
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
         NumberOfEnemies++;
         this.MoveTo(spawnGridPosition);
     }
 
-    public override void Draw()
+    public static Enemy CreateNewEnemy(Point spawnGridPosition)
     {
-        Rectangle enemyRect = new(DrawArea.X, DrawArea.Y-8, DrawArea.Width, DrawArea.Height);
+        if(NumberOfEnemies % 4 == 0)
+            return new Fighter(spawnGridPosition);
+        else if((NumberOfEnemies+1) % 4 == 0)
+            return new Imp(spawnGridPosition);
+        else if((NumberOfEnemies+2) % 4 == 0)
+            return new Demon(spawnGridPosition);
+        else
+            return new GreaterDemon(spawnGridPosition);
+    }
+
+    public virtual void Draw(Rectangle enemyRect)
+    {
+        // Rectangle enemyRect = new(DrawArea.X, DrawArea.Y-8, DrawArea.Width, DrawArea.Height);
         GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(enemyRect, Camera.zoomLevel), Sunlight.Mask);
         base.Draw();
     }
@@ -61,7 +66,7 @@ class Enemy : Unit
             opertunityCounter++;
             if (opertunityCounter >= AttackRate)
             {
-                _ = new Projectile(10, 0, 1f, target, this.TargetPosition.ToVector2(), 1, 30);
+                _ = new Projectile(10, 0, 1f, target, this.TargetPosition.ToVector2(), this.projectileTextureId, 30);
                 opertunityCounter = 0;
             }
                         
@@ -111,7 +116,40 @@ class Enemy : Unit
     {
         base.Die();
         NumberOfEnemies--;
-    }     
+    }  
+
+    protected Rectangle GetRectHeightScaledTo(Rectangle rect, int targetSize)
+    {
+        float ratio = (float)targetSize /  rect.Height;
+
+        int width = (int)(rect.Width * ratio);
+        int height = targetSize;
+        rect = new Rectangle(rect.X, rect.Y, width, height);
+
+        Console.WriteLine("H|" + rect);
+
+        int x = rect.X + DrawArea.Width/2 - rect.Width/2; // Center with DrawArea
+        int y = rect.Y +  DrawArea.Height  - targetSize; // Align with bottom DrawArea
+
+        return new Rectangle(x, y, width, height);
+    }
+
+    // Todo fix incorrect alignments
+    // protected Rectangle GetRectWidthScaledTo(Rectangle rect, int targetSize)
+    // {
+    //     float ratio = (float)targetSize /  rect.Width;
+
+    //     int height = (int)(rect.Height * ratio);
+    //     int width = targetSize;
+    //     rect = new Rectangle(rect.X, rect.Y, width, height);
+
+    //     Console.WriteLine("W|" + rect);
+
+    //     int x = rect.X + DrawArea.Width/2 - rect.Width/2; // Center with DrawArea
+    //     int y = rect.Y +  DrawArea.Height  - targetSize; // Align with bottom DrawArea
+
+    //     return new Rectangle(x, y, width, height);
+    // }
 
         
 
