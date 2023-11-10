@@ -14,7 +14,8 @@ class Imp : Enemy
         this.MaxHp = 50;
         this.Hp = this.MaxHp;
         this.Regen_Health = 1;
-        this.projectileTextureId = 5;
+        _weapon = new Weapon(this, 5);
+        _weapon.Scale = 0.09f;
     }
 
     public override void Draw()

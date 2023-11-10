@@ -61,7 +61,7 @@ class Projectile
 
     private bool rotate = true;
     public bool Rotate { get => rotate; set => rotate = value; }
-    private float scale = 0.15f;
+    private float scale;
     public float Scale { get => scale; set => scale = value; }
 
      public delegate void HitDelegate(Vector2 impactLocation);
@@ -74,7 +74,7 @@ class Projectile
 
     public Projectile(
         int damage, int energyTransfer, float speed, Targetable target, Vector2 senderPosition, 
-        int textureId, int preMoveTicks = 0, HitDelegate onHit = null)
+        int textureId, int preMoveTicks = 0, HitDelegate onHit = null, float scale = 0.10f) // scale default should suit texture-id 1
     {
         if (textureId < 0 || textureId > projTexture.Length)
             throw new ArgumentException($"Texture id does not match any textures : id={textureId}");
@@ -86,6 +86,7 @@ class Projectile
         this.position = senderPosition;
         this.textureId = textureId;
         this.onHit = onHit;
+        this.scale = scale;
 
         if (textureId != 0)
             projTexture[textureId-1] ??= Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/Texture/Projectile/{textureId}.png");
@@ -136,20 +137,20 @@ class Projectile
     {
         if (this.textureId != 0)
         {
+            Vector2 sizeVec = new(projTexture[textureId-1].Width, projTexture[textureId-1].Height);
+            sizeVec *= this.scale;
+            Rectangle rect = new(this.position.ToPoint(), sizeVec.ToPoint());
+
             GameWindow.spriteBatch.Draw(
                 projTexture[textureId-1], 
-                Camera.ModifyPoint(this.position), 
+                Camera.ModifiedDrawArea(rect, Camera.zoomLevel), 
                 null, 
                 Color.White, 
                 this.rotation, 
                 new Vector2(projTexture[textureId-1].Width / 2, projTexture[textureId-1].Height / 2), 
-                this.scale, 
                 SpriteEffects.None, 
                 0f);
         }
         
-    }
-
-
-    
+    } 
 }

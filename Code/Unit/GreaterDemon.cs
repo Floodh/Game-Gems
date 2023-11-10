@@ -14,7 +14,8 @@ class GreaterDemon : Enemy
         this.MaxHp = 300;
         this.Hp = this.MaxHp;
         this.Regen_Health = 1;
-        this.projectileTextureId = 5;
+        _weapon = new Weapon(this, 5);
+        _weapon.Scale = 0.22f;
     }
 
     public override void Draw()

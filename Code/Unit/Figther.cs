@@ -13,8 +13,9 @@ class Fighter : Enemy
     {
         this.MaxHp = 100;
         this.Hp = this.MaxHp;
-        this.Regen_Health = 1;
-        this.projectileTextureId = 1;
+        this.Regen_Health = 1;        
+        _weapon = new Weapon(this, 6);
+        _weapon.Scale = 0.4f;
     }  
 
     public override void Draw()

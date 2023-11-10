@@ -11,6 +11,7 @@ class Enemy : Unit
     protected Texture2D baseTexture;
     protected int projectileTextureId;
     protected Targetable target = null;
+    protected Weapon _weapon;
 
     protected Enemy(Point spawnGridPosition, string Path_BaseTexture) 
         : base(Faction.Enemy, spawnGridPosition)
@@ -34,7 +35,6 @@ class Enemy : Unit
 
     public virtual void Draw(Rectangle enemyRect)
     {
-        // Rectangle enemyRect = new(DrawArea.X, DrawArea.Y-8, DrawArea.Width, DrawArea.Height);
         GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(enemyRect, Camera.zoomLevel), Sunlight.Mask);
         base.Draw();
     }
@@ -63,13 +63,7 @@ class Enemy : Unit
                 return;
             }
             //  perform attack
-            opertunityCounter++;
-            if (opertunityCounter >= AttackRate)
-            {
-                _ = new Projectile(10, 0, 1f, target, this.TargetPosition.ToVector2(), this.projectileTextureId, 30);
-                opertunityCounter = 0;
-            }
-                        
+            _weapon?.Tick(target, ref opertunityCounter);                  
         }
         else
         {
@@ -125,8 +119,6 @@ class Enemy : Unit
         int width = (int)(rect.Width * ratio);
         int height = targetSize;
         rect = new Rectangle(rect.X, rect.Y, width, height);
-
-        Console.WriteLine("H|" + rect);
 
         int x = rect.X + DrawArea.Width/2 - rect.Width/2; // Center with DrawArea
         int y = rect.Y +  DrawArea.Height  - targetSize; // Align with bottom DrawArea
