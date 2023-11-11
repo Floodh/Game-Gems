@@ -57,6 +57,7 @@ public class GameWindow : Game
         Content.RootDirectory = "Content";
         Window.AllowUserResizing = true;
         Window.ClientSizeChanged += this.OnResize;
+        Exiting += ThemePlayer.Dispose;
     }
 
     protected override void Initialize()
@@ -112,7 +113,9 @@ public class GameWindow : Game
         contextMouseState = Mouse.GetState();
 
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+        {
             Exit();
+        }
 
         // TODO: Add your update logic here
         //Console.WriteLine($"Mouse coords: {contextMouseState.X}, {contextMouseState.Y}");
@@ -222,6 +225,7 @@ public class GameWindow : Game
         this.mainMenu.OnResize(windowSize);
 
     }
+
 
 
 }

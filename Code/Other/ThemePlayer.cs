@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using System.Threading;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
@@ -26,6 +28,8 @@ static class ThemePlayer
 
     public static MainMenu.State MainMenuState {get; set;}
 
+    public static volatile bool shouldQuit = false;
+
 
 
 
@@ -44,32 +48,39 @@ static class ThemePlayer
         thread.Start();
     }
 
-
+    private static SoundEffectInstance soundEffectInstance_1;
+    private static SoundEffectInstance soundEffectInstance_2;
+    private static SoundEffectInstance soundEffectInstance_3;
+    private static SoundEffectInstance soundEffectInstance_4;
+        
     private static void PlayTheme_MainMenu()
     {
 
-        SoundEffectInstance soundEffectInstance_1 = soundEffect_1.CreateInstance();
-        SoundEffectInstance soundEffectInstance_2 = soundEffect_2.CreateInstance();
-        SoundEffectInstance soundEffectInstance_3 = soundEffect_3.CreateInstance();
-        SoundEffectInstance soundEffectInstance_4 = soundEffect_4.CreateInstance();
+        soundEffectInstance_1 = soundEffect_1.CreateInstance();
+        soundEffectInstance_2 = soundEffect_2.CreateInstance();
+        soundEffectInstance_3 = soundEffect_3.CreateInstance();
+        soundEffectInstance_4 = soundEffect_4.CreateInstance();
 
         soundEffectInstance_1.Volume = 0.5f;
         soundEffectInstance_2.Volume = 0.0f;
         soundEffectInstance_3.Volume = 0.0f;
         soundEffectInstance_4.Volume = 0.0f;
 
-        soundEffectInstance_1.IsLooped = true;
-        soundEffectInstance_2.IsLooped = true;
-        soundEffectInstance_3.IsLooped = true;
-        soundEffectInstance_4.IsLooped = true;
+        // soundEffectInstance_1.IsLooped = true;
+        // soundEffectInstance_2.IsLooped = true;
+        // soundEffectInstance_3.IsLooped = true;
+        // soundEffectInstance_4.IsLooped = true;
 
         soundEffectInstance_1.Play();
         soundEffectInstance_2.Play();
         soundEffectInstance_3.Play();
         soundEffectInstance_4.Play();
 
-        while (MainMenuState != MainMenu.State.InActive)
+        int counter = 0;
+
+        while (MainMenuState != MainMenu.State.InActive && shouldQuit == false)
         {
+            //Console.WriteLine($"Is alive! {counter++}, should quit {shouldQuit}");
 
             switch (MainMenuState)
             {
@@ -108,14 +119,34 @@ static class ThemePlayer
                     break;                  
             }
 
+            if (soundEffectInstance_4.State != SoundState.Playing)
+            {
+                soundEffectInstance_1.Stop();
+                soundEffectInstance_2.Stop();
+                soundEffectInstance_3.Stop();
+                soundEffectInstance_4.Stop();
+
+                soundEffectInstance_1.Play();
+                soundEffectInstance_2.Play();
+                soundEffectInstance_3.Play();
+                soundEffectInstance_4.Play();                
+            }
+
+            Thread.Sleep(0);
+
         }
 
         soundEffectInstance_1.Dispose();
         soundEffectInstance_2.Dispose();
         soundEffectInstance_3.Dispose();
         soundEffectInstance_4.Dispose();
-        
 
+    }
+
+
+    public static void Dispose(object sender, EventArgs e)
+    {
+        shouldQuit = true;       
     }
 
 }
