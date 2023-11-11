@@ -17,7 +17,7 @@ class MainMenu
         Loading,
         InActive,
     }
-    public State state = State.Start;
+    public State state {get; private set;} = State.Start;
 
     private GameArguments gameArguments;
 
@@ -76,7 +76,7 @@ class MainMenu
         this.gameArguments = new GameArguments();
     }
 
-    private void EnterState(State newState)
+    public void EnterState(State newState)
     {
 
         switch (newState)

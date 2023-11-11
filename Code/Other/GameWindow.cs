@@ -1,5 +1,6 @@
 ﻿﻿using System;
 using System.Net;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -91,7 +92,7 @@ public class GameWindow : Game
         this.mainMenu = new MainMenu(new Point(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight));
 
         this.state = State.MainMenu;
-        this.mainMenu.state = MainMenu.State.Start;
+        this.mainMenu.EnterState(MainMenu.State.Start);
         ThemePlayer.Load();
 
         _ = new Booster();
@@ -129,7 +130,7 @@ public class GameWindow : Game
                 this.map = new Map(arguments.mapPath);
                 Building.SetGrid(this.map.SourceImage);
                 this.level = new Level(arguments);
-                this.mainMenu.state = MainMenu.State.InActive;
+                this.mainMenu.EnterState(MainMenu.State.InActive);
             }
             this.mainMenu.UpdateByMouse(contextMouseState);
             this.mainMenu.UpdateByKeyboard(contextKeyboardState);

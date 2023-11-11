@@ -76,11 +76,9 @@ static class ThemePlayer
         soundEffectInstance_3.Play();
         soundEffectInstance_4.Play();
 
-        int counter = 0;
-
         while (MainMenuState != MainMenu.State.InActive && shouldQuit == false)
         {
-            //Console.WriteLine($"Is alive! {counter++}, should quit {shouldQuit}");
+            Console.WriteLine($"Is alive! {MainMenuState}");
 
             switch (MainMenuState)
             {
@@ -114,7 +112,12 @@ static class ThemePlayer
                     soundEffectInstance_3.Volume = 0.5f;
                     soundEffectInstance_4.Volume = 0.5f;  
                     break;
-
+                case MainMenu.State.InActive:
+                    soundEffectInstance_1.Volume = 0.0f;
+                    soundEffectInstance_2.Volume = 0.0f;
+                    soundEffectInstance_3.Volume = 0.0f;
+                    soundEffectInstance_4.Volume = 0.5f;  
+                    break;
                 default:
                     break;                  
             }
@@ -129,7 +132,7 @@ static class ThemePlayer
                 soundEffectInstance_1.Play();
                 soundEffectInstance_2.Play();
                 soundEffectInstance_3.Play();
-                soundEffectInstance_4.Play();                
+                soundEffectInstance_4.Play();
             }
 
             Thread.Sleep(0);
