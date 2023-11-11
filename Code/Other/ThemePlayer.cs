@@ -78,7 +78,6 @@ static class ThemePlayer
 
         while (MainMenuState != MainMenu.State.InActive && shouldQuit == false)
         {
-            Console.WriteLine($"Is alive! {MainMenuState}");
 
             switch (MainMenuState)
             {
