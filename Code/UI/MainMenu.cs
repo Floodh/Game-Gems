@@ -95,6 +95,7 @@ class MainMenu
                 break;                                               
         }
         this.state = newState;
+        ThemePlayer.MainMenuState = newState;
 
     }
 

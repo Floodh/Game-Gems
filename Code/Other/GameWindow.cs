@@ -91,6 +91,7 @@ public class GameWindow : Game
 
         this.state = State.MainMenu;
         this.mainMenu.state = MainMenu.State.Start;
+        ThemePlayer.Load();
 
         _ = new Booster();
         _ = new Cannon();
@@ -99,6 +100,10 @@ public class GameWindow : Game
         _ = new Wall();
 
         // TODO: use this.Content to load your game content here
+
+
+        //  REMOVE THIS, edventually
+            ThemePlayer.Start_PlayTheme_MainMenu();
     }
 
     protected override void Update(GameTime gameTime)

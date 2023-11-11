@@ -9,7 +9,7 @@ readonly struct Resources
     public static int Green     {get => Current.green;}
     public static int Purple    {get => Current.purple;}
     public static int Orange    {get => Current.orange;}
-    public static Resources Current {get; private set;} = new Resources(64,0,0,0);
+    public static Resources Current {get; private set;} = new Resources(800,800,800,800);
 
     public static bool CanBuy(Resources resources)
     {
