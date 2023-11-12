@@ -8,11 +8,11 @@ static class ThemePlayer
 {
 
     private const string Path_MainMenuTheme_Folder = "Data/Audio/Music_MainMenu/";
-    private const string Path_MainMenuTheme_1 = $"{Path_MainMenuTheme_Folder}/TestEnviroment_1.wav";
-    private const string Path_MainMenuTheme_2 = $"{Path_MainMenuTheme_Folder}/TestEnviroment_2.wav";
-    private const string Path_MainMenuTheme_3 = $"{Path_MainMenuTheme_Folder}/TestEnviroment_3.wav";
-    private const string Path_MainMenuTheme_4 = $"{Path_MainMenuTheme_Folder}/TestEnviroment_4.wav";
-    private const string Path_MainMenuTheme_Master = $"{Path_MainMenuTheme_Folder}/TestEnviroment_1.wav";
+    private const string Path_MainMenuTheme_1 = $"{Path_MainMenuTheme_Folder}/TestEnviroment_Insert 1.wav";
+    private const string Path_MainMenuTheme_2 = $"{Path_MainMenuTheme_Folder}/TestEnviroment_Insert 2.wav";
+    private const string Path_MainMenuTheme_3 = $"{Path_MainMenuTheme_Folder}/TestEnviroment_Insert 3.wav";
+    private const string Path_MainMenuTheme_4 = $"{Path_MainMenuTheme_Folder}/TestEnviroment_Insert 4.wav";
+    private const string Path_MainMenuTheme_Master = $"{Path_MainMenuTheme_Folder}/TestEnviroment_Master.wav";
     
 
 
@@ -66,10 +66,10 @@ static class ThemePlayer
         soundEffectInstance_3.Volume = 0.0f;
         soundEffectInstance_4.Volume = 0.0f;
 
-        // soundEffectInstance_1.IsLooped = true;
-        // soundEffectInstance_2.IsLooped = true;
-        // soundEffectInstance_3.IsLooped = true;
-        // soundEffectInstance_4.IsLooped = true;
+        soundEffectInstance_1.IsLooped = true;
+        soundEffectInstance_2.IsLooped = true;
+        soundEffectInstance_3.IsLooped = true;
+        soundEffectInstance_4.IsLooped = true;
 
         soundEffectInstance_1.Play();
         soundEffectInstance_2.Play();
@@ -108,7 +108,7 @@ static class ThemePlayer
                 case MainMenu.State.Loading:
                     soundEffectInstance_1.Volume = 0.0f;
                     soundEffectInstance_2.Volume = 0.5f;
-                    soundEffectInstance_3.Volume = 0.5f;
+                    soundEffectInstance_3.Volume = 0.0f;
                     soundEffectInstance_4.Volume = 0.5f;  
                     break;
                 case MainMenu.State.InActive:
@@ -121,22 +121,14 @@ static class ThemePlayer
                     break;                  
             }
 
-            if (soundEffectInstance_4.State != SoundState.Playing)
-            {
-                soundEffectInstance_1.Stop();
-                soundEffectInstance_2.Stop();
-                soundEffectInstance_3.Stop();
-                soundEffectInstance_4.Stop();
-
-                soundEffectInstance_1.Play();
-                soundEffectInstance_2.Play();
-                soundEffectInstance_3.Play();
-                soundEffectInstance_4.Play();
-            }
-
             Thread.Sleep(0);
 
         }
+
+        soundEffectInstance_1.Stop();
+        soundEffectInstance_2.Stop();
+        soundEffectInstance_3.Stop();
+        soundEffectInstance_4.Stop();
 
         soundEffectInstance_1.Dispose();
         soundEffectInstance_2.Dispose();
