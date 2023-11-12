@@ -76,50 +76,55 @@ static class ThemePlayer
         soundEffectInstance_3.Play();
         soundEffectInstance_4.Play();
 
+        MainMenu.State previusState = MainMenu.State.InActive;
+
         while (MainMenuState != MainMenu.State.InActive && shouldQuit == false)
         {
 
-            switch (MainMenuState)
-            {
-                case MainMenu.State.Start:
-                    soundEffectInstance_1.Volume = 0.5f;
-                    soundEffectInstance_2.Volume = 0.0f;
-                    soundEffectInstance_3.Volume = 0.0f;
-                    soundEffectInstance_4.Volume = 0.0f;  
-                    break;
-                case MainMenu.State.SelectMap:
-                    soundEffectInstance_1.Volume = 0.5f;
-                    soundEffectInstance_2.Volume = 0.5f;
-                    soundEffectInstance_3.Volume = 0.0f;
-                    soundEffectInstance_4.Volume = 0.0f;  
-                    break;
-                case MainMenu.State.SelectAvatar:
-                    soundEffectInstance_1.Volume = 0.5f;
-                    soundEffectInstance_2.Volume = 0.5f;
-                    soundEffectInstance_3.Volume = 0.5f;
-                    soundEffectInstance_4.Volume = 0.0f;  
-                    break;
-                case MainMenu.State.SelectCollcectionBonus:
-                    soundEffectInstance_1.Volume = 0.5f;
-                    soundEffectInstance_2.Volume = 0.5f;
-                    soundEffectInstance_3.Volume = 0.5f;
-                    soundEffectInstance_4.Volume = 0.5f;  
-                    break;                                        
-                case MainMenu.State.Loading:
-                    soundEffectInstance_1.Volume = 0.0f;
-                    soundEffectInstance_2.Volume = 0.5f;
-                    soundEffectInstance_3.Volume = 0.0f;
-                    soundEffectInstance_4.Volume = 0.5f;  
-                    break;
-                case MainMenu.State.InActive:
-                    soundEffectInstance_1.Volume = 0.0f;
-                    soundEffectInstance_2.Volume = 0.0f;
-                    soundEffectInstance_3.Volume = 0.0f;
-                    soundEffectInstance_4.Volume = 0.5f;  
-                    break;
-                default:
-                    break;                  
-            }
+            MainMenu.State readState = MainMenuState;   //  this assignment is important
+            if (readState != previusState)
+                switch (readState)
+                {
+                    case MainMenu.State.Start:
+                        soundEffectInstance_1.Volume = 0.5f;
+                        soundEffectInstance_2.Volume = 0.0f;
+                        soundEffectInstance_3.Volume = 0.0f;
+                        soundEffectInstance_4.Volume = 0.0f;  
+                        break;
+                    case MainMenu.State.SelectMap:
+                        soundEffectInstance_1.Volume = 0.5f;
+                        soundEffectInstance_2.Volume = 0.5f;
+                        soundEffectInstance_3.Volume = 0.0f;
+                        soundEffectInstance_4.Volume = 0.0f;  
+                        break;
+                    case MainMenu.State.SelectAvatar:
+                        soundEffectInstance_1.Volume = 0.5f;
+                        soundEffectInstance_2.Volume = 0.5f;
+                        soundEffectInstance_3.Volume = 0.5f;
+                        soundEffectInstance_4.Volume = 0.0f;  
+                        break;
+                    case MainMenu.State.SelectCollcectionBonus:
+                        soundEffectInstance_1.Volume = 0.5f;
+                        soundEffectInstance_2.Volume = 0.5f;
+                        soundEffectInstance_3.Volume = 0.5f;
+                        soundEffectInstance_4.Volume = 0.5f;  
+                        break;                                        
+                    case MainMenu.State.Loading:
+                        soundEffectInstance_1.Volume = 0.0f;
+                        soundEffectInstance_2.Volume = 0.5f;
+                        soundEffectInstance_3.Volume = 0.0f;
+                        soundEffectInstance_4.Volume = 0.5f;  
+                        break;
+                    case MainMenu.State.InActive:
+                        soundEffectInstance_1.Volume = 0.0f;
+                        soundEffectInstance_2.Volume = 0.0f;
+                        soundEffectInstance_3.Volume = 0.0f;
+                        soundEffectInstance_4.Volume = 0.5f;  
+                        break;
+                    default:
+                        break;                  
+                }
+            previusState = readState;
 
             Thread.Sleep(0);
 

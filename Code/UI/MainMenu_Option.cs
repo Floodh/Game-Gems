@@ -7,8 +7,8 @@ class MainMenu_Option
 {
 
     private const double StartYPercentage = 0.25;
-    private const double BufferPercantage = 0.025;
-    private const double WidthPercentage = 0.155;
+    private const double BufferPercantage = 0.0225;
+    private const double WidthPercentage = 0.125;
     private const double HeightPercentage = WidthPercentage;
     private const double InnerBufferPercentage = WidthPercentage / 4;
 
