@@ -6,9 +6,10 @@ using MonoGame.Extended.BitmapFonts;
 
 class DayNightCycle
 {
-
-    public const int DayDuration_sec = 60;
-    public const int NightDuration_sec = 60;
+    public const int DayDuration_sec = 20;
+    public const int NightDuration_sec = 20;
+    // public const int DayDuration_sec = 160;
+    // public const int NightDuration_sec = 160;
 
     public const int DayDuration_tick = (int)Level.tickPerSec * DayDuration_sec;
     public const int NightDuration_tick = (int)Level.tickPerSec * NightDuration_sec;
@@ -74,22 +75,23 @@ class DayNightCycle
 
         if (this.IsDay)
         {
-            Sunlight.Mask = new Color(0.85f,0.85f,0.85f,1.0f);
+            Sunlight.AlterSunlight(0.85f,0.85f,0.85f);
             this.text = $"Day : {dayNumber}";
-            this.countdownText = $"{DayDuration_sec - timeLeft / (int)Level.tickPerSec}";
+            this.countdownText = $"{timeLeft / (int)Level.tickPerSec}";
             this.textColor = Color.Yellow;
             this.RecaulcuateRendering();
         }
         else
         {
-            Sunlight.Mask = new Color(0.55f,0.55f,0.55f,1.0f);
+            Sunlight.AlterSunlight(0.55f ,0.55f,0.55f);
             this.text = $"Night : {nightNumber}";
-            this.countdownText = $"{DayDuration_sec - timeLeft / (int)Level.tickPerSec}";
+            this.countdownText = $"{timeLeft / (int)Level.tickPerSec}";
             this.textColor = Color.DarkCyan;
             this.RecaulcuateRendering();
         }
 
     }
+
 
     public void SetWindowSize(Point size)
     {

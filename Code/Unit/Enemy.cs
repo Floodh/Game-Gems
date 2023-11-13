@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-class Enemy : Unit
+abstract class Enemy : Unit
 {
     protected const int sunDmg = 1000;
     public static int NumberOfEnemies {get; protected set;}

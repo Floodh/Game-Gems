@@ -159,6 +159,7 @@ class Map
     {
         Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height); 
         drawArea = Camera.ModifiedDrawArea(drawArea, Camera.zoomLevel);
+        Console.WriteLine($"sunlight mask : {Sunlight.Mask}");
         GameWindow.spriteBatch.Draw(drawTexture, drawArea, Sunlight.Mask);
         //Console.WriteLine($"texture size : {this.drawTexture.Width}, {this.drawTexture.Height}");
     }
