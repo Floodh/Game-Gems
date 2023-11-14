@@ -54,7 +54,6 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
         if (gridArea != Rectangle.Empty)
         {
             GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
-            hpBar.Update();
             hpBar.Draw();
         }
         base.Draw();

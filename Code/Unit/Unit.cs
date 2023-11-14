@@ -44,11 +44,14 @@ abstract class Unit : Targetable
         }
     }
 
+    protected HealthBar hpBar;
+
     public Unit(Faction faction, Point gridPosition)
         : base(faction)
     {
         allUnits.Add(this);
         this.GridArea = new Rectangle(gridPosition, new Point(1,1));
+        hpBar = new HealthBar(this);
     }
 
     protected Rectangle DrawArea 
@@ -60,11 +63,14 @@ abstract class Unit : Targetable
     }
     
     public virtual void Draw()
-    {}
+    {
+        this.hpBar.Draw();
+    }
 
     public override void Tick()
     {
         base.Tick();
+        this.hpBar.Update();
     }
 
     protected override void Die()

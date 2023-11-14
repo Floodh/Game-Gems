@@ -44,7 +44,6 @@ class Booster : UpgradeableBuilding
         {
             Rectangle rect = new(DrawArea.X+32, DrawArea.Y-8-64, DrawArea.Width/2, DrawArea.Height/2*3);
             GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
-            hpBar.Update();
             hpBar.Draw();
         }
     }

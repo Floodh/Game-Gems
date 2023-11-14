@@ -13,7 +13,7 @@ abstract class Building : Targetable
 
     public static List<Building> allBuildings = new List<Building>();
     public static Grid grid;
-    public EState State = EState.Normal;
+    
     
 
     public static void SetGrid(Bitmap sourceImage)
@@ -53,6 +53,7 @@ abstract class Building : Targetable
     }
 
     protected HealthBar hpBar;
+    public EState State = EState.Normal;
 
     public Building(Faction faction)
         : base(faction)
@@ -91,6 +92,7 @@ abstract class Building : Targetable
     public override void Tick()
     {
         base.Tick();
+        this.hpBar.Update();
     }
 
     public bool Place(int x, int y)

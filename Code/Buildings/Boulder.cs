@@ -34,7 +34,6 @@ class Boulder : Building
     public override void Tick()
     {
         base.Tick();
-        this.hpBar.Update();
     }
 
     public override void PlayerInteraction()

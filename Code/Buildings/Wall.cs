@@ -42,7 +42,6 @@ class Wall : UpgradeableBuilding
         {
             Rectangle rect = new(DrawArea.Location, DrawArea.Size);
             GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
-            hpBar.Update();
             hpBar.Draw();
         }
     }
