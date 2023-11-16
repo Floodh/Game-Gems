@@ -34,8 +34,8 @@ class MainMenu
     {
 
         //
-        startButton = new MainMenu_Button(windowSize, 0);
-        exitButton = new MainMenu_Button(windowSize, 1);
+        startButton = new MainMenu_Button(windowSize, 0, "Play");
+        exitButton = new MainMenu_Button(windowSize, 1, "Quit");
         mainMenu_Options[0] = new MainMenu_Option[0];   //  will use special case buttons for this
         //
 

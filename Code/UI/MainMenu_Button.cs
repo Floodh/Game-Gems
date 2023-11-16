@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using FontStashSharp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -26,14 +27,16 @@ class MainMenu_Button
     private const int numberOfOptions = 2;
 
     private Texture2D optionTexture;
+    private String text;
 
     
 
-    public MainMenu_Button(Point windowSize, int index)
+    public MainMenu_Button(Point windowSize, int index, String text)
     {
         this.index = index;
         frameTexture ??= Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/frame2.png");
         this.AdjustDrawArea(windowSize);
+        this.text = text;
     }
 
     public void AdjustDrawArea(Point windowSize)
@@ -70,6 +73,13 @@ class MainMenu_Button
     {
         GameWindow.spriteBatch.Draw(GameWindow.whitePixelTexture, this.drawArea, Color.Gray);
         GameWindow.spriteBatch.Draw(GameWindow.whitePixelTexture, this.textureDrawArea, Color.Red);
+
+        int fontSize = 56;
+        SpriteFontBase font = ResourcesUi.FontSystem.GetFont(fontSize);
+        Vector2 centerOfButtonVec = this.textureDrawArea.Center.ToVector2();
+        Vector2 fontVec = new(font.MeasureString(text).Length() / 2, fontSize / 2);
+        Vector2 vec = centerOfButtonVec - fontVec;
+        GameWindow.spriteBatch.DrawString(font, this.text, vec, Color.Black);   
     }
 
 }
