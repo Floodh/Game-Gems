@@ -94,6 +94,7 @@ public class GameWindow : Game
         this.state = State.MainMenu;
         this.mainMenu.EnterState(MainMenu.State.Start);
         ThemePlayer.Load();
+        EffectPlayer.Load();
 
         _ = new Booster();
         _ = new Cannon();
