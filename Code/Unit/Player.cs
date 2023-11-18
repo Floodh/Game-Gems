@@ -14,6 +14,9 @@ class Player : Unit
 
     private Point gridDestination;
     private Texture2D baseTexture;
+
+
+    private Animation numberAnimation;
     
 
 
@@ -53,6 +56,11 @@ class Player : Unit
                 if (this.currentTarget != null && currentValue == int.MaxValue)
                 {
                     this.currentTarget.PlayerInteraction();
+                    this.numberAnimation ??= new NumberAnimation(Grid.ToDrawArea(this.GridArea), "+1", Color.Red);
+                    this.numberAnimation.drawArea = this.DrawArea;
+                    this.numberAnimation.drawArea.Offset(0, -this.DrawArea.Height * 0.85f);
+
+                    this.numberAnimation.Play();
                 }
                 else
                 {

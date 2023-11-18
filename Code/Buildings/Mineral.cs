@@ -3,6 +3,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
 
 class Mineral : Building
 {
@@ -15,6 +16,23 @@ class Mineral : Building
         Orange = 3,
     }
     public readonly Type type;
+
+    public Color GemColor
+    {
+        get {
+            if (type == Type.Blue)
+                return Color.Blue;
+            else if (type == Type.Green)
+                return Color.Green;
+            else if (type == Type.Purple)
+                return Color.Purple;
+            else if (type == Type.Orange)
+                return Color.Orange;
+            else
+                throw new Exception("Can't get a Color since the Mineral does not have an assigned type.");
+        }
+    }
+
     private static Texture2D[] baseTextures;
 
     public int quantity = 10000;
@@ -23,6 +41,9 @@ class Mineral : Building
         : base(Faction.Neutral)
     {
         this.type = type;
+        Rectangle animationArea = this.GridArea;
+        //this.numberAnimation = new Explosion(new(DrawArea.X+8, DrawArea.Y-4, DrawArea.Width-16, DrawArea.Height-16));
+
         if (baseTextures == null)
         {
             baseTextures = TextureSource.LoadMinerals();       
@@ -70,6 +91,11 @@ class Mineral : Building
                 Resources.Gain(0,0,0,1);
                 break;                                
         }
+
+        // if (this.numberAnimation == null)
+        // {
+            
+        // }
 
     }
 }
