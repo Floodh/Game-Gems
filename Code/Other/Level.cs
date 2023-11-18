@@ -89,6 +89,8 @@ class Level
         Animation.TickAll();
 
         this.dayNightCycle.Tick((int)this.CurrentTick);
+        ThemePlayer.ToggleDayTheme(this.dayNightCycle.IsDay);
+        
 
     }
 

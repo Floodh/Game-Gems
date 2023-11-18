@@ -6,8 +6,8 @@ using MonoGame.Extended.BitmapFonts;
 
 class DayNightCycle
 {
-    public const int DayDuration_sec = 20;
-    public const int NightDuration_sec = 20;
+    public const int DayDuration_sec = 200;
+    public const int NightDuration_sec = 200;
     // public const int DayDuration_sec = 160;
     // public const int NightDuration_sec = 160;
 
