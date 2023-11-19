@@ -1,80 +1,135 @@
 using System;
+using System.Collections.Generic;
+using System.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 abstract class Bar
 {
+    protected const int _baseYOffset = -Map.mapPixelToTexturePixel_Multiplier / 2;
+    protected const int _barSectionWidth = Map.mapPixelToTexturePixel_Multiplier / 8;
+    protected const int _barHeight = Map.mapPixelToTexturePixel_Multiplier / 8;
+    protected const int _barSectionHp = 100;
+    protected const int _barBorderSize = 2;
+    private static Texture2D _whitePixelTexture;
+    protected Targetable _entity;
+    private Vector2 _offsetVec;
+    private readonly Color _borderColor;
+    private readonly Color _emptyColor;
+    private readonly Color _fillColor;
+    protected Vector2 _position;
+    protected int _numSections;
 
-    protected const int baseYoffset = -Map.mapPixelToTexturePixel_Multiplier / 2;
-    protected const int barSectionWidth = Map.mapPixelToTexturePixel_Multiplier / 8;
-    protected const int barHeight = Map.mapPixelToTexturePixel_Multiplier / 8;
-    protected const int barBorderSize = 2;
-    protected const int barSectionHp = 100;
-    
-
-    private readonly Color borderColor;
-    private readonly Color emptyColor;
-    private readonly Color fillColor;
-
-    private static Texture2D whitePixelTexture;
-    protected Targetable entity;
-
-    private Rectangle borderDrawArea;
-    private Rectangle emptyDrawArea;
-    private Rectangle fillDrawArea;
-
-    private Point offset;
-
-    private int sections;
-
-    public Bar(Targetable building, Color fillColor, Color emptyColor, Color borderColor, Point offset)
+    public Bar(Targetable building, Color fillColor, Color emptyColor, Color borderColor, Vector2 offsetVec)
     {
-        this.fillColor = fillColor;
-        this.emptyColor = emptyColor;
-        this.borderColor = borderColor;
-        this.entity = building;
-        this.offset = offset;
-        if (whitePixelTexture == null)
-        {
-            whitePixelTexture = new(GameWindow.graphicsDevice, 1, 1);
-            whitePixelTexture.SetData(new Color[] { Color.White });
-        }
-
+        _entity = building;
+        _offsetVec = offsetVec;
+        _fillColor = fillColor;
+        _emptyColor = emptyColor;
+        _borderColor = borderColor;
     }
+
+    public Point Size
+    {
+        get
+        {
+            if(MaxUnit() <= 1600) // fix
+            {
+            return new Point(
+                (SectionSize.X + _barBorderSize) * _numSections + _barBorderSize * 1,
+                 SectionSize.Y + _barBorderSize * 2);
+            }
+            else
+            {
+                return new Point(
+                (SectionSize.X + _barBorderSize) * _numSections / 2 + _barBorderSize * 1,
+                 SectionSize.Y + _barBorderSize * 2);
+            }
+        }
+    }
+
+    public static Point SectionSize
+    {
+        get { return new Point(_barSectionWidth - _barBorderSize * 0, _barHeight - _barBorderSize * 2); }
+    }
+
+    public static Texture2D GetWhiteTexture()
+    {
+        if (_whitePixelTexture == null)
+        {
+            _whitePixelTexture = new(GameWindow.graphicsDevice, 1, 1);
+            _whitePixelTexture.SetData(new Color[] { Color.White });
+        }
+        return _whitePixelTexture;
+    }
+
+
     public void Update()
     {
-        Point center = this.entity.TargetPosition;
-        center.X += this.offset.X;
-        center.Y += baseYoffset + this.offset.Y;
+        Vector2 centerVec = _entity.TargetPosition.ToVector2();
+        centerVec += _offsetVec + new Vector2(0, _baseYOffset); // What is _baseYOffset?
+        _position = centerVec - Size.ToVector2()/2;
 
-        sections = entity.MaxHp / barSectionHp;
-        sections = Math.Max(1, sections);
-        int width = barBorderSize * (sections + 1) + barSectionWidth * sections;
-        borderDrawArea = new Rectangle(center.X - width / 2, center.Y, width, barHeight);
 
-        // Calculate the position and size of the filled portion of the health bar
-        double percentace = this.Percentace();
-        int internalWidth = (borderDrawArea.Width - barBorderSize * 2);
-        int fillWidth = (int)(internalWidth * percentace);
-        this.emptyDrawArea = new Rectangle(borderDrawArea.X + barBorderSize, borderDrawArea.Y + barBorderSize, internalWidth, barHeight - barBorderSize * 2);
-        this.fillDrawArea = new Rectangle(borderDrawArea.X + barBorderSize, borderDrawArea.Y + barBorderSize, fillWidth, barHeight - barBorderSize * 2);
+        _numSections = MaxUnit() / 100; // fix
     }
+
     public void Draw()
     {
-        Rectangle transformedBorderDrawArea = Camera.ModifiedDrawArea(borderDrawArea, Camera.zoomLevel);
-        Rectangle transformedEmptyDrawArea = Camera.ModifiedDrawArea(emptyDrawArea, Camera.zoomLevel);
-        Rectangle transformedFillDrawArea = Camera.ModifiedDrawArea(fillDrawArea, Camera.zoomLevel);
-        GameWindow.spriteBatch.Draw(whitePixelTexture, transformedBorderDrawArea, borderColor);
-        GameWindow.spriteBatch.Draw(whitePixelTexture, transformedEmptyDrawArea, emptyColor);
-        GameWindow.spriteBatch.Draw(whitePixelTexture, transformedFillDrawArea, fillColor);
-        for (int section = 1; section < this.sections; section++)
+        int gaugeMaxWidth = Size.X - 2 * _barBorderSize;
+  
+        if(MaxUnit() <= 1600) // fix
         {
-            Rectangle sectionDividerArea = new Rectangle(this.borderDrawArea.X + section * (barBorderSize + barSectionWidth), this.borderDrawArea.Y, barBorderSize, barHeight);
-            Rectangle transformedSectionDividerArea = Camera.ModifiedDrawArea(sectionDividerArea, Camera.zoomLevel);
-            GameWindow.spriteBatch.Draw(whitePixelTexture, transformedSectionDividerArea, borderColor);
+            int width = (int)(gaugeMaxWidth * Percentace());
+            DrawBar(_position,
+                width, gaugeMaxWidth, _numSections);
+        }
+        else // If above 1600, draw in 2 bars
+        {
+            int dmg = Convert.ToInt32((1 - Percentace()) * gaugeMaxWidth * 2);
+            int width1 = gaugeMaxWidth * 2 - dmg;
+            width1 = Math.Clamp(width1, 0, gaugeMaxWidth);
+            int width2 = gaugeMaxWidth - dmg;
+  
+            DrawBar(_position, 
+                width1, gaugeMaxWidth, _numSections / 2);
+            DrawBar(_position + new Vector2(0, Size.Y - _barBorderSize), 
+                width2, gaugeMaxWidth, _numSections / 2);
+        }
+    }
+
+    protected void DrawBar(Vector2 position, int width, int gaugeMaxWidth, int numSections)
+    {
+        // Black background
+        Rectangle outerRect = new (position.ToPoint(), Size);
+        outerRect = Camera.ModifiedDrawArea(outerRect, Camera.zoomLevel);
+        GameWindow.spriteBatch.Draw(GetWhiteTexture(), outerRect, _borderColor);
+
+        // First section location
+        Vector2 sectionPos = position + new Vector2(_barBorderSize, _barBorderSize);
+
+        // Gauge background
+        Point gaugeBgSize = new(gaugeMaxWidth, SectionSize.Y);
+        Rectangle gaugeBgRect = new (sectionPos.ToPoint(), gaugeBgSize);
+        gaugeBgRect = Camera.ModifiedDrawArea(gaugeBgRect, Camera.zoomLevel);
+        GameWindow.spriteBatch.Draw(GetWhiteTexture(), gaugeBgRect, _emptyColor);
+
+        // Gauge foreground (current health/energy)
+        Point gaugeSize = new(width, SectionSize.Y);
+        Rectangle gaugeRect = new (sectionPos.ToPoint(), gaugeSize);
+        gaugeRect = Camera.ModifiedDrawArea(gaugeRect, Camera.zoomLevel);
+        GameWindow.spriteBatch.Draw(GetWhiteTexture(), gaugeRect, _fillColor);
+
+        // Draw divider lines
+        for(int dividerIndex = 1; dividerIndex < numSections; dividerIndex++)
+        {
+            Vector2 from = sectionPos + new Vector2(dividerIndex * (SectionSize.X + _barBorderSize) - _barBorderSize, - _barBorderSize);
+            Vector2 to = from + new Vector2(0, SectionSize.Y + _barBorderSize);
+            GameWindow.spriteBatch.DrawLine(Camera.ModifyPoint(from), Camera.ModifyPoint(to), _borderColor, _barBorderSize);
         }
     }
 
     protected abstract double Percentace();
+    protected abstract int MaxUnit();
 
 }

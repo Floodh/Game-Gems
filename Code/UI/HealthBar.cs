@@ -10,12 +10,19 @@ class HealthBar : Bar
     private static readonly Color freindlyEmptyColor = Color.DarkRed;
 
     public HealthBar(Targetable building)
-        : base(building, building.faction == Faction.Enemy ?  enemyFillColor : freindlyFillColor, building.faction == Faction.Enemy ?  enemyEmptyColor : freindlyEmptyColor, Color.Black, Point.Zero)
+        : base(building,
+        building.faction == Faction.Enemy ?  enemyFillColor : freindlyFillColor,
+        building.faction == Faction.Enemy ?  enemyEmptyColor : freindlyEmptyColor,
+        Color.Black, Vector2.Zero)
     {}
-
 
     protected override double Percentace()
     {
-        return (double)entity.Hp / entity.MaxHp;
+        return (double)_entity.Hp / _entity.MaxHp;
+    }
+
+    protected override int MaxUnit()
+    {
+        return _entity.MaxHp;
     }
 }
