@@ -13,7 +13,8 @@ static class ThemePlayer
     private const string Path_MainMenuTheme_3 = $"{Path_MainMenuTheme_Folder}/TestEnviroment_Insert 3.wav";
     private const string Path_MainMenuTheme_4 = $"{Path_MainMenuTheme_Folder}/TestEnviroment_Insert 4.wav";
     private const string Path_MainMenuTheme_Master = $"{Path_MainMenuTheme_Folder}/TestEnviroment_Master.wav";
-    
+    private const string Path_DayTheme = $"{Path_MainMenuTheme_Folder}/DayTheme_Normal.wav";
+    private const string Path_NightTheme = $"{Path_MainMenuTheme_Folder}/DayTheme_Ambiance.wav";    
 
 
     //  load 4 sound effect from .wav files
@@ -23,6 +24,11 @@ static class ThemePlayer
     static SoundEffect soundEffect_2;
     static SoundEffect soundEffect_3;
     static SoundEffect soundEffect_4;
+    static SoundEffect dayEffect;
+    static SoundEffect nightEffect;
+
+    static SoundEffectInstance dayEffectInstance;
+    static SoundEffectInstance nightEffectInstance;
 
     static readonly Thread thread = new Thread(PlayTheme_MainMenu);
 
@@ -40,6 +46,10 @@ static class ThemePlayer
         soundEffect_2 = SoundEffect.FromFile(Path_MainMenuTheme_2);
         soundEffect_3 = SoundEffect.FromFile(Path_MainMenuTheme_3);
         soundEffect_4 = SoundEffect.FromFile(Path_MainMenuTheme_4);
+        dayEffect = SoundEffect.FromFile(Path_DayTheme);
+        nightEffect = SoundEffect.FromFile(Path_NightTheme);
+        dayEffectInstance = dayEffect.CreateInstance();
+        nightEffectInstance = nightEffect.CreateInstance();
     }
 
     public static void Start_PlayTheme_MainMenu(MainMenu.State mainMenuState = MainMenu.State.Start)
@@ -140,6 +150,27 @@ static class ThemePlayer
         soundEffectInstance_3.Dispose();
         soundEffectInstance_4.Dispose();
 
+    }
+
+    private static bool oldIsDayValue = false;
+    public static void ToggleDayTheme(bool isDay)
+    {
+        
+        if (isDay != oldIsDayValue)
+        {
+            Console.WriteLine($"Switching acording to value : {isDay}");
+            oldIsDayValue = isDay;
+            if (isDay)
+            {
+                nightEffectInstance.Stop();
+                dayEffectInstance.Play();
+            }
+            else
+            {
+                dayEffectInstance.Stop();
+                nightEffectInstance.Play();            
+            }
+        }
     }
 
 

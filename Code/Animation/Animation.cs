@@ -5,53 +5,65 @@ using Microsoft.Xna.Framework.Graphics;
 
 class Animation
 {
-    private static List<Animation> allAnimations = new List<Animation>();
+    private class PlayInstance
+    {
+        public Animation animation;
+        public int frameCounter;
+        public PlayInstance(Animation animation)
+        {
+            this.animation = animation;
+            this.frameCounter = 0;
+        }
+    }
+
+
+    private static List<PlayInstance> allAnimations = new List<PlayInstance>();
 
     public static void DrawAll()
     {
-        foreach (Animation animation in allAnimations)
+        foreach (PlayInstance animationInstance in allAnimations)
         {
-            animation.Draw();
+            //Console.WriteLine($"         frame counter {animationInstance.frameCounter}");
+            animationInstance.animation.Draw(animationInstance.frameCounter);
         }
     }
     public static void TickAll()
     {
+        //Console.WriteLine($"tick : ");
         for (int i = 0; i < allAnimations.Count; i++)
         {
-            Animation animation = allAnimations[i];
-            if (animation.IsPlaying == false)
+            
+            PlayInstance animationInstance = allAnimations[i];
+            animationInstance.frameCounter++;
+            //Console.WriteLine($"    {i}, {animationInstance.frameCounter}, {animationInstance.animation.Duration}");
+            if (animationInstance.frameCounter >= animationInstance.animation.Duration * animationInstance.animation.frameDuration)
             {
-                i--;
-                allAnimations.Remove(animation);
-                animation.IsPlaying = false;
+                allAnimations.RemoveAt(i--);
+                animationInstance.animation.numberOfActiveAnimations--;
             }
         }        
 
     }
 
-    public static void Remove(Animation animation)
-    {
-        allAnimations.Remove(animation);
-    }
-
-
     public static void PlayAnimation(Animation animation)
     {
-        allAnimations.Add(animation);
-        animation.IsPlaying = true;
-        animation.currentFrame = 0;
+        allAnimations.Add(new PlayInstance(animation));
+
+        animation.numberOfActiveAnimations++;
+        //animation.currentFrame = 0;
         //Console.WriteLine($"     - {animation.IsPlaying}");
     }
 
-    int currentFrame = 0;
+    //int currentFrame = 0;
     readonly Texture2D[] frames;
-    Rectangle drawArea;
+    public Rectangle drawArea;
     readonly int frameDuration;
     private bool useModifiedDrawArea = true;
 
     int Duration {get {return this.frames.Length;}}
 
-    public bool IsPlaying{get; private set;}
+    public bool IsPlaying{get {return numberOfActiveAnimations > 0;}}
+    private int numberOfActiveAnimations = 0;
 
     public Animation(Tuple<Texture2D[], Rectangle> data, int frameDuration, bool useModifiedDrawArea = true)
         :   this(data.Item1, data.Item2, frameDuration, useModifiedDrawArea)
@@ -59,6 +71,9 @@ class Animation
 
     public Animation(Texture2D[] frames, Rectangle drawArea, int frameDuration, bool useModifiedDrawArea = true)
     {
+        if (drawArea == Rectangle.Empty)
+            throw new ArgumentException("Draw area should not be empty!");
+
         this.frames = frames;
         this.drawArea = drawArea;
         this.frameDuration = frameDuration;
@@ -76,20 +91,15 @@ class Animation
         PlayAnimation(this);
     }
 
-    private void Draw()
+    private void Draw(int currentFrame)
     {
         //Console.WriteLine("Is drawing...");
 
         if (currentFrame/frameDuration < Duration)
         {
             Rectangle rect = useModifiedDrawArea ? Camera.ModifiedDrawArea(drawArea, Camera.zoomLevel) : drawArea;
-            GameWindow.spriteBatch.Draw(this.frames[currentFrame++ / frameDuration], rect, Color.White);
-        }
-        else
-        {
-            this.IsPlaying = false;
-        }
-        
+            GameWindow.spriteBatch.Draw(this.frames[currentFrame / frameDuration], rect, Color.White);
+        } 
     }
 
 

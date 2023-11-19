@@ -93,6 +93,8 @@ class Projectile
         allProjectiles.Add(this);
 
         MoveToTarget(this.speed * preMoveTicks);
+
+        EffectPlayer.Play(EffectPlayer.EffectType.Plop);
     }
 
     // protected virtual void Hit()
