@@ -49,7 +49,9 @@ static class ThemePlayer
         dayEffect = SoundEffect.FromFile(Path_DayTheme);
         nightEffect = SoundEffect.FromFile(Path_NightTheme);
         dayEffectInstance = dayEffect.CreateInstance();
+        dayEffectInstance.IsLooped = true;
         nightEffectInstance = nightEffect.CreateInstance();
+        nightEffectInstance.IsLooped = true;
     }
 
     public static void Start_PlayTheme_MainMenu(MainMenu.State mainMenuState = MainMenu.State.Start)
