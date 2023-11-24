@@ -196,8 +196,9 @@ class Grid
     }
 
     //  same logic as with CalculateEnemyValue(Building building) 
-    public void CalculatePlayerValue(Targetable target)
+    public void CalculatePlayerValue(Targetable target, Point playerPosition)
     {
+        this.Mark(playerPosition, false);
         this.ClearValue(playerValue);
         Rectangle area = target.GridArea;
         for (int x = area.Left; x < area.Right; x++)
@@ -206,11 +207,13 @@ class Grid
                 this.CalculateValue(x, y, 0, playerValue);
             }
         PresentValue(this.enemyValue);
+        this.Mark(playerPosition, true);
     }
 
     //  slightly different logic since we wan't to arrive at this point
-    public void CalculatePlayerValue(Point gridDestination)
+    public void CalculatePlayerValue(Point gridDestination, Point playerPosition)
     {
+        this.Mark(playerPosition, false);
         this.ClearValue(playerValue);
         if (playerValue[gridDestination.Y][gridDestination.X] != int.MinValue)
         {
@@ -221,6 +224,7 @@ class Grid
         {
             Console.WriteLine($"{gridDestination} is taken, value = {playerValue[gridDestination.X][gridDestination.Y]}");
         }
+        this.Mark(playerPosition, true);
     }
 
     public static readonly int[] offsets = {1,0,-1,0,0,1,0,-1};

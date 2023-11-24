@@ -112,7 +112,7 @@ class Player : Unit
                         this.currentTarget = null;
                         Console.WriteLine("     Recalculateing player destination...");
                         this.gridDestination = gridPoint;
-                        Building.grid.CalculatePlayerValue(this.gridDestination);
+                        Building.grid.CalculatePlayerValue(this.gridDestination, this.GridLocation);
                         Console.WriteLine("     Done!");
                     }
                     else
@@ -123,7 +123,7 @@ class Player : Unit
                         {
                             Console.WriteLine($"     Trying to go next to a target! {ocupant.GridArea}");
                             if (currentTarget != ocupant)
-                                Building.grid.CalculatePlayerValue(ocupant);
+                                Building.grid.CalculatePlayerValue(ocupant, this.GridLocation);
                             this.currentTarget = ocupant;
                         }
                         else
