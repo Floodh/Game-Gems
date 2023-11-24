@@ -15,7 +15,7 @@ class Booster : UpgradeableBuilding
         new Resources(256,256,256,256),
         new Resources(512,512,512,512),
         new Resources(1024,1024,1024,1024),
-    };    
+    };
     private static readonly int[] maxHealth = new int[]
     {
         100,
@@ -30,7 +30,7 @@ class Booster : UpgradeableBuilding
 
     public Booster()
         : base("income-tower3", textureSet)
-    {}
+    { }
 
     public override void Tick()
     {
@@ -42,20 +42,20 @@ class Booster : UpgradeableBuilding
         Rectangle gridArea = this.GridArea;
         if (gridArea != Rectangle.Empty)
         {
-            Rectangle rect = new(DrawArea.X+32, DrawArea.Y-8-64, DrawArea.Width/2, DrawArea.Height/2*3);
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
+            Rectangle rect = new(DrawArea.X + 32, DrawArea.Y - 8 - 64, DrawArea.Width / 2, DrawArea.Height / 2 * 3);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], rect, Sunlight.Mask);
             hpBar.Draw();
         }
     }
     protected override void UpdateStats()
     {
         this.MaxHp = maxHealth[currentTierIndex];
-        this.Hp = this.MaxHp;    
+        this.Hp = this.MaxHp;
     }
     public override Resources GetUpgradeCost()
     {
         return costs[currentTierIndex];
-    }    
+    }
     public static new Building CreateNew()
     {
         return new Booster();
@@ -63,7 +63,7 @@ class Booster : UpgradeableBuilding
 
     public static new Building Buy()
     {
-        if(Resources.BuyFor(costs[0]))
+        if (Resources.BuyFor(costs[0]))
             return CreateNew();
         else
             return null;
@@ -76,9 +76,9 @@ class Booster : UpgradeableBuilding
 
     public static new Rectangle GetRectangle(Point point)
     {
-        return new Rectangle(point.X+32, point.Y-8-64, Map.mapPixelToTexturePixel_Multiplier, Map.mapPixelToTexturePixel_Multiplier*3);
+        return new Rectangle(point.X + 32, point.Y - 8 - 64, Map.mapPixelToTexturePixel_Multiplier, Map.mapPixelToTexturePixel_Multiplier * 3);
     }
-   
+
     public override string ToString()
     {
         return $"Booster : {this.Hp} / {this.MaxHp} / tier:{this.Tier}";

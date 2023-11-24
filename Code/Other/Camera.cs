@@ -1,129 +1,125 @@
-using System;
-using System.Globalization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
-using Size = System.Drawing.Size;
-
-static class Camera
+public class Camera
 {
-    public static Point offset = Point.Zero;
-    // public static Point Center { 
-    //     get {return new Point((int)((offset.X + cameraWindowSize.Width) / zoomLevel), (int)((offset.Y + cameraWindowSize.Height) / zoomLevel));}   
-    //     set {offset = new Point((int)((value.X - cameraWindowSize.Width) * zoomLevel), (int)((value.Y - cameraWindowSize.Height) * zoomLevel));}
-    // }
-
-    private static Size cameraWindowSize;
-    private static Size drawTextureSize;
-
-    public static float zoomLevel = 1.75f; //default zoom level
-    private static float minZoom = 1.0f;
-    private static float maxZoom = 1.75f;
-    private static float zoomSpeed = 0.0009f;
-    private static int previousScrollValue = 0;
-
-    public static void Init(Size mapsize)
+    private const float SPEED = 400;
+    private const float _minZoom = 0.25f, _maxZoom = 2.5f;
+    private int previousScrollValue = 0;
+    public Camera()
     {
-        drawTextureSize = mapsize;
-        cameraWindowSize = drawTextureSize;
-
-        offset = new Point(-mapsize.Width/2, -mapsize.Height/2);
+        Zoom = 1.0f;
     }
-    public static Vector2 ModifyPoint(Vector2 point)
+    // Centered Position of the Camera in pixels.
+    public Vector2 Center { get => _center; set => _center = value; }
+    private Vector2 _center;
+
+    public Point MapSize { get => _mapSize; set => _mapSize = value; }
+    private Point _mapSize;
+
+    public float Zoom { get; private set; }
+    public float Rotation { get; private set; }
+    // Height and width of the viewport window which should be adjusted when the player resizes the game window.
+    public int ViewportWidth { get; set; }
+    public int ViewportHeight { get; set; }
+    // Center of the Viewport does not account for scale
+    public Vector2 ViewportCenter
     {
-        float x = ((point.X + offset.X) * zoomLevel);
-        float y = ((point.Y + offset.Y) * zoomLevel);  
-        return new Vector2(x, y);      
-    }
-    //  untested
-    public static Point ModifyPoint(Point point)
-    {
-        int x = (int)((point.X + offset.X) * zoomLevel);
-        int y = (int)((point.Y + offset.Y) * zoomLevel);  
-        return new Point(x, y);      
-    }
-
-    public static Rectangle ModifiedDrawArea(Rectangle area, float zoomLevel)
-    {
-        int xOffset = (int)((area.X + offset.X) * zoomLevel);
-        int yOffset = (int)((area.Y + offset.Y) * zoomLevel);
-        int width = (int)(area.Width * zoomLevel);
-        int height = (int)(area.Height * zoomLevel);
-
-        return new Rectangle(xOffset, yOffset, width, height);
-    }
-
-    public static bool IsVisible(Rectangle area)
-    {
-
-        Rectangle checkRec = new Rectangle(offset.X, offset.Y, cameraWindowSize.Width, cameraWindowSize.Height);
-        // Check if every corner of 'area' is inside the camera view
-        bool topLeftInside = checkRec.Contains(area.Left, area.Top);
-        bool topRightInside = checkRec.Contains(area.Right, area.Top);
-        bool bottomLeftInside = checkRec.Contains(area.Left, area.Bottom);
-        bool bottomRightInside = checkRec.Contains(area.Right, area.Bottom);
-
-        return topLeftInside && topRightInside && bottomLeftInside && bottomRightInside;
-    }
-
-    public static void UpdateByMouse(MouseState mouseState, GraphicsDeviceManager graphics)
-    {
-
-        // Calculate the scroll delta based on the change in scroll wheel value
-        int scrollDelta = mouseState.ScrollWheelValue - previousScrollValue;
-        previousScrollValue = mouseState.ScrollWheelValue;
-
-        // Calculate the new zoom level and limit it within specified bounds
-        float newZoomLevel = zoomLevel + scrollDelta * zoomSpeed;
-        newZoomLevel = MathHelper.Clamp(newZoomLevel, minZoom, maxZoom);
-
-        // Calculate the change in zoom level
-        float zoomFactor = newZoomLevel / zoomLevel;
-
-        // Calculate the mouse position in world coordinates
-        Point mouseWorldPosition = new Point(
-            (int)((mouseState.Position.X - offset.X) / zoomLevel),
-            (int)((mouseState.Position.Y - offset.Y) / zoomLevel)
-        );
-
-        // Calculate the new camera offset to keep the mouse position fixed while zooming
-        offset.X -= (int)((mouseWorldPosition.X * zoomFactor) - mouseWorldPosition.X);
-        offset.Y -= (int)((mouseWorldPosition.Y * zoomFactor) - mouseWorldPosition.Y);
-
-        // Update the zoom level
-        zoomLevel = newZoomLevel;
-
-        // Adjust camera window size based on the zoom level
-        cameraWindowSize = new Size((int)(drawTextureSize.Width * zoomLevel), (int)(drawTextureSize.Height * zoomLevel));
-    }
-
-    public static void UpdateByKeyboard(KeyboardState keyboardState)
-    {
-        if (keyboardState.IsKeyDown(Keys.Right))
+        get
         {
-            offset.X -= 10;
+            return new Vector2(ViewportWidth * 0.5f, ViewportHeight * 0.5f);
         }
-        if (keyboardState.IsKeyDown(Keys.Left))
+    }
+    // create a matrix for the camera to offset everything we draw, the map and our objects. since the
+    // camera coordinates are where the camera is, we offset everything by the negative of that to simulate
+    // a camera moving. we also cast to integers to avoid filtering artifacts
+    public Matrix TranslationMatrix
+    {
+        get
         {
-            offset.X += 10;
-        }
-        if (keyboardState.IsKeyDown(Keys.Down))
-        {
-            offset.Y -= 10;
-        }
-        if (keyboardState.IsKeyDown(Keys.Up))
-        {
-            offset.Y += 10;
+            return Matrix.CreateTranslation(-(int)Center.X, -(int)Center.Y, 0) *
+                Matrix.CreateRotationZ(Rotation) *
+                Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
+                Matrix.CreateTranslation(new Vector3(ViewportCenter, 0));
         }
     }
 
-    //  untested
-    public static Vector2 ScreenToWorld(Vector2 screenPosition)
+    public void AdjustZoom(float amount)
     {
-        // Inverse of the ModifiedDrawArea logic
-        float worldX = (screenPosition.X / zoomLevel) - offset.X;
-        float worldY = (screenPosition.Y / zoomLevel) - offset.Y;
-        return new Vector2(worldX, worldY);
+        Zoom += amount;
+        if (Zoom < _minZoom)
+            Zoom = _minZoom;
+        else if (Zoom > _maxZoom)
+            Zoom = _maxZoom;
     }
 
+    public Rectangle ViewportWorldBoundry()
+    {
+        Vector2 viewPortCorner = ScreenToWorld(new Vector2(0, 0));
+        Vector2 viewPortBottomCorner = ScreenToWorld(new Vector2(ViewportWidth, ViewportHeight));
+        return new Rectangle((int)viewPortCorner.X, (int)viewPortCorner.Y, (int)(viewPortBottomCorner.X - viewPortCorner.X),
+                                            (int)(viewPortBottomCorner.Y - viewPortCorner.Y));
+    }
+
+    // Clamp the camera so it never leaves the visible area of the map.
+    private Vector2 MapClampedPosition(Vector2 position)
+    {
+        var cameraMax = new Vector2(_mapSize.X - (ViewportWidth / Zoom / 2),
+        _mapSize.Y - (ViewportHeight / Zoom / 2));
+        return Vector2.Clamp(position, new Vector2(ViewportWidth / Zoom / 2, ViewportHeight / Zoom / 2), cameraMax);
+    }
+    public Vector2 WorldToScreen(Vector2 worldPosition)
+    {
+        return Vector2.Transform(worldPosition, TranslationMatrix);
+    }
+    public Vector2 ScreenToWorld(Vector2 screenPosition)
+    {
+        return Vector2.Transform(screenPosition, Matrix.Invert(TranslationMatrix));
+    }
+
+    public void UpdateCenter(Vector2 center, bool clampToMap = false)
+    {
+        _center = center;
+        if (clampToMap)
+            _center = MapClampedPosition(_center);
+    }
+
+    public void UpdateCenterByInput(bool clampToMap = false)
+    {
+        if (InputManager.MovingWASD)
+        {
+            Vector2 vec = Vector2.Normalize(InputManager.DirectionWASD);
+            _center += vec * Camera.SPEED * GameWindow.Time;
+
+            if (clampToMap)
+                _center = MapClampedPosition(_center);
+        }
+        else if (InputManager.MovingArrow) // Secondary key input
+        {
+            Vector2 vec = Vector2.Normalize(InputManager.DirectionArrows);
+            _center += vec * Camera.SPEED * GameWindow.Time;
+
+            if (clampToMap)
+                _center = MapClampedPosition(_center);
+        }
+    }
+
+    public void UpdateZoom(bool clampToMap = false)
+    {
+        var currentMouseState = Mouse.GetState();
+
+        if (currentMouseState.ScrollWheelValue < previousScrollValue)
+        {
+            AdjustZoom(-0.25f);
+        }
+        else if (currentMouseState.ScrollWheelValue > previousScrollValue)
+        {
+            AdjustZoom(+0.25f);
+        }
+        previousScrollValue = currentMouseState.ScrollWheelValue;
+
+        if (clampToMap)
+            _center = MapClampedPosition(_center);
+    }
 }

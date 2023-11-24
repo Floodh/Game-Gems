@@ -76,21 +76,21 @@ class Cannon : UpgradeableBuilding
             int dy = this.target.TargetPosition.X - this.TargetPosition.X;
             int distanceSquared = dx * dx + dy * dy;
             if (initative++ > requiredInitative)
-            if (this.Energy >= dmg[currentTierIndex])
-            if (distanceSquared > this.range * this.range)
-            {
-                this.target = null;
-                initative = requiredInitative / 2;
-            }
-            else
-            {
-                Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
-                this.Energy -= dmg[currentTierIndex];
-                _ = new Projectile(dmg[currentTierIndex], 0, 3.13f, this.target, sourceVec, 2, 5, this.OnHit);
-                initative = 0;
-                if (this.target.IsDead)
-                    this.target = null;
-            }
+                if (this.Energy >= dmg[currentTierIndex])
+                    if (distanceSquared > this.range * this.range)
+                    {
+                        this.target = null;
+                        initative = requiredInitative / 2;
+                    }
+                    else
+                    {
+                        Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
+                        this.Energy -= dmg[currentTierIndex];
+                        _ = new Projectile(dmg[currentTierIndex], 0, 3.13f, this.target, sourceVec, 2, 5, this.OnHit);
+                        initative = 0;
+                        if (this.target.IsDead)
+                            this.target = null;
+                    }
 
         }
         else
@@ -113,8 +113,8 @@ class Cannon : UpgradeableBuilding
         Rectangle gridArea = this.GridArea;
         if (gridArea != Rectangle.Empty)
         {
-            Rectangle rect = new(DrawArea.X+32, DrawArea.Y-8-64, DrawArea.Width/2, DrawArea.Height/2*3);
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
+            Rectangle rect = new(DrawArea.X + 32, DrawArea.Y - 8 - 64, DrawArea.Width / 2, DrawArea.Height / 2 * 3);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], rect, Sunlight.Mask);
             hpBar.Draw();
         }
         this.energyBar.Draw();
@@ -134,12 +134,12 @@ class Cannon : UpgradeableBuilding
         this.MaxHp = maxHealth[currentTierIndex];
         this.AttackDmg = dmg[currentTierIndex];
         this.Hp = this.MaxHp;
-        this.Energy = this.MaxEnergy;        
+        this.Energy = this.MaxEnergy;
     }
     public override Resources GetUpgradeCost()
     {
-        return costs[currentTierIndex+1];
-    }    
+        return costs[currentTierIndex + 1];
+    }
     public static new Building CreateNew()
     {
         return new Cannon();
@@ -147,7 +147,7 @@ class Cannon : UpgradeableBuilding
 
     public static new Building Buy()
     {
-        if(Resources.BuyFor(costs[0]))
+        if (Resources.BuyFor(costs[0]))
             return CreateNew();
         else
             return null;
@@ -160,9 +160,9 @@ class Cannon : UpgradeableBuilding
 
     public static new Rectangle GetRectangle(Point point)
     {
-        return new Rectangle(point.X+32, point.Y-8-64, Map.mapPixelToTexturePixel_Multiplier, Map.mapPixelToTexturePixel_Multiplier*3);
+        return new Rectangle(point.X + 32, point.Y - 8 - 64, Map.mapPixelToTexturePixel_Multiplier, Map.mapPixelToTexturePixel_Multiplier * 3);
     }
-    
+
     public override string ToString()
     {
         return $"Cannon : {this.Hp} / {this.MaxHp} / tier:{this.Tier}";

@@ -8,8 +8,8 @@ class Player : Unit
     public const string Path_BaseTexture = "Data/Texture/Units/wizard1.png";
 
 
-    public Point GridLocation {get{return this.GridArea.Location;}}
-    public bool IsMoving {get{return this.GridLocation != this.gridDestination || currentTarget != null;}}
+    public Point GridLocation { get { return this.GridArea.Location; } }
+    public bool IsMoving { get { return this.GridLocation != this.gridDestination || currentTarget != null; } }
     private Targetable currentTarget = null;
 
     private Point gridDestination;
@@ -17,7 +17,7 @@ class Player : Unit
 
 
     private Animation numberAnimation;
-    
+
 
 
 
@@ -32,8 +32,8 @@ class Player : Unit
 
     public override void Draw()
     {
-        Rectangle playerRect = new(DrawArea.X, DrawArea.Y-8, DrawArea.Width, DrawArea.Height);
-        GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(playerRect, Camera.zoomLevel), Sunlight.Mask);
+        Rectangle playerRect = new(DrawArea.X, DrawArea.Y - 8, DrawArea.Width, DrawArea.Height);
+        GameWindow.spriteBatch.Draw(baseTexture, playerRect, Sunlight.Mask);
         base.Draw();
     }
 
@@ -43,8 +43,8 @@ class Player : Unit
         base.Tick();
 
         this.HandleMouse(
-            GameWindow.contextMouseState, 
-            GameWindow.interactingWithUI, 
+            GameWindow.contextMouseState,
+            GameWindow.interactingWithUI,
             GameWindow.interactingWithContextMenu,
              GameWindow.interactingWithSelectableBuilding);
         if (this.IsMoving)
@@ -80,16 +80,16 @@ class Player : Unit
                             }
                         }
                     }
-                    
+
                     //  verification of the new position has already been done
                     if (nextPos != this.GridArea.Location)
                     {
-                        this.MoveToFrom(nextPos, this.GridArea.Location);                
-                        this.GridArea = new Rectangle(nextPos, new Point(1,1));
-                        Building.grid.CalculateEnemyValue();   
+                        this.MoveToFrom(nextPos, this.GridArea.Location);
+                        this.GridArea = new Rectangle(nextPos, new Point(1, 1));
+                        Building.grid.CalculateEnemyValue();
                     }
                 }
-            }            
+            }
         }
     }
     private void HandleMouse(MouseState mouseState, bool interactingWithUI, bool interactingWithContextMenu, bool interactingWithSelectableBuilding)
@@ -97,35 +97,35 @@ class Player : Unit
 
         if (!interactingWithUI && !interactingWithContextMenu && !interactingWithSelectableBuilding)
         {
-            Point mousePosition = mouseState.Position;
+            Point mousePosition = InputManager.WorldMousePosition.ToPoint();
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
-                Vector2 worldPoint = Camera.ScreenToWorld(new Vector2(mousePosition.X, mousePosition.Y));
+                Vector2 worldPoint = new Vector2(mousePosition.X, mousePosition.Y);
                 Point gridPoint = Grid.WorldToGrid(new Point((int)worldPoint.X, (int)worldPoint.Y));
 
                 if ((this.gridDestination != gridPoint) && Building.grid.InsideBounds(gridPoint))
-                if (!Building.grid.IsTileTaken(gridPoint))
-                {
-                    Console.WriteLine("     Recalculateing player destination...");
-                    this.gridDestination = gridPoint;
-                    Building.grid.CalculatePlayerValue(this.gridDestination);
-                    Console.WriteLine("     Done!");
-                }
-                else
-                {
-                    //  in this senario the player might try to move to attack a boulder or mine a resource
-                    Targetable ocupant = Building.grid.FindOcupant(gridPoint);
-                    if (ocupant != null)
+                    if (!Building.grid.IsTileTaken(gridPoint))
                     {
-                        Console.WriteLine($"     Trying to go next to a target! {ocupant.GridArea}");
-                        if (currentTarget != ocupant)
-                            Building.grid.CalculatePlayerValue(ocupant);
-                        this.currentTarget = ocupant;
+                        Console.WriteLine("     Recalculateing player destination...");
+                        this.gridDestination = gridPoint;
+                        Building.grid.CalculatePlayerValue(this.gridDestination);
+                        Console.WriteLine("     Done!");
                     }
                     else
-                        Console.WriteLine("     Tried to go to water!");
+                    {
+                        //  in this senario the player might try to move to attack a boulder or mine a resource
+                        Targetable ocupant = Building.grid.FindOcupant(gridPoint);
+                        if (ocupant != null)
+                        {
+                            Console.WriteLine($"     Trying to go next to a target! {ocupant.GridArea}");
+                            if (currentTarget != ocupant)
+                                Building.grid.CalculatePlayerValue(ocupant);
+                            this.currentTarget = ocupant;
+                        }
+                        else
+                            Console.WriteLine("     Tried to go to water!");
 
-                }
+                    }
 
             }
         }

@@ -24,7 +24,7 @@ class Projectile
             {
                 projectile.target.TakeDmg(projectile);
                 projectile.hasHit = true;
-                if(projectile.onHit != null)
+                if (projectile.onHit != null)
                     projectile.onHit(projectile.position);
             }
 
@@ -42,7 +42,7 @@ class Projectile
 
     public static void DrawAll()
     {
-        foreach(Projectile proj in allProjectiles)
+        foreach (Projectile proj in allProjectiles)
         {
             proj.Draw();
         }
@@ -64,8 +64,8 @@ class Projectile
     private float scale;
     public float Scale { get => scale; set => scale = value; }
 
-     public delegate void HitDelegate(Vector2 impactLocation);
-     public HitDelegate onHit;
+    public delegate void HitDelegate(Vector2 impactLocation);
+    public HitDelegate onHit;
 
     static Projectile()
     {
@@ -73,7 +73,7 @@ class Projectile
     }
 
     public Projectile(
-        int damage, int energyTransfer, float speed, Targetable target, Vector2 senderPosition, 
+        int damage, int energyTransfer, float speed, Targetable target, Vector2 senderPosition,
         int textureId, int preMoveTicks = 0, HitDelegate onHit = null, float scale = 0.10f) // scale default should suit texture-id 1
     {
         if (textureId < 0 || textureId > projTexture.Length)
@@ -89,7 +89,7 @@ class Projectile
         this.scale = scale;
 
         if (textureId != 0)
-            projTexture[textureId-1] ??= Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/Texture/Projectile/{textureId}.png");
+            projTexture[textureId - 1] ??= Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/Texture/Projectile/{textureId}.png");
         allProjectiles.Add(this);
 
         MoveToTarget(this.speed * preMoveTicks);
@@ -115,7 +115,7 @@ class Projectile
         float dy = destination.Y - this.position.Y;
         float distance = (float)Math.Sqrt(dx * dx + dy * dy);
 
-        if(this.Rotate)
+        if (this.Rotate)
             this.rotation = (float)Math.Atan2(dy, dx);
         else
             this.rotation = 0;
@@ -127,8 +127,8 @@ class Projectile
         }
         else
         {
-            float moveX = (dx / distance) * speed; 
-            float moveY = (dy / distance) * speed; 
+            float moveX = (dx / distance) * speed;
+            float moveY = (dy / distance) * speed;
             this.position = new Vector2(this.position.X + moveX, this.position.Y + moveY);
             return false;
         }
@@ -139,20 +139,20 @@ class Projectile
     {
         if (this.textureId != 0)
         {
-            Vector2 sizeVec = new(projTexture[textureId-1].Width, projTexture[textureId-1].Height);
+            Vector2 sizeVec = new(projTexture[textureId - 1].Width, projTexture[textureId - 1].Height);
             sizeVec *= this.scale;
             Rectangle rect = new(this.position.ToPoint(), sizeVec.ToPoint());
 
             GameWindow.spriteBatch.Draw(
-                projTexture[textureId-1], 
-                Camera.ModifiedDrawArea(rect, Camera.zoomLevel), 
-                null, 
-                Color.White, 
-                this.rotation, 
-                new Vector2(projTexture[textureId-1].Width / 2, projTexture[textureId-1].Height / 2), 
-                SpriteEffects.None, 
+                projTexture[textureId - 1],
+                rect,
+                null,
+                Color.White,
+                this.rotation,
+                new Vector2(projTexture[textureId - 1].Width / 2, projTexture[textureId - 1].Height / 2),
+                SpriteEffects.None,
                 0f);
         }
-        
-    } 
+
+    }
 }

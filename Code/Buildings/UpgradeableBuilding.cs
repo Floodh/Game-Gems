@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 interface IUpgradeableBuilding
 {
     Resources GetUpgradeCost();
-    int Tier {get;}
+    int Tier { get; }
     bool TryUpgrade();
 }
 
@@ -16,10 +16,10 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
     protected const int maxTier = 4;
     protected static Texture2D[][] baseTextures;
 
-    public int Tier{get{return this.currentTier;}}
-    public int MaxTier{get{ return UpgradeableBuilding.maxTier; }}
+    public int Tier { get { return this.currentTier; } }
+    public int MaxTier { get { return UpgradeableBuilding.maxTier; } }
     private int currentTier = 1;
-    protected int currentTierIndex {get {return this.currentTier-1;}}
+    protected int currentTierIndex { get { return this.currentTier - 1; } }
     private readonly int textureSet;
 
     protected UpgradeableBuilding(string colorName, int textureSet)
@@ -27,14 +27,14 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
     {
         this.textureSet = textureSet;
         baseTextures ??= new Texture2D[textureSets][];
-        
+
         if (baseTextures[textureSet] == null)
         {
             baseTextures[textureSet] = new Texture2D[4];
             for (int i = 0; i < maxTier; i++)
-                baseTextures[textureSet][i] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/Texture/Buildings/{colorName}-tier{i+1}.png");
+                baseTextures[textureSet][i] = Texture2D.FromFile(GameWindow.graphicsDevice, $"Data/Texture/Buildings/{colorName}-tier{i + 1}.png");
         }
-        
+
         UpdateStats();
     }
 
@@ -53,7 +53,7 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
         Rectangle gridArea = this.GridArea;
         if (gridArea != Rectangle.Empty)
         {
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], DrawArea, Sunlight.Mask);
             hpBar.Draw();
         }
         base.Draw();
@@ -64,11 +64,11 @@ abstract class UpgradeableBuilding : Building, IUpgradeableBuilding
     {
         bool result = false;
 
-        if(currentTier < maxTier)
-        {   
+        if (currentTier < maxTier)
+        {
             result = Resources.BuyFor(GetUpgradeCost());
 
-            if(result)
+            if (result)
             {
                 currentTier++;
                 UpdateStats();

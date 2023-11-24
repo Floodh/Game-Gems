@@ -19,7 +19,8 @@ class Mineral : Building
 
     public Color GemColor
     {
-        get {
+        get
+        {
             if (type == Type.Blue)
                 return Color.Blue;
             else if (type == Type.Green)
@@ -36,7 +37,7 @@ class Mineral : Building
     private static Texture2D[] baseTextures;
 
     public int quantity = 10000;
-    
+
     public Mineral(Type type)
         : base(Faction.Neutral)
     {
@@ -46,7 +47,7 @@ class Mineral : Building
 
         if (baseTextures == null)
         {
-            baseTextures = TextureSource.LoadMinerals();       
+            baseTextures = TextureSource.LoadMinerals();
         }
     }
 
@@ -55,8 +56,8 @@ class Mineral : Building
         Rectangle gridArea = this.GridArea;
         if (gridArea != Rectangle.Empty)
         {
-            Rectangle mineralRect = new(DrawArea.X+8, DrawArea.Y-4, DrawArea.Width-16, DrawArea.Height-16);
-            GameWindow.spriteBatch.Draw(baseTextures[((int)this.type)], Camera.ModifiedDrawArea(mineralRect, Camera.zoomLevel), Sunlight.Mask);
+            Rectangle mineralRect = new(DrawArea.X + 8, DrawArea.Y - 4, DrawArea.Width - 16, DrawArea.Height - 16);
+            GameWindow.spriteBatch.Draw(baseTextures[((int)this.type)], mineralRect, Sunlight.Mask);
         }
         base.Draw();
     }
@@ -79,22 +80,22 @@ class Mineral : Building
         switch (this.type)
         {
             case Type.Blue:
-                Resources.Gain(1,0,0,0);
+                Resources.Gain(1, 0, 0, 0);
                 break;
             case Type.Green:
-                Resources.Gain(0,1,0,0);
+                Resources.Gain(0, 1, 0, 0);
                 break;
             case Type.Purple:
-                Resources.Gain(0,0,1,0);
+                Resources.Gain(0, 0, 1, 0);
                 break;
             case Type.Orange:
-                Resources.Gain(0,0,0,1);
-                break;                                
+                Resources.Gain(0, 0, 0, 1);
+                break;
         }
 
         // if (this.numberAnimation == null)
         // {
-            
+
         // }
 
     }

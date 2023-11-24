@@ -28,7 +28,7 @@ class Wall : UpgradeableBuilding
 
     public Wall()
         : base("walls2", textureSet)
-    {}
+    { }
 
     public override void Tick()
     {
@@ -41,7 +41,7 @@ class Wall : UpgradeableBuilding
         if (gridArea != Rectangle.Empty)
         {
             Rectangle rect = new(DrawArea.Location, DrawArea.Size);
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], rect, Sunlight.Mask);
             hpBar.Draw();
         }
     }
@@ -54,7 +54,7 @@ class Wall : UpgradeableBuilding
     public override Resources GetUpgradeCost()
     {
         return costs[currentTierIndex];
-    }    
+    }
     public static new Building CreateNew()
     {
         return new Wall();
@@ -62,7 +62,7 @@ class Wall : UpgradeableBuilding
 
     public static new Building Buy()
     {
-        if(Resources.BuyFor(costs[0]))
+        if (Resources.BuyFor(costs[0]))
             return CreateNew();
         else
             return null;
@@ -75,7 +75,7 @@ class Wall : UpgradeableBuilding
 
     public static new Rectangle GetRectangle(Point point)
     {
-        return new Rectangle(point.X, point.Y, Map.mapPixelToTexturePixel_Multiplier*2, Map.mapPixelToTexturePixel_Multiplier*2);
+        return new Rectangle(point.X, point.Y, Map.mapPixelToTexturePixel_Multiplier * 2, Map.mapPixelToTexturePixel_Multiplier * 2);
     }
 
     public override string ToString()

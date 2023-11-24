@@ -32,7 +32,7 @@ class Animation
         //Console.WriteLine($"tick : ");
         for (int i = 0; i < allAnimations.Count; i++)
         {
-            
+
             PlayInstance animationInstance = allAnimations[i];
             animationInstance.frameCounter++;
             //Console.WriteLine($"    {i}, {animationInstance.frameCounter}, {animationInstance.animation.Duration}");
@@ -41,7 +41,7 @@ class Animation
                 allAnimations.RemoveAt(i--);
                 animationInstance.animation.numberOfActiveAnimations--;
             }
-        }        
+        }
 
     }
 
@@ -60,14 +60,14 @@ class Animation
     readonly int frameDuration;
     private bool useModifiedDrawArea = true;
 
-    int Duration {get {return this.frames.Length;}}
+    int Duration { get { return this.frames.Length; } }
 
-    public bool IsPlaying{get {return numberOfActiveAnimations > 0;}}
+    public bool IsPlaying { get { return numberOfActiveAnimations > 0; } }
     private int numberOfActiveAnimations = 0;
 
     public Animation(Tuple<Texture2D[], Rectangle> data, int frameDuration, bool useModifiedDrawArea = true)
-        :   this(data.Item1, data.Item2, frameDuration, useModifiedDrawArea)
-    {}
+        : this(data.Item1, data.Item2, frameDuration, useModifiedDrawArea)
+    { }
 
     public Animation(Texture2D[] frames, Rectangle drawArea, int frameDuration, bool useModifiedDrawArea = true)
     {
@@ -82,7 +82,7 @@ class Animation
         for (int i = 0; i < Duration; i++)
             if (frames[i] == null)
                 throw new Exception($"frame {i} is null!");
-        
+
 
     }
 
@@ -95,11 +95,13 @@ class Animation
     {
         //Console.WriteLine("Is drawing...");
 
-        if (currentFrame/frameDuration < Duration)
+        if (currentFrame / frameDuration < Duration)
         {
-            Rectangle rect = useModifiedDrawArea ? Camera.ModifiedDrawArea(drawArea, Camera.zoomLevel) : drawArea;
-            GameWindow.spriteBatch.Draw(this.frames[currentFrame / frameDuration], rect, Color.White);
-        } 
+            if (useModifiedDrawArea)
+                GameWindow.spriteBatch.Draw(this.frames[currentFrame / frameDuration], drawArea, Color.White);
+            else
+                GameWindow.spriteBatchUi.Draw(this.frames[currentFrame / frameDuration], drawArea, Color.White);
+        }
     }
 
 

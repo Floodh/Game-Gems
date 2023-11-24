@@ -35,8 +35,8 @@ class Map
 
     public static Rectangle hightlightGridArea = Rectangle.Empty;
 
-    public Size SourceSize { get {return this.SourceImage.Size;} }
-    public Bitmap SourceImage {get; private set;}
+    public Size SourceSize { get { return this.SourceImage.Size; } }
+    public Bitmap SourceImage { get; private set; }
 
     public Point drawOffset = Point.Zero;
 
@@ -52,6 +52,7 @@ class Map
     private Texture2D inValidTileTexture;
 
     private Size drawTextureSize;
+    public Point MapSize { get => new Point(drawTextureSize.Width, drawTextureSize.Height); }
 
 
 
@@ -81,8 +82,8 @@ class Map
 
         spriteBatch.Begin();
 
-            graphicsDevice.SetRenderTarget(renderTargetIsAOffScreenBuffer);
-            for (int y = 0; y < this.SourceImage.Width; y++)
+        graphicsDevice.SetRenderTarget(renderTargetIsAOffScreenBuffer);
+        for (int y = 0; y < this.SourceImage.Width; y++)
             for (int x = 0; x < this.SourceImage.Height; x++)
             {
                 //Console.WriteLine($"x : {x}, y : {y}");
@@ -107,18 +108,18 @@ class Map
                         break;
                 }
                 //Console.WriteLine(argb);
-                
+
             }
 
-            
-            for (int y = 1; y < this.SourceImage.Width - 1; y++)
+
+        for (int y = 1; y < this.SourceImage.Width - 1; y++)
             for (int x = 1; x < this.SourceImage.Height - 1; x++)
             {
                 TilesRGB argb = (TilesRGB)SourceImage.GetPixel(x, y).ToArgb();
 
                 if (argb == TilesRGB.Water)
                 {
-                    Point[] neighborGridPoints = new Point[4]{new Point(x-1,y), new Point(x+1,y),new Point(x,y-1), new Point(x,y+1)};
+                    Point[] neighborGridPoints = new Point[4] { new Point(x - 1, y), new Point(x + 1, y), new Point(x, y - 1), new Point(x, y + 1) };
                     foreach (Point neighborGridPoint in neighborGridPoints)
                     {
                         argb = (TilesRGB)SourceImage.GetPixel(neighborGridPoint.X, neighborGridPoint.Y).ToArgb();
@@ -126,7 +127,7 @@ class Map
                         {
                             Rectangle drawRect_0 = DrawRectFromGrid(x, y);
                             Rectangle drawRect_1 = DrawRectFromGrid(neighborGridPoint);
-                            
+
                             drawRect_0 = new Rectangle(drawRect_0.X - mapBorderLinePixelSize / 2, drawRect_0.Y - mapBorderLinePixelSize / 2, drawRect_0.Width + mapBorderLinePixelSize, drawRect_0.Height + mapBorderLinePixelSize);
                             drawRect_1 = new Rectangle(drawRect_1.X - mapBorderLinePixelSize / 2, drawRect_1.Y - mapBorderLinePixelSize / 2, drawRect_1.Width + mapBorderLinePixelSize, drawRect_1.Height + mapBorderLinePixelSize);
                             Rectangle lineArea = Rectangle.Intersect(drawRect_0, drawRect_1);
@@ -136,29 +137,28 @@ class Map
                     }
 
                 }
-                
-                
+
+
             }
         spriteBatch.End();
 
         //  annoying syntax to transfer the data from screenBuffer to the texture
         using MemoryStream stream = new MemoryStream();
         renderTargetIsAOffScreenBuffer.SaveAsPng(stream, drawTextureSize.Width, drawTextureSize.Height);
-        #if SAVEPREVIEW
-            string previewPath = PATH_MAPDATA_PREVIEW + path.Substring(path.LastIndexOf('/') + 1);
-            if (!File.Exists(previewPath))
-                File.WriteAllBytes(previewPath, stream.ToArray());
-        #endif
+#if SAVEPREVIEW
+        string previewPath = PATH_MAPDATA_PREVIEW + path.Substring(path.LastIndexOf('/') + 1);
+        if (!File.Exists(previewPath))
+            File.WriteAllBytes(previewPath, stream.ToArray());
+#endif
         this.drawTexture = Texture2D.FromStream(graphicsDevice, stream);
         graphicsDevice.SetRenderTarget(null);   //  give back the rendering target
-        Camera.Init(drawTextureSize);
+        // Camera.Init(drawTextureSize);
 
     }
 
     public void Draw()
     {
-        Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height); 
-        drawArea = Camera.ModifiedDrawArea(drawArea, Camera.zoomLevel);
+        Rectangle drawArea = new Rectangle(drawOffset.X, drawOffset.Y, drawTextureSize.Width, drawTextureSize.Height);
         GameWindow.spriteBatch.Draw(drawTexture, drawArea, Sunlight.Mask);
         //Console.WriteLine($"texture size : {this.drawTexture.Width}, {this.drawTexture.Height}");
     }

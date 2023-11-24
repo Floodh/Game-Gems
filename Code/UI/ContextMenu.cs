@@ -41,23 +41,23 @@ class ContextMenu
         button.OnClick += UpgradeBuilding;
         button.OnOver += OverBuilding;
 
-        button = this.AddBoostButton(new Vector2(0, 390/2+offset));
+        button = this.AddBoostButton(new Vector2(0, 390 / 2 + offset));
         button.OnClick += UpgradeAllGems;
         button.OnOver += OverAllGems;
 
-        button = this.AddBoostButton(new Vector2(-154/2, 298/2+offset));
+        button = this.AddBoostButton(new Vector2(-154 / 2, 298 / 2 + offset));
         button.OnClick += UpgradeBlueGem;
         button.OnOver += OverBlueGems;
 
-        button = this.AddBoostButton(new Vector2(-51/2, 298/2+offset));
+        button = this.AddBoostButton(new Vector2(-51 / 2, 298 / 2 + offset));
         button.OnClick += UpgradeGreenGem;
         button.OnOver += OverGreenGems;
 
-        button = this.AddBoostButton(new Vector2(52/2, 298/2+offset));
+        button = this.AddBoostButton(new Vector2(52 / 2, 298 / 2 + offset));
         button.OnClick += UpgradePurpleGem;
         button.OnOver += OverPurpleGems;
 
-        button = this.AddBoostButton(new Vector2(157/2, 298/2+offset));
+        button = this.AddBoostButton(new Vector2(157 / 2, 298 / 2 + offset));
         button.OnClick += UpgradeOrangeGem;
         button.OnOver += OverOrangeGems;
     }
@@ -89,7 +89,7 @@ class ContextMenu
     }
 
     public void OverAllGems(object sender, EventArgs e)
-    {  
+    {
         _cost = new Resources(1, 1, 1, 1);
     }
 
@@ -99,7 +99,7 @@ class ContextMenu
     }
 
     public void OverBlueGems(object sender, EventArgs e)
-    { 
+    {
         _cost = new Resources(1, 0, 0, 0);
     }
 
@@ -109,7 +109,7 @@ class ContextMenu
     }
 
     public void OverGreenGems(object sender, EventArgs e)
-    { 
+    {
         _cost = new Resources(0, 1, 0, 0);
     }
 
@@ -119,7 +119,7 @@ class ContextMenu
     }
 
     public void OverPurpleGems(object sender, EventArgs e)
-    { 
+    {
         _cost = new Resources(0, 0, 1, 0);
     }
 
@@ -129,7 +129,7 @@ class ContextMenu
     }
 
     public void OverOrangeGems(object sender, EventArgs e)
-    {  
+    {
         _cost = new Resources(0, 0, 0, 1);
     }
 
@@ -138,36 +138,35 @@ class ContextMenu
         Console.WriteLine("UpgradeOrangeGem");
     }
 
-    public bool Update(MouseState mouseState)
+    public bool Update()
     {
         this.Building = Building.selectedBuilding;
 
-        if(this._building != null && this._building.State == Building.EState.Selected)
+        if (this._building != null && this._building.State == Building.EState.Selected)
         {
             _boosterBuilding = this._building as Booster;
             _cost = new Resources(0, 0, 0, 0);
-            
+
             // Position of menu image
-            Point textureSize = _boosterBuilding == null? new Point(this.menuTexture.Width/2, this.menuTexture.Height/2) : new Point(this.menuTextureBoost.Width/2, this.menuTextureBoost.Height/2);
+            Point textureSize = _boosterBuilding == null ? new Point(this.menuTexture.Width / 2, this.menuTexture.Height / 2) : new Point(this.menuTextureBoost.Width / 2, this.menuTextureBoost.Height / 2);
             Vector2 vec = _building.TargetPosition.ToVector2() + new Vector2(0, 0);
-            vec = Camera.ModifyPoint(vec);
-            this.menuVec = vec - new Vector2(textureSize.X/2, textureSize.Y/2);
+            this.menuVec = vec - new Vector2(textureSize.X / 2, textureSize.Y / 2);
             this.menuRect = new Rectangle(this.menuVec.ToPoint(), textureSize);
 
             // Position of buttons
-            if(this.menuRect.Contains(mouseState.Position))
-            {   
+            if (this.menuRect.Contains(InputManager.WorldMousePosition))
+            {
                 Vector2 buttonVec = _building.TargetPosition.ToVector2();
 
-                if(_boosterBuilding == null)
+                if (_boosterBuilding == null)
                 {
-                    foreach(UpgradeButton button in _buttons)
-                        button.Update(mouseState, buttonVec);           
+                    foreach (UpgradeButton button in _buttons)
+                        button.Update(buttonVec);
                 }
                 else
                 {
-                    foreach(UpgradeButton button in _buttons_boost)
-                        button.Update(mouseState, buttonVec);               
+                    foreach (UpgradeButton button in _buttons_boost)
+                        button.Update(buttonVec);
                 }
 
                 return true;
@@ -178,23 +177,23 @@ class ContextMenu
 
     public void Draw()
     {
-        if(_building != null && _building.State == Building.EState.Selected)
+        if (_building != null && _building.State == Building.EState.Selected)
         {
             var upgradableBuilding = _building as UpgradeableBuilding;
-            if(upgradableBuilding.Tier >= upgradableBuilding.MaxTier)
+            if (upgradableBuilding.Tier >= upgradableBuilding.MaxTier)
                 return;
 
             // Draw marking of grid
             var blankTexture = new Texture2D(GameWindow.graphicsDevice, 1, 1);
-                blankTexture.SetData(new Color[] { Color.White });
-                GameWindow.spriteBatch.Draw(
-                    blankTexture, this.menuRect, null, new Color(Color.White, 1f)*0.5f, 0f, 
-                    new Vector2(0, 0), SpriteEffects.None, 0f);
+            blankTexture.SetData(new Color[] { Color.White });
+            GameWindow.spriteBatch.Draw(
+                blankTexture, this.menuRect, null, new Color(Color.White, 1f) * 0.5f, 0f,
+                new Vector2(0, 0), SpriteEffects.None, 0f);
 
             // Draw menu image
-            Texture2D texture = _boosterBuilding == null?this.menuTexture:this.menuTextureBoost;
+            Texture2D texture = _boosterBuilding == null ? this.menuTexture : this.menuTextureBoost;
             GameWindow.spriteBatch.Draw(
-                texture, this.menuRect, null, new Color(Color.White, 1f), 0f, 
+                texture, this.menuRect, null, new Color(Color.White, 1f), 0f,
                 new Vector2(0, 0), SpriteEffects.None, 0f);
 
 
@@ -204,25 +203,25 @@ class ContextMenu
             menuVec += new Vector2(40, 79);
             GameWindow.spriteBatch.DrawString(font18, _cost.blue.ToString(), menuVec, Color.Black);
             menuVec += new Vector2(108, 0);
-            GameWindow.spriteBatch.DrawString(font18, _cost.green.ToString(), menuVec, Color.Black); 
+            GameWindow.spriteBatch.DrawString(font18, _cost.green.ToString(), menuVec, Color.Black);
             menuVec += new Vector2(-108, 42);
             GameWindow.spriteBatch.DrawString(font18, _cost.purple.ToString(), menuVec, Color.Black);
             menuVec += new Vector2(108, 0);
             GameWindow.spriteBatch.DrawString(font18, _cost.orange.ToString(), menuVec, Color.Black);
 
             // Draw buttons
-            if(_boosterBuilding == null)
-                {
-                    foreach(UpgradeButton button in _buttons)
-                        button.Draw();          
-                }
-                else
-                {
-                    foreach(UpgradeButton button in _buttons_boost)
-                        button.Draw();               
-                }
+            if (_boosterBuilding == null)
+            {
+                foreach (UpgradeButton button in _buttons)
+                    button.Draw();
+            }
+            else
+            {
+                foreach (UpgradeButton button in _buttons_boost)
+                    button.Draw();
+            }
         }
     }
 
-   
+
 }

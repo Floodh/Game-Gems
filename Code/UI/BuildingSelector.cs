@@ -10,12 +10,12 @@ using FontStashSharp;
 
 class BuildingSelector
 {
-    public enum EState 
+    public enum EState
     {
         NotVisible = 0,
         Visible = 1,
         PlacementPending = 2
-    }   
+    }
 
     // Rectangle worldRect;
     bool canplace = false;
@@ -40,7 +40,7 @@ class BuildingSelector
     public BuildingSelector(Size displaySize)
     {
         this.displaySize = displaySize;
-        this.center = new Point(this.displaySize.Width/2, this.displaySize.Height/2);
+        this.center = new Point(this.displaySize.Width / 2, this.displaySize.Height / 2);
         this.centerTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/center3-null.png");
         this.centerTextureInfo = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/build-menu-info-1.png");
         this.centerTexturePointing = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/center3.png");
@@ -65,9 +65,9 @@ class BuildingSelector
             this, Wall.Buy, Wall.GetTextures, Wall.GetRectangle, 1.7f,
             Wall.costs[0], "Wall", "Data/Texture/UI/walls2-menu2.png"));
 
-        foreach(BuildingOption bo in this._buildingOptions)
+        foreach (BuildingOption bo in this._buildingOptions)
             bo.OnOver += BuildingOption_OnOver;
-           
+
     }
 
     private void BuildingOption_OnOver(BuildingOption sender)
@@ -86,13 +86,14 @@ class BuildingSelector
 
     public void UpdateByKeyboard(KeyboardState keyboardState)
     {
-        if(this.State == EState.NotVisible || this.State == EState.Visible)
+        if (this.State == EState.NotVisible || this.State == EState.Visible)
         {
             if (keyboardState.IsKeyDown(Keys.LeftShift) || keyboardState.IsKeyDown(Keys.RightShift))
             {
                 this.State = EState.Visible;
-            } 
-            else{
+            }
+            else
+            {
                 this.State = EState.NotVisible;
             }
         }
@@ -108,26 +109,26 @@ class BuildingSelector
 
     public void UpdateByMouse(MouseState mouseState)
     {
-        if(this.State == EState.NotVisible)
+        if (this.State == EState.NotVisible)
             return;
 
         _hoverOverBuildingOption = null;
-            
-        foreach(var buildingOption in this._buildingOptions)
+
+        foreach (var buildingOption in this._buildingOptions)
         {
             buildingOption.Update(mouseState);
         }
 
-        if(this.State == EState.Visible)
+        if (this.State == EState.Visible)
         {
-            if(mouseState.LeftButton == ButtonState.Pressed)
+            if (mouseState.LeftButton == ButtonState.Pressed)
             {
                 selectingOption = true;
             }
 
-            if(selectingOption == true && mouseState.LeftButton == ButtonState.Released)
+            if (selectingOption == true && mouseState.LeftButton == ButtonState.Released)
             {
-                if(this.selectedItem != null)
+                if (this.selectedItem != null)
                 {
                     this.BuildingToPlaceTexture = this.selectedItem.PlacementTexture;
                     this.buildingToPlace = this.selectedItem._buildingCallback;
@@ -139,16 +140,11 @@ class BuildingSelector
                 }
                 selectingOption = false;
             }
-        } 
-        else if(this.State == EState.PlacementPending)
+        }
+        else if (this.State == EState.PlacementPending)
         {
-            Vector2 mouseVec = new(mouseState.X, mouseState.Y);
-            Vector2 worldCenterVec = Camera.ScreenToWorld(mouseVec);
+            Vector2 worldCenterVec = InputManager.WorldMousePosition; ;
             Vector2 worldTopLeftVec = worldCenterVec - new Vector2(this.BuildingToPlaceTexture.Width / 2, this.BuildingToPlaceTexture.Height / 2);
-            // this.worldRect = new(
-            //     worldTopLeftVec.ToPoint().X + this.BuildingToPlaceTexture.Width/2, 
-            //     worldTopLeftVec.ToPoint().Y+this.BuildingToPlaceTexture.Height/2-64+8-32, 
-            //     this.BuildingToPlaceTexture.Width / 6, this.BuildingToPlaceTexture.Height / 6);
 
             Point gridCenterPoint = Grid.WorldToGrid(worldCenterVec.ToPoint());
             Rectangle gridRect = new(gridCenterPoint.X, gridCenterPoint.Y, 2, 2); // Asuming build size 2 atm.
@@ -156,17 +152,17 @@ class BuildingSelector
 
             Map.hightlightGridArea = gridRect;  //  in order to highlight valid tiles
 
-            if(mouseState.LeftButton == ButtonState.Pressed)
+            if (mouseState.LeftButton == ButtonState.Pressed)
             {
                 selectingOption = true;
             }
 
-            if(selectingOption == true &&  mouseState.LeftButton == ButtonState.Released)
+            if (selectingOption == true && mouseState.LeftButton == ButtonState.Released)
             {
-                if(this.canplace)
+                if (this.canplace)
                 {
                     Building building = this.buildingToPlace();
-                    if(building != null)
+                    if (building != null)
                         building.Place(gridCenterPoint);
                     this.buildingToPlace = null;
                     selectingOption = false;
@@ -176,7 +172,7 @@ class BuildingSelector
                 }
             }
 
-            if(mouseState.RightButton == ButtonState.Pressed)
+            if (mouseState.RightButton == ButtonState.Pressed)
             {
                 selectingOption = false;
                 this.State = EState.NotVisible;
@@ -186,31 +182,31 @@ class BuildingSelector
 
     public void Draw()
     {
-        if(this.State == EState.NotVisible)
+        if (this.State == EState.NotVisible)
             return;
 
-        if( this.State == EState.Visible)
+        if (this.State == EState.Visible)
         {
             DrawBuildingOptions();
             DrawCenterKnob();
             DrawCostInformation();
             this.selectedItem = null; // Otherwise the last selected item will be pointed at forever
         }
-        else if(this.State == EState.PlacementPending)
-        {         
+        else if (this.State == EState.PlacementPending)
+        {
             Rectangle hightlightGridArea = Map.hightlightGridArea;
             int mapPixelToTexturePixel_Multiplier = Map.mapPixelToTexturePixel_Multiplier;
 
             if (hightlightGridArea != Rectangle.Empty)
-            {  
+            {
                 DrawGridAvailability(hightlightGridArea, mapPixelToTexturePixel_Multiplier);
                 DrawBuildingRangeCoverage(hightlightGridArea, mapPixelToTexturePixel_Multiplier);
-                DrawGridSnappedBuilding(hightlightGridArea, mapPixelToTexturePixel_Multiplier);   
+                DrawGridSnappedBuilding(hightlightGridArea, mapPixelToTexturePixel_Multiplier);
             }
             // Mouse follow
             // GameWindow.spriteBatch.Draw(
-            //     this.BuildingToPlaceTexture, Camera.ModifiedDrawArea(this.worldRect, Camera.zoomLevel), col*0.4f);
-        }    
+            //     this.BuildingToPlaceTexture, this.worldRect, col*0.4f);
+        }
     }
 
     private void DrawBuildingOptions()
@@ -224,35 +220,35 @@ class BuildingSelector
     private void DrawCenterKnob()
     {
         int size = 200;
-        var drawArea =  new Rectangle(this.Center.X, this.Center.Y, size, size);
-        if(this.selectedItem == null)         
+        var drawArea = new Rectangle(this.Center.X, this.Center.Y, size, size);
+        if (this.selectedItem == null)
         {
-            GameWindow.spriteBatch.Draw(
-                this.centerTexture, drawArea, null, new Color(Color.White, 0.9f), 0f, 
+            GameWindow.spriteBatchUi.Draw(
+                this.centerTexture, drawArea, null, new Color(Color.White, 0.9f), 0f,
                 new Vector2(this.centerTexture.Width / 2, this.centerTexture.Height / 2), SpriteEffects.None, 0f);
         }
         else
         {
-            GameWindow.spriteBatch.Draw(
-                this.centerTexturePointing, drawArea, null, new Color(Color.White, 0.9f), this.selectedItem.Angle, 
+            GameWindow.spriteBatchUi.Draw(
+                this.centerTexturePointing, drawArea, null, new Color(Color.White, 0.9f), this.selectedItem.Angle,
                 new Vector2(this.centerTexturePointing.Width / 2, this.centerTexturePointing.Height / 2), SpriteEffects.None, 0f);
         }
     }
 
     private void DrawCostInformation()
     {
-        if(_hoverOverBuildingOption == null)
+        if (_hoverOverBuildingOption == null)
             return;
 
-        Rectangle infoRect = new(this.Center.X, this.Center.Y, (int)(this.centerTextureInfo.Width*0.4), (int)(this.centerTextureInfo.Height*0.4));
-        Vector2 infoVec = new(this.centerTextureInfo.Width / 2, this.centerTextureInfo.Height / 2 -77);
-        GameWindow.spriteBatch.Draw(this.centerTextureInfo, infoRect, null, Color.White, 0f, infoVec, SpriteEffects.None, 0f);
-        
+        Rectangle infoRect = new(this.Center.X, this.Center.Y, (int)(this.centerTextureInfo.Width * 0.4), (int)(this.centerTextureInfo.Height * 0.4));
+        Vector2 infoVec = new(this.centerTextureInfo.Width / 2, this.centerTextureInfo.Height / 2 - 77);
+        GameWindow.spriteBatchUi.Draw(this.centerTextureInfo, infoRect, null, Color.White, 0f, infoVec, SpriteEffects.None, 0f);
+
         Vector2 textVec = this.Center.ToVector2();
         SpriteFontBase font = ResourcesUi.FontSystem.GetFont(fonstSize);
         Vector2 fontVec = new(font.MeasureString(_hoverOverBuildingOption.BuildingName).Length() / 2, fonstSize / 2);
         textVec = textVec - fontVec;
-        GameWindow.spriteBatch.DrawString(font, _hoverOverBuildingOption.BuildingName, textVec, Color.Black);
+        GameWindow.spriteBatchUi.DrawString(font, _hoverOverBuildingOption.BuildingName, textVec, Color.Black);
 
 
         Vector2 costVec;
@@ -260,22 +256,22 @@ class BuildingSelector
         Vector2 bottomLeftVec = new(-30, 60);
         Vector2 topRightVec = new(30, 30);
         Vector2 bottomRightVec = new(30, 60);
-        
+
         fontVec = new(font.MeasureString(_hoverOverBuildingOption.Cost.blue.ToString()).Length() / 2, fonstSize / 2);
         costVec = this.center.ToVector2() + topLeftVec - fontVec;
-        GameWindow.spriteBatch.DrawString(font,_hoverOverBuildingOption.Cost.blue.ToString(), costVec, Color.Black);
+        GameWindow.spriteBatchUi.DrawString(font, _hoverOverBuildingOption.Cost.blue.ToString(), costVec, Color.Black);
 
         fontVec = new(font.MeasureString(_hoverOverBuildingOption.Cost.purple.ToString()).Length() / 2, fonstSize / 2);
         costVec = this.center.ToVector2() + bottomLeftVec - fontVec;
-        GameWindow.spriteBatch.DrawString(font, _hoverOverBuildingOption.Cost.purple.ToString(), costVec, Color.Black);
+        GameWindow.spriteBatchUi.DrawString(font, _hoverOverBuildingOption.Cost.purple.ToString(), costVec, Color.Black);
 
         fontVec = new(font.MeasureString(_hoverOverBuildingOption.Cost.green.ToString()).Length() / 2, fonstSize / 2);
         costVec = this.center.ToVector2() + topRightVec - fontVec;
-        GameWindow.spriteBatch.DrawString(font, _hoverOverBuildingOption.Cost.green.ToString(), costVec, Color.Black);
+        GameWindow.spriteBatchUi.DrawString(font, _hoverOverBuildingOption.Cost.green.ToString(), costVec, Color.Black);
 
         fontVec = new(font.MeasureString(_hoverOverBuildingOption.Cost.orange.ToString()).Length() / 2, fonstSize / 2);
         costVec = this.center.ToVector2() + bottomRightVec - fontVec;
-        GameWindow.spriteBatch.DrawString(font, _hoverOverBuildingOption.Cost.orange.ToString(), costVec, Color.Black);
+        GameWindow.spriteBatchUi.DrawString(font, _hoverOverBuildingOption.Cost.orange.ToString(), costVec, Color.Black);
     }
 
     private void DrawGridAvailability(Rectangle hightlightGridArea, int mapPixelToTexturePixel_Multiplier)
@@ -283,9 +279,8 @@ class BuildingSelector
         for (int y = hightlightGridArea.Y; y < hightlightGridArea.Bottom; y++)
         {
             for (int x = hightlightGridArea.X; x < hightlightGridArea.Right; x++)
-            {         
+            {
                 Rectangle tileArea = new Rectangle(x * mapPixelToTexturePixel_Multiplier, y * mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier, mapPixelToTexturePixel_Multiplier);
-                tileArea = Camera.ModifiedDrawArea(tileArea, Camera.zoomLevel);
                 if (Building.grid.IsTileTaken(x, y))
                 {
                     // GameWindow.spriteBatch.Draw(this.blankTexture, tileArea, Color.Red * 0.4f);
@@ -304,19 +299,19 @@ class BuildingSelector
     {
         int range = 8; // TODO Fetch from building
         Point point = hightlightGridArea.Location;
- 
-        for(int y = point.Y-range; y < point.Y+range; y+=2)
+
+        for (int y = point.Y - range; y < point.Y + range; y += 2)
         {
-            for(int x = point.X-range; x < point.X+range; x+=2)
-            {       
-                if(inside_circle(point, new Point(x, y), range))
+            for (int x = point.X - range; x < point.X + range; x += 2)
+            {
+                if (inside_circle(point, new Point(x, y), range))
                 {
-                    Rectangle rect = new (
-                        (x) * mapPixelToTexturePixel_Multiplier, 
-                        (y) * mapPixelToTexturePixel_Multiplier, 
-                        mapPixelToTexturePixel_Multiplier*2, 
-                        mapPixelToTexturePixel_Multiplier*2);
-                    GameWindow.spriteBatch.Draw(this.blankTexture, Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Color.LightBlue * 0.3f);
+                    Rectangle rect = new(
+                        (x) * mapPixelToTexturePixel_Multiplier,
+                        (y) * mapPixelToTexturePixel_Multiplier,
+                        mapPixelToTexturePixel_Multiplier * 2,
+                        mapPixelToTexturePixel_Multiplier * 2);
+                    GameWindow.spriteBatch.Draw(this.blankTexture, rect, Color.LightBlue * 0.3f);
                 }
             }
         }
@@ -324,20 +319,20 @@ class BuildingSelector
 
     private void DrawGridSnappedBuilding(Rectangle hightlightGridArea, int mapPixelToTexturePixel_Multiplier)
     {
-        Color color = this.canplace?Color.Green:Color.Red;
+        Color color = this.canplace ? Color.Green : Color.Red;
 
-        Point point = new (hightlightGridArea.X * mapPixelToTexturePixel_Multiplier, hightlightGridArea.Y * mapPixelToTexturePixel_Multiplier);
+        Point point = new(hightlightGridArea.X * mapPixelToTexturePixel_Multiplier, hightlightGridArea.Y * mapPixelToTexturePixel_Multiplier);
         Rectangle rect = this.selectedItem._rectCallback(point);
 
         GameWindow.spriteBatch.Draw(
-            this.BuildingToPlaceTexture, Camera.ModifiedDrawArea(rect, Camera.zoomLevel), color * 0.4f);
+            this.BuildingToPlaceTexture, rect, color * 0.4f);
     }
 
     private bool inside_circle(Point center, Point tile, int diameter)
     {
         int dx = center.X - tile.X,
             dy = center.Y - tile.Y;
-        int distance_squared = dx*dx + dy*dy;
-        return 4 * distance_squared <= diameter*diameter;
+        int distance_squared = dx * dx + dy * dy;
+        return 4 * distance_squared <= diameter * diameter;
     }
 }

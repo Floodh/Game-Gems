@@ -33,11 +33,11 @@ abstract class Bar
     {
         get
         {
-            if(MaxUnit() <= 1600) // fix
+            if (MaxUnit() <= 1600) // fix
             {
-            return new Point(
-                (SectionSize.X + _barBorderSize) * _numSections + _barBorderSize * 1,
-                 SectionSize.Y + _barBorderSize * 2);
+                return new Point(
+                    (SectionSize.X + _barBorderSize) * _numSections + _barBorderSize * 1,
+                     SectionSize.Y + _barBorderSize * 2);
             }
             else
             {
@@ -68,7 +68,7 @@ abstract class Bar
     {
         Vector2 centerVec = _entity.TargetPosition.ToVector2();
         centerVec += _offsetVec + new Vector2(0, _baseYOffset); // What is _baseYOffset?
-        _position = centerVec - Size.ToVector2()/2;
+        _position = centerVec - Size.ToVector2() / 2;
 
 
         _numSections = MaxUnit() / 100; // fix
@@ -77,8 +77,8 @@ abstract class Bar
     public void Draw()
     {
         int gaugeMaxWidth = Size.X - 2 * _barBorderSize;
-  
-        if(MaxUnit() <= 1600) // fix
+
+        if (MaxUnit() <= 1600) // fix
         {
             int width = (int)(gaugeMaxWidth * Percentace());
             DrawBar(_position,
@@ -90,10 +90,10 @@ abstract class Bar
             int width1 = gaugeMaxWidth * 2 - dmg;
             width1 = Math.Clamp(width1, 0, gaugeMaxWidth);
             int width2 = gaugeMaxWidth - dmg;
-  
-            DrawBar(_position, 
+
+            DrawBar(_position,
                 width1, gaugeMaxWidth, _numSections / 2);
-            DrawBar(_position + new Vector2(0, Size.Y - _barBorderSize), 
+            DrawBar(_position + new Vector2(0, Size.Y - _barBorderSize),
                 width2, gaugeMaxWidth, _numSections / 2);
         }
     }
@@ -101,8 +101,7 @@ abstract class Bar
     protected void DrawBar(Vector2 position, int width, int gaugeMaxWidth, int numSections)
     {
         // Black background
-        Rectangle outerRect = new (position.ToPoint(), Size);
-        outerRect = Camera.ModifiedDrawArea(outerRect, Camera.zoomLevel);
+        Rectangle outerRect = new(position.ToPoint(), Size);
         GameWindow.spriteBatch.Draw(GetWhiteTexture(), outerRect, _borderColor);
 
         // First section location
@@ -110,22 +109,20 @@ abstract class Bar
 
         // Gauge background
         Point gaugeBgSize = new(gaugeMaxWidth, SectionSize.Y);
-        Rectangle gaugeBgRect = new (sectionPos.ToPoint(), gaugeBgSize);
-        gaugeBgRect = Camera.ModifiedDrawArea(gaugeBgRect, Camera.zoomLevel);
+        Rectangle gaugeBgRect = new(sectionPos.ToPoint(), gaugeBgSize);
         GameWindow.spriteBatch.Draw(GetWhiteTexture(), gaugeBgRect, _emptyColor);
 
         // Gauge foreground (current health/energy)
         Point gaugeSize = new(width, SectionSize.Y);
-        Rectangle gaugeRect = new (sectionPos.ToPoint(), gaugeSize);
-        gaugeRect = Camera.ModifiedDrawArea(gaugeRect, Camera.zoomLevel);
+        Rectangle gaugeRect = new(sectionPos.ToPoint(), gaugeSize);
         GameWindow.spriteBatch.Draw(GetWhiteTexture(), gaugeRect, _fillColor);
 
         // Draw divider lines
-        for(int dividerIndex = 1; dividerIndex < numSections; dividerIndex++)
+        for (int dividerIndex = 1; dividerIndex < numSections; dividerIndex++)
         {
-            Vector2 from = sectionPos + new Vector2(dividerIndex * (SectionSize.X + _barBorderSize) - _barBorderSize, - _barBorderSize);
+            Vector2 from = sectionPos + new Vector2(dividerIndex * (SectionSize.X + _barBorderSize) - _barBorderSize, -_barBorderSize);
             Vector2 to = from + new Vector2(0, SectionSize.Y + _barBorderSize);
-            GameWindow.spriteBatch.DrawLine(Camera.ModifyPoint(from), Camera.ModifyPoint(to), _borderColor, _barBorderSize);
+            GameWindow.spriteBatch.DrawLine(from, to, _borderColor, _barBorderSize);
         }
     }
 

@@ -17,34 +17,32 @@ public class UpgradeButton
 
     public UpgradeButton(Vector2 offsetVec)
     {
-        _texture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/UpgradeBuilding/glow.png");;
-        _textureSize = new Point(this._texture.Width/2, this._texture.Height/2);
+        _texture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/UpgradeBuilding/glow.png"); ;
+        _textureSize = new Point(this._texture.Width / 2, this._texture.Height / 2);
         _offsetVec = offsetVec;
     }
 
 
     private Vector2 _vector;
 
-    public bool Update(MouseState mouseState, Vector2 vector)
+    public bool Update(Vector2 vector)
     {
-        // Clicked = (MouseState.LeftButton == ButtonState.Pressed) && (LastMouseState.LeftButton == ButtonState.Released);
-        _vector = Camera.ModifyPoint(vector);
-        _vector = _vector + new Vector2(-_textureSize.X/2, -_textureSize.Y/2) + _offsetVec;
+        _vector = vector + new Vector2(-_textureSize.X / 2, -_textureSize.Y / 2) + _offsetVec;
         _rect = new Rectangle(_vector.ToPoint(), _textureSize);
 
-        if(this._rect.Contains(mouseState.Position))
+        if (this._rect.Contains(InputManager.WorldMousePosition))
         {
             _mouseOver = true;
             this.Over();
-            if(mouseState.LeftButton == ButtonState.Released && this._mousePressed == false)
+            if (Mouse.GetState().LeftButton == ButtonState.Released && this._mousePressed == false)
             {
                 // Console.WriteLine("Hover ContextMenu");
             }
-            else if(mouseState.LeftButton == ButtonState.Pressed)
+            else if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 this._mousePressed = true;
             }
-            else if(mouseState.LeftButton == ButtonState.Released && this._mousePressed == true)
+            else if (Mouse.GetState().LeftButton == ButtonState.Released && this._mousePressed == true)
             {
                 this._mousePressed = false;
                 this.Click();
@@ -69,12 +67,12 @@ public class UpgradeButton
 
     public void Draw()
     {
-        if(_mouseOver)
+        if (_mouseOver)
         {
             GameWindow.spriteBatch.Draw(
-                    _texture, _rect, null, new Color(Color.White, 1f), 0f, 
+                    _texture, _rect, null, new Color(Color.White, 1f), 0f,
                     new Vector2(0, 0), SpriteEffects.None, 0f);
         }
-        
+
     }
 }

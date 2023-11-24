@@ -24,7 +24,7 @@ class ThePortal : Building
         Rectangle gridArea = this.GridArea;
         if (gridArea != Rectangle.Empty)
         {
-            GameWindow.spriteBatch.Draw(baseTexture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Sunlight.Mask);
+            GameWindow.spriteBatch.Draw(baseTexture, DrawArea, Sunlight.Mask);
         }
         base.Draw();
     }
@@ -37,18 +37,18 @@ class ThePortal : Building
     {
         base.Tick();
         if (spawnCounter++ > threshHold)
-        if (Enemy.NumberOfEnemies < MaxSpawnedUnits)
-        if (this.dayNightCycle.IsNight)
-        {
-            foreach (Point spawnLocation in this.EligibleSpawns()) 
-                if (!grid.IsTileTaken(spawnLocation))
-            {
-                spawnCounter = 0;
-                Enemy.CreateNewEnemy(spawnLocation);
-                break;
-            }          
-                       
-        }
+            if (Enemy.NumberOfEnemies < MaxSpawnedUnits)
+                if (this.dayNightCycle.IsNight)
+                {
+                    foreach (Point spawnLocation in this.EligibleSpawns())
+                        if (!grid.IsTileTaken(spawnLocation))
+                        {
+                            spawnCounter = 0;
+                            Enemy.CreateNewEnemy(spawnLocation);
+                            break;
+                        }
+
+                }
     }
 
     public static new Building CreateNew()
@@ -69,7 +69,7 @@ class ThePortal : Building
 
         // Console.WriteLine(results.Length);
         // Console.WriteLine(outerShell);
-        
+
         for (int x = outerShell.Left; x < outerShell.Right; x++)
         {
             //Console.WriteLine($"x {x}");

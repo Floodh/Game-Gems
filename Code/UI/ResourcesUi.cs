@@ -37,22 +37,22 @@ class ResourcesUi
                 this.topLeftPoint.X, this.topLeftPoint.Y, ResourceTypeUi.resourceSize.Width, ResourceTypeUi.resourceSize.Height);
 
             this.gemRect = new Rectangle(
-                this.topLeftPoint.X + 2, this.topLeftPoint.Y + 2, ResourceTypeUi.textureSize.Width, ResourceTypeUi.textureSize.Height);            
+                this.topLeftPoint.X + 2, this.topLeftPoint.Y + 2, ResourceTypeUi.textureSize.Width, ResourceTypeUi.textureSize.Height);
         }
 
         public void Draw()
         {
-            GameWindow.spriteBatch.Draw(
-                this.bgTexture, this.bgRect, null, new Color(Color.White, 1f), 0f, 
-                new Vector2(0, 0), SpriteEffects.None, 0f);                
+            GameWindow.spriteBatchUi.Draw(
+                this.bgTexture, this.bgRect, null, new Color(Color.White, 1f), 0f,
+                new Vector2(0, 0), SpriteEffects.None, 0f);
 
-            GameWindow.spriteBatch.Draw(
-                this.gemTexture, this.gemRect, null, new Color(Color.White, 1f), 0f, 
+            GameWindow.spriteBatchUi.Draw(
+                this.gemTexture, this.gemRect, null, new Color(Color.White, 1f), 0f,
                 new Vector2(0, 0), SpriteEffects.None, 0f);
 
             Vector2 vec = this.topLeftPoint.ToVector2() + new Vector2(38, 6);
             SpriteFontBase font18 = ResourcesUi.FontSystem.GetFont(18);
-            GameWindow.spriteBatch.DrawString(font18, this._callback().ToString(), vec, Color.Black);   
+            GameWindow.spriteBatchUi.DrawString(font18, this._callback().ToString(), vec, Color.Black);
         }
     }
 
@@ -76,19 +76,19 @@ class ResourcesUi
             Resources.GetBlue,
             new Point(x, y)));
 
-        x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding*2;
+        x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding * 2;
         ResourcesUi.resourceList.Add(
             new ResourceTypeUi(textures[1],
             Resources.GetGreen,
             new Point(x, y)));
 
-        x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding*2;
+        x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding * 2;
         ResourcesUi.resourceList.Add(
             new ResourceTypeUi(textures[2],
             Resources.GetPurple,
             new Point(x, y)));
 
-        x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding*2;
+        x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding * 2;
         ResourcesUi.resourceList.Add(
             new ResourceTypeUi(textures[3],
             Resources.GetOrange,
@@ -99,28 +99,30 @@ class ResourcesUi
     public Point TopLeftPoint
     {
         get
-        {   
-            return new Point(this.displaySize.Width/2 - (ResourceTypeUi.ResourceSize.Width * 2 + ResourcesUi.padding * 3));
+        {
+            return new Point(this.displaySize.Width / 2 - (ResourceTypeUi.ResourceSize.Width * 2 + ResourcesUi.padding * 3));
         }
     }
 
-    public static FontSystem FontSystem 
-    {   get {    //  this is a stupid idea on my part buuuuuuuut, might aswell try new things
+    public static FontSystem FontSystem
+    {
+        get
+        {    //  this is a stupid idea on my part buuuuuuuut, might aswell try new things
             if (_fontSystem == null)
             {
                 _fontSystem = new FontSystem();
-                _fontSystem.AddFont(System.IO.File.ReadAllBytes(@"Data/Fonts/PTC55F.ttf"));                
+                _fontSystem.AddFont(System.IO.File.ReadAllBytes(@"Data/Fonts/PTC55F.ttf"));
             }
             return _fontSystem;
         }
-        set => _fontSystem = value; 
+        set => _fontSystem = value;
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public void Draw()
     {
-        foreach(var resource in ResourcesUi.resourceList)
+        foreach (var resource in ResourcesUi.resourceList)
         {
             resource.Draw();
-        }            
+        }
     }
 }

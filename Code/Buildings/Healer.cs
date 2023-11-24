@@ -54,7 +54,7 @@ class Healer : UpgradeableBuilding
     private Targetable target;
 
     private EnergyBar energyBar;
-    
+
     public Healer()
         : base("healing-tower1", textureSet)
     {
@@ -75,29 +75,29 @@ class Healer : UpgradeableBuilding
         {
             attackCounter++;
             if (attackCounter >= AttackRate)
-            if (this.Energy >= healing[currentTierIndex])
-            {   
-                Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
-                this.Energy -= healing[currentTierIndex]; 
-                Projectile projectile = new(-healing[currentTierIndex], 0, 4f, target, sourceVec, 3, 5);
-                projectile.Rotate = false;
-                projectile.Scale = 0.075f;
-                attackCounter = 0;
-            }
+                if (this.Energy >= healing[currentTierIndex])
+                {
+                    Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
+                    this.Energy -= healing[currentTierIndex];
+                    Projectile projectile = new(-healing[currentTierIndex], 0, 4f, target, sourceVec, 3, 5);
+                    projectile.Rotate = false;
+                    projectile.Scale = 0.075f;
+                    attackCounter = 0;
+                }
 
         }
 
         this.energyBar.Update();
-        
+
     }
 
     public override void Draw()
     {
-       Rectangle gridArea = this.GridArea;
+        Rectangle gridArea = this.GridArea;
         if (gridArea != Rectangle.Empty)
         {
-            Rectangle rect = new(DrawArea.X+32, DrawArea.Y-8-64, DrawArea.Width/2, DrawArea.Height/2*3);
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], Camera.ModifiedDrawArea(rect, Camera.zoomLevel), Sunlight.Mask);
+            Rectangle rect = new(DrawArea.X + 32, DrawArea.Y - 8 - 64, DrawArea.Width / 2, DrawArea.Height / 2 * 3);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], rect, Sunlight.Mask);
             hpBar.Draw();
         }
         this.energyBar.Draw();
@@ -113,7 +113,7 @@ class Healer : UpgradeableBuilding
     public override Resources GetUpgradeCost()
     {
         return costs[currentTierIndex];
-    }        
+    }
     public static new Building CreateNew()
     {
         return new Healer();
@@ -121,7 +121,7 @@ class Healer : UpgradeableBuilding
 
     public static new Building Buy()
     {
-        if(Resources.BuyFor(costs[0]))
+        if (Resources.BuyFor(costs[0]))
             return CreateNew();
         else
             return null;
@@ -134,7 +134,7 @@ class Healer : UpgradeableBuilding
 
     public static new Rectangle GetRectangle(Point point)
     {
-        return new Rectangle(point.X+32, point.Y-8-64, Map.mapPixelToTexturePixel_Multiplier, Map.mapPixelToTexturePixel_Multiplier*3);
+        return new Rectangle(point.X + 32, point.Y - 8 - 64, Map.mapPixelToTexturePixel_Multiplier, Map.mapPixelToTexturePixel_Multiplier * 3);
     }
     public override string ToString()
     {

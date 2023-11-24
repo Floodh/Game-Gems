@@ -21,6 +21,7 @@ public class GameWindow : Game
     public static Point windowSize = new Point(1920, 1080);
     public static GraphicsDeviceManager graphics;
     public static SpriteBatch spriteBatch;
+    public static SpriteBatch spriteBatchUi;
     public static GraphicsDevice graphicsDevice;
     public static MouseState contextMouseState;
     public static KeyboardState contextKeyboardState;
@@ -31,12 +32,16 @@ public class GameWindow : Game
     public static bool interactingWithContextMenu = false;
     public static bool isInside = false;
 
-    private bool InteractingWithUI {get{return this.buildingSelector.State != BuildingSelector.EState.NotVisible;}}
-    private bool IsInside { get 
-    {   return this.IsActive
-            && contextMouseState.X >= 0 && contextMouseState.X < base.Window.ClientBounds.Width
-            && contextMouseState.Y >= 0 && contextMouseState.Y < base.Window.ClientBounds.Height;
-    }}
+    private bool InteractingWithUI { get { return this.buildingSelector.State != BuildingSelector.EState.NotVisible; } }
+    private bool IsInside
+    {
+        get
+        {
+            return this.IsActive
+                && contextMouseState.X >= 0 && contextMouseState.X < base.Window.ClientBounds.Width
+                && contextMouseState.Y >= 0 && contextMouseState.Y < base.Window.ClientBounds.Height;
+        }
+    }
 
     private Cursor cursor;
     private Map map;
@@ -47,6 +52,13 @@ public class GameWindow : Game
     private ResourcesUi resourcesUi;
     private ContextMenu contextMenu;
     private MainMenu mainMenu;
+
+
+    private Camera _camera;
+    public static Matrix WorldTranslation { get; set; }
+    public static float Time { get; set; }
+
+
 
     public GameWindow()
     {
@@ -66,17 +78,18 @@ public class GameWindow : Game
         // TODO: Add your initialization logic here
         Console.WriteLine("Initlizing...");
         base.Initialize();
-        
+
     }
 
     protected override void LoadContent()
     {
         Console.WriteLine("Loading content...");
         spriteBatch = new SpriteBatch(GraphicsDevice);
+        spriteBatchUi = new SpriteBatch(GraphicsDevice);
         graphicsDevice = base.GraphicsDevice;
-        
+
         whitePixelTexture = new Texture2D(base.GraphicsDevice, 1, 1);
-        whitePixelTexture.SetData( new Color[] { Color.White });
+        whitePixelTexture.SetData(new Color[] { Color.White });
 
         this.cursor = new(this);
         this.background = new Background(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, graphicsDevice);
@@ -102,15 +115,21 @@ public class GameWindow : Game
         _ = new Healer();
         _ = new Wall();
 
+        _camera = new();
+        WorldTranslation = Matrix.CreateTranslation(0f, 0f, 0f);
+
+
         // TODO: use this.Content to load your game content here
 
 
         //  REMOVE THIS, edventually
-            ThemePlayer.Start_PlayTheme_MainMenu();
+        ThemePlayer.Start_PlayTheme_MainMenu();
     }
 
     protected override void Update(GameTime gameTime)
     {
+        Time = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
         contextKeyboardState = Keyboard.GetState();
         contextMouseState = Mouse.GetState();
 
@@ -132,33 +151,38 @@ public class GameWindow : Game
                 Building.SetGrid(this.map.SourceImage);
                 this.level = new Level(arguments);
                 this.mainMenu.EnterState(MainMenu.State.InActive);
+
+                // Camera setup
+                _camera.MapSize = this.map.MapSize;
+                _camera.ViewportWidth = GameWindow.windowSize.X;
+                _camera.ViewportHeight = GameWindow.windowSize.Y;
+                foreach (Unit unit in Unit.allUnits)
+                    if (unit.faction == Faction.Player)
+                        _camera.UpdateCenter(unit.TargetPosition.ToVector2());
+
             }
             this.mainMenu.UpdateByMouse(contextMouseState);
             this.mainMenu.UpdateByKeyboard(contextKeyboardState);
-            
+
         }
         else if (this.state == State.InGame)
         {
             if (isInside = IsInside)
             {
-
-                Camera.UpdateByMouse(contextMouseState,graphics);
-                Camera.UpdateByKeyboard(contextKeyboardState);
-
                 this.buildingSelector.UpdateByMouse(contextMouseState);
-                this.buildingSelector.UpdateByKeyboard(contextKeyboardState);   
+                this.buildingSelector.UpdateByKeyboard(contextKeyboardState);
 
-                if(!InteractingWithUI)
+                if (!InteractingWithUI)
                 {
-                    interactingWithContextMenu = this.contextMenu.Update(contextMouseState);
+                    interactingWithContextMenu = this.contextMenu.Update();
 
-                    if(!interactingWithContextMenu)
+                    if (!interactingWithContextMenu)
                     {
                         interactingWithSelectableBuilding = Building.UpdateAllByMouse(contextMouseState);
                     }
 
-                } 
- 
+                }
+
             }
             interactingWithUI = this.InteractingWithUI;
             level.MayTick();    //  performs all ticks            
@@ -166,9 +190,14 @@ public class GameWindow : Game
             // Click confirm
             this.cursor.Update(contextMouseState, buildingSelector.State);
             if (!interactingWithUI && !interactingWithContextMenu && !interactingWithSelectableBuilding)
-                if(contextMouseState.LeftButton == ButtonState.Pressed)
-                    this.cursor.Play();    
+                if (contextMouseState.LeftButton == ButtonState.Pressed)
+                    this.cursor.Play();
 
+            // Camera and Input utility update
+            InputManager.Update();
+            _camera.UpdateCenterByInput(clampToMap: true);
+            _camera.UpdateZoom(clampToMap: true);
+            WorldTranslation = _camera.TranslationMatrix;
         }
 
 
@@ -179,7 +208,7 @@ public class GameWindow : Game
         //     this.map.RenderGrid = true; //  force update
         // }
 
-        
+
 
         base.Update(gameTime);
     }
@@ -189,7 +218,8 @@ public class GameWindow : Game
 
         // TODO: Add your drawing code here
         //Console.WriteLine("Drawing...");
-        spriteBatch.Begin();
+        spriteBatch.Begin(transformMatrix: WorldTranslation);
+        spriteBatchUi.Begin();
 
         this.background.Draw();
         this.map?.Draw();
@@ -205,18 +235,25 @@ public class GameWindow : Game
         }
         else if (this.state == State.InGame)
         {
-            this.resourcesUi.Draw(spriteBatch);
-            if(!InteractingWithUI)
-                this.contextMenu.Draw();
-             this.buildingSelector.Draw();
-            this.level?.dayNightCycle?.Draw();            
+            this.level?.dayNightCycle?.Draw();
         }
 
-        spriteBatch.End();
+        // spriteBatchUi.Begin();
+        if (this.state == State.InGame)
+        {
+            this.resourcesUi.Draw();
+            if (!InteractingWithUI)
+                this.contextMenu.Draw();
+            this.buildingSelector.Draw();
+        }
+
+        spriteBatch.End(); // Must be after buildingSelector Since placement of building requires transform.
+        spriteBatchUi.End();
+
         base.Draw(gameTime);
     }
-    
-    
+
+
     public void OnResize(Object sender, EventArgs e)
     {
         Console.WriteLine("Updating");

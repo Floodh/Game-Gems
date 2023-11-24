@@ -13,8 +13,8 @@ abstract class Building : Targetable
 
     public static List<Building> allBuildings = new List<Building>();
     public static Grid grid;
-    
-    
+
+
 
     public static void SetGrid(Bitmap sourceImage)
     {
@@ -40,14 +40,15 @@ abstract class Building : Targetable
         }
     }
 
-    public override Rectangle GridArea {get; protected set;} = Rectangle.Empty;
+    public override Rectangle GridArea { get; protected set; } = Rectangle.Empty;
 
-    public override Point TargetPosition {
-        get 
+    public override Point TargetPosition
+    {
+        get
         {
             return new Point(
                 DrawArea.X + DrawArea.Width / 2,
-                DrawArea.Y + DrawArea.Height / 2               
+                DrawArea.Y + DrawArea.Height / 2
             );
         }
     }
@@ -60,29 +61,32 @@ abstract class Building : Targetable
     {
         hpBar = new HealthBar(this);
     }
-    
+
     //  can overide this
-    public static Size GridSize{
-        get {return new Size(2,2);}
+    public static Size GridSize
+    {
+        get { return new Size(2, 2); }
     }
     public Rectangle DrawArea
-    {   get
-        {   return
+    {
+        get
+        {
+            return
             Grid.ToDrawArea(GridArea);
-        }      
+        }
     }
 
     public bool isSelected = false;
 
     public virtual void Draw()
     {
-        if(this.State == EState.Selected)
+        if (this.State == EState.Selected)
         {
             Texture2D _texture;
             _texture = new Texture2D(GameWindow.graphicsDevice, 1, 1);
             _texture.SetData(new Color[] { Color.White });
 
-            GameWindow.spriteBatch.Draw(_texture, Camera.ModifiedDrawArea(DrawArea, Camera.zoomLevel), Color.White * 0.5f);
+            GameWindow.spriteBatch.Draw(_texture, DrawArea, Color.White * 0.5f);
         }
     }
 
@@ -127,7 +131,7 @@ abstract class Building : Targetable
     //  returns true if health is negative
     public override bool Hit(Projectile projectile)
     {
-        this.TakeDmg(projectile); 
+        this.TakeDmg(projectile);
         return this.Hp <= 0;
     }
 
@@ -149,18 +153,18 @@ abstract class Building : Targetable
     {
         bool mouseOnSelectableBuilding = false;
 
-        if(mouseState.LeftButton == ButtonState.Pressed)
+        if (mouseState.LeftButton == ButtonState.Pressed)
         {
-            if(Building.selectedBuilding != null)
+            if (Building.selectedBuilding != null)
             {
                 Building.selectedBuilding.State = EState.Normal;
                 Building.selectedBuilding = null;
             }
-            
-            foreach(Building building in Building.GetClickableBuildings())
+
+            foreach (Building building in Building.GetClickableBuildings())
             {
-                Point gridPoint = Building.GetMouseGridPoint(mouseState);
-                if(building.GridArea.Contains(gridPoint))
+                Point gridPoint = Building.GetMouseGridPoint();
+                if (building.GridArea.Contains(gridPoint))
                 {
                     Building.selectedBuilding = building;
                     Building.selectedBuilding.State = EState.Normal;
@@ -168,25 +172,25 @@ abstract class Building : Targetable
                     mouseOnSelectableBuilding = true;
                 }
             }
-        }  
-        else if(mouseState.LeftButton == ButtonState.Released)
-        {    
-            if(Building.selectedBuilding != null && Building.selectedBuilding.State != EState.Selected)
+        }
+        else if (mouseState.LeftButton == ButtonState.Released)
+        {
+            if (Building.selectedBuilding != null && Building.selectedBuilding.State != EState.Selected)
             {
-                Point gridPoint = Building.GetMouseGridPoint(mouseState);
+                Point gridPoint = Building.GetMouseGridPoint();
                 // Ensure that press and release is on the same building
-                if(Building.selectedBuilding.GridArea.Contains(gridPoint)) 
+                if (Building.selectedBuilding.GridArea.Contains(gridPoint))
                 {
                     Building.selectedBuilding.State = EState.Selected;
 
                     Console.WriteLine("Selected: " + Building.selectedBuilding.ToString());
-                }  
-            }  
+                }
+            }
         }
 
-        if(mouseState.RightButton == ButtonState.Pressed)  
+        if (mouseState.RightButton == ButtonState.Pressed)
         {
-            if(Building.selectedBuilding != null)
+            if (Building.selectedBuilding != null)
             {
                 Building.selectedBuilding.State = EState.Normal;
                 Building.selectedBuilding = null;
@@ -196,7 +200,7 @@ abstract class Building : Targetable
         return mouseOnSelectableBuilding;
     }
 
-    public enum EState 
+    public enum EState
     {
         Normal = 0,
         Selected = 1,
@@ -213,11 +217,11 @@ abstract class Building : Targetable
 
     public static List<Building> GetClickableBuildings()
     {
-        List<Building>list = new();
+        List<Building> list = new();
         foreach (Building building in Building.allBuildings)
         {
             // TODO Implement IClickable or something
-            if(building.faction == Faction.Player)
+            if (building.faction == Faction.Player)
             {
                 list.Add(building);
             }
@@ -225,9 +229,9 @@ abstract class Building : Targetable
         return list;
     }
 
-    public static Point GetMouseGridPoint(MouseState mouseState)
+    public static Point GetMouseGridPoint()
     {
-        Vector2 worldVec = Camera.ScreenToWorld(new Vector2(mouseState.X, mouseState.Y));
+        Vector2 worldVec = InputManager.WorldMousePosition;
         Point gridPoint = Grid.WorldToGrid(worldVec.ToPoint());
         return gridPoint;
     }
@@ -237,6 +241,6 @@ abstract class Building : Targetable
     {
         Type type = this.GetType();
         return $"Building| Pos:{this.GridArea.ToString()}, Type:{type.ToString()}, Faction:{this.faction.ToString()}";
-    }  
+    }
 }
 
