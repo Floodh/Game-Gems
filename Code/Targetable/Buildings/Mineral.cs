@@ -8,6 +8,22 @@ using MonoGame.Extended;
 class Mineral : Building
 {
 
+    public static Color ToMineralColor(Type type)
+    {
+
+        if (type == Type.Blue)
+            return Color.Blue;
+        else if (type == Type.Green)
+            return Color.Green;
+        else if (type == Type.Purple)
+            return Color.Purple;
+        else if (type == Type.Orange)
+            return Color.Orange;
+        else
+            throw new Exception("Can't get a Color since the Mineral does not have an assigned type.");
+
+    }
+
     public enum Type
     {
         Blue = 0,
@@ -21,16 +37,7 @@ class Mineral : Building
     {
         get
         {
-            if (type == Type.Blue)
-                return Color.Blue;
-            else if (type == Type.Green)
-                return Color.Green;
-            else if (type == Type.Purple)
-                return Color.Purple;
-            else if (type == Type.Orange)
-                return Color.Orange;
-            else
-                throw new Exception("Can't get a Color since the Mineral does not have an assigned type.");
+            return ToMineralColor(this.type);        
         }
     }
 
@@ -42,7 +49,7 @@ class Mineral : Building
         : base(Faction.Neutral)
     {
         this.type = type;
-        Rectangle animationArea = this.GridArea;
+        this.mineralType = type;
         //this.numberAnimation = new Explosion(new(DrawArea.X+8, DrawArea.Y-4, DrawArea.Width-16, DrawArea.Height-16));
 
         if (baseTextures == null)

@@ -33,6 +33,8 @@ abstract class Targetable
 
     public bool IsDead{get; protected set;} = false;
 
+    public Mineral.Type? mineralType = null;
+
     public Targetable(Faction faction)
     {
         this.faction = faction;

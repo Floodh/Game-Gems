@@ -37,9 +37,11 @@ class NumberAnimation : Animation
             font = fontSystem.GetFont(fontPxSize);
         }
 
-        if (textureData.ContainsKey(new Tuple<string, Color>(text, color)))
+        Tuple<string, Color> key = new Tuple<string, Color>(text, color);
+
+        if (textureData.ContainsKey(key))
         {
-            return textureData[new Tuple<string, Color>(text, color)];
+            return textureData[key];
         }
 
         Vector2 textSize = font.MeasureString(text);
@@ -61,15 +63,13 @@ class NumberAnimation : Animation
             GameWindow.spriteBatch.End();
             using MemoryStream stream = new MemoryStream();
             renderTarget.SaveAsPng(stream, width, height);
-            File.WriteAllBytes($"Cache/debugg_{i}.png", stream.ToArray());
+            //File.WriteAllBytes($"Cache/debugg_{i}.png", stream.ToArray());
             textures[i] = Texture2D.FromStream(GameWindow.graphicsDevice, stream);
         }
 
 
         GameWindow.graphicsDevice.SetRenderTarget(null);
-
-        textureData[new Tuple<string, Color>(text, color)] = textures;
-
+        textureData[key] = textures;
         return textures;
     }
 
