@@ -150,23 +150,23 @@ class ContextMenu
             // Position of menu image
             Point textureSize = _boosterBuilding == null ? new Point(this.menuTexture.Width / 2, this.menuTexture.Height / 2) : new Point(this.menuTextureBoost.Width / 2, this.menuTextureBoost.Height / 2);
             Vector2 vec = _building.TargetPosition.ToVector2() + new Vector2(0, 0);
+            vec = Camera.WorldToScreen(vec, GameWindow.WorldTranslation);
+
             this.menuVec = vec - new Vector2(textureSize.X / 2, textureSize.Y / 2);
             this.menuRect = new Rectangle(this.menuVec.ToPoint(), textureSize);
 
             // Position of buttons
-            if (this.menuRect.Contains(InputManager.WorldMousePosition))
+            if (this.menuRect.Contains(InputManager.MousePosition))
             {
-                Vector2 buttonVec = _building.TargetPosition.ToVector2();
-
                 if (_boosterBuilding == null)
                 {
                     foreach (UpgradeButton button in _buttons)
-                        button.Update(buttonVec);
+                        button.Update(vec);
                 }
                 else
                 {
                     foreach (UpgradeButton button in _buttons_boost)
-                        button.Update(buttonVec);
+                        button.Update(vec);
                 }
 
                 return true;
@@ -186,13 +186,13 @@ class ContextMenu
             // Draw marking of grid
             var blankTexture = new Texture2D(GameWindow.graphicsDevice, 1, 1);
             blankTexture.SetData(new Color[] { Color.White });
-            GameWindow.spriteBatch.Draw(
+            GameWindow.spriteBatchUi.Draw(
                 blankTexture, this.menuRect, null, new Color(Color.White, 1f) * 0.5f, 0f,
                 new Vector2(0, 0), SpriteEffects.None, 0f);
 
             // Draw menu image
             Texture2D texture = _boosterBuilding == null ? this.menuTexture : this.menuTextureBoost;
-            GameWindow.spriteBatch.Draw(
+            GameWindow.spriteBatchUi.Draw(
                 texture, this.menuRect, null, new Color(Color.White, 1f), 0f,
                 new Vector2(0, 0), SpriteEffects.None, 0f);
 
@@ -201,13 +201,13 @@ class ContextMenu
             SpriteFontBase font18 = ResourcesUi.FontSystem.GetFont(18);
             Vector2 menuVec = this.menuVec;
             menuVec += new Vector2(40, 79);
-            GameWindow.spriteBatch.DrawString(font18, _cost.blue.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatchUi.DrawString(font18, _cost.blue.ToString(), menuVec, Color.Black);
             menuVec += new Vector2(108, 0);
-            GameWindow.spriteBatch.DrawString(font18, _cost.green.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatchUi.DrawString(font18, _cost.green.ToString(), menuVec, Color.Black);
             menuVec += new Vector2(-108, 42);
-            GameWindow.spriteBatch.DrawString(font18, _cost.purple.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatchUi.DrawString(font18, _cost.purple.ToString(), menuVec, Color.Black);
             menuVec += new Vector2(108, 0);
-            GameWindow.spriteBatch.DrawString(font18, _cost.orange.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatchUi.DrawString(font18, _cost.orange.ToString(), menuVec, Color.Black);
 
             // Draw buttons
             if (_boosterBuilding == null)

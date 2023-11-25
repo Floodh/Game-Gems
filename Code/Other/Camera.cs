@@ -78,6 +78,17 @@ public class Camera
         return Vector2.Transform(screenPosition, Matrix.Invert(TranslationMatrix));
     }
 
+    public static Vector2 WorldToScreen(Vector2 worldPosition, Matrix translationMatrix)
+    {
+        return Vector2.Transform(worldPosition, translationMatrix);
+    }
+
+    public static Vector2 ScreenToWorld(Vector2 screenPosition, Matrix translationMatrix)
+    {
+        return Vector2.Transform(screenPosition, Matrix.Invert(translationMatrix));
+    }
+
+
     public void UpdateCenter(Vector2 center, bool clampToMap = false)
     {
         _center = center;
