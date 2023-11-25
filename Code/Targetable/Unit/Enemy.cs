@@ -21,16 +21,16 @@ abstract class Enemy : Unit
         this.MoveTo(spawnGridPosition);
     }
 
-    public static Enemy CreateNewEnemy(Point spawnGridPosition)
+    public static Enemy CreateNewEnemy(Point spawnGridPosition, NightDifficulty.DiffucultyModifier diffucultyModifier)
     {
         if (NumberOfEnemies % 4 == 0)
-            return new Fighter(spawnGridPosition);
+            return new Fighter(spawnGridPosition, diffucultyModifier);
         else if ((NumberOfEnemies + 1) % 4 == 0)
-            return new Imp(spawnGridPosition);
+            return new Imp(spawnGridPosition, diffucultyModifier);
         else if ((NumberOfEnemies + 2) % 4 == 0)
-            return new Demon(spawnGridPosition);
+            return new Demon(spawnGridPosition, diffucultyModifier);
         else
-            return new GreaterDemon(spawnGridPosition);
+            return new GreaterDemon(spawnGridPosition, diffucultyModifier);
     }
 
     public virtual void Draw(Rectangle enemyRect)

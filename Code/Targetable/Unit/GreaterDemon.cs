@@ -8,13 +8,14 @@ class GreaterDemon : Enemy
 {   
     private const string Path_BaseTexture = "Data/Texture/Units/great-demon1.png";
 
-    public GreaterDemon(Point spawnGridPosition) 
+    public GreaterDemon(Point spawnGridPosition, NightDifficulty.DiffucultyModifier diffucultyModifier) 
         : base(spawnGridPosition, Path_BaseTexture)
     {
-        this.MaxHp = 300;
+        this.MaxHp = (int)(150 * diffucultyModifier.healthModifier);
         this.Hp = this.MaxHp;
-        this.Regen_Health = 1;
-        _weapon = new Weapon(this, 5);
+        this.Regen_Health = 1;    
+        this.AttackDmg = (int)(12.5 * diffucultyModifier.damageModifier);      
+        _weapon = new Weapon(this, 5, AttackDmg);
         _weapon.Scale = 0.22f;
     }
 

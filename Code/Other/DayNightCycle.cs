@@ -18,6 +18,7 @@ class DayNightCycle
     
     public bool IsDay {get; private set;} = true;
     public bool IsNight {get{return !IsDay;} private set {this.IsDay = !value;}}
+    
 
     private int timeLeft;
     private int tick;
@@ -28,6 +29,9 @@ class DayNightCycle
     private Point windowSize;
     private Vector2 drawVec_text;
     private Vector2 drawVec_countdownText;
+
+    public int dayNumber = 0, nightNumber = 0;
+
 
     public DayNightCycle(Point windowSize)
     {
@@ -49,8 +53,8 @@ class DayNightCycle
         this.tick = currentTick;
 
         int counter = this.tick;
-        int dayNumber = 1;
-        int nightNumber = 1;
+        dayNumber = 1;
+        nightNumber = 1;
 
         while (true)
         {

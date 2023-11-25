@@ -16,10 +16,11 @@ class Weapon
     private float _projectileSpeed = 1f;
     private int _projectileSpawnOffset = 30;
 
-    public Weapon(Unit parent, int projectileTextureId)
+    public Weapon(Unit parent, int projectileTextureId, int damage)
     {
         _parent = parent;
         _projectileTextureId = projectileTextureId;
+        this._damage = damage;
     }
 
     public int ProjectileTextureId { get => _projectileTextureId; set => _projectileTextureId = value; }

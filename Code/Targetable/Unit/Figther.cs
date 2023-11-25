@@ -8,13 +8,14 @@ class Fighter : Enemy
 {
     private const string Path_BaseTexture = "Data/Texture/Units/fighter1.png";
 
-    public Fighter(Point spawnGridPosition) 
+    public Fighter(Point spawnGridPosition, NightDifficulty.DiffucultyModifier diffucultyModifier) 
         : base(spawnGridPosition, Path_BaseTexture)
     {
-        this.MaxHp = 100;
+        this.MaxHp = (int)(100 * diffucultyModifier.healthModifier);
         this.Hp = this.MaxHp;
-        this.Regen_Health = 1;        
-        _weapon = new Weapon(this, 6);
+        this.Regen_Health = 1;    
+        this.AttackDmg = (int)(10 * diffucultyModifier.damageModifier);    
+        _weapon = new Weapon(this, 6, AttackDmg);
         _weapon.Scale = 0.4f;
     }  
 

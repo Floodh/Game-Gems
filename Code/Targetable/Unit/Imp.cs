@@ -8,13 +8,14 @@ class Imp : Enemy
 {   
     private const string Path_BaseTexture = "Data/Texture/Units/demon2.png";
 
-    public Imp(Point spawnGridPosition) 
+    public Imp(Point spawnGridPosition, NightDifficulty.DiffucultyModifier diffucultyModifier) 
         : base(spawnGridPosition, Path_BaseTexture)
     {
-        this.MaxHp = 50;
+        this.MaxHp = (int)(85 * diffucultyModifier.healthModifier);
         this.Hp = this.MaxHp;
-        this.Regen_Health = 1;
-        _weapon = new Weapon(this, 5);
+        this.Regen_Health = 1;    
+        this.AttackDmg = (int)(12.5 * diffucultyModifier.damageModifier);      
+        _weapon = new Weapon(this, 7, AttackDmg);
         _weapon.Scale = 0.09f;
     }
 
