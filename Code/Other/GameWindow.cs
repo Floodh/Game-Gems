@@ -238,7 +238,6 @@ public class GameWindow : Game
             this.level?.dayNightCycle?.Draw();
         }
 
-        // spriteBatchUi.Begin();
         if (this.state == State.InGame)
         {
             this.resourcesUi.Draw();
@@ -247,7 +246,7 @@ public class GameWindow : Game
             this.buildingSelector.Draw();
         }
 
-        spriteBatch.End(); // Must be after buildingSelector Since placement of building requires transform.
+        spriteBatch.End();
         spriteBatchUi.End();
 
         base.Draw(gameTime);

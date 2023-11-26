@@ -165,11 +165,12 @@ class BuildingSelector
                     if (building != null)
                         building.Place(gridCenterPoint);
                     this.buildingToPlace = null;
-                    selectingOption = false;
                     this.selectedItem = null;
                     this.State = EState.NotVisible;
                     Map.hightlightGridArea = Rectangle.Empty;   //  to stop higlighting areas
                 }
+
+                selectingOption = false;
             }
 
             if (mouseState.RightButton == ButtonState.Pressed)

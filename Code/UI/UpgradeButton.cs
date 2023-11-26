@@ -30,7 +30,7 @@ public class UpgradeButton
         _vector = vector + new Vector2(-_textureSize.X / 2, -_textureSize.Y / 2) + _offsetVec;
         _rect = new Rectangle(_vector.ToPoint(), _textureSize);
 
-        if (this._rect.Contains(InputManager.WorldMousePosition))
+        if (this._rect.Contains(InputManager.MousePosition))
         {
             _mouseOver = true;
             this.Over();
@@ -69,10 +69,9 @@ public class UpgradeButton
     {
         if (_mouseOver)
         {
-            GameWindow.spriteBatch.Draw(
+            GameWindow.spriteBatchUi.Draw(
                     _texture, _rect, null, new Color(Color.White, 1f), 0f,
                     new Vector2(0, 0), SpriteEffects.None, 0f);
         }
-
     }
 }
