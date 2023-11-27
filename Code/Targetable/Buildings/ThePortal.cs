@@ -44,7 +44,7 @@ class ThePortal : Building
                         if (!grid.IsTileTaken(spawnLocation))
                         {
                             spawnCounter = 0;
-                            Enemy.CreateNewEnemy(spawnLocation);
+                            Enemy.CreateNewEnemy(spawnLocation, NightDifficulty.GetModifier(this.dayNightCycle.nightNumber));
                             break;
                         }
 

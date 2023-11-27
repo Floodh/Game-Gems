@@ -8,16 +8,14 @@ class DayNightCycle
 {
     public const int DayDuration_sec = 200;
     public const int NightDuration_sec = 200;
-    // public const int DayDuration_sec = 160;
-    // public const int NightDuration_sec = 160;
 
     public const int DayDuration_tick = (int)Level.tickPerSec * DayDuration_sec;
     public const int NightDuration_tick = (int)Level.tickPerSec * NightDuration_sec;
 
     private static SpriteFontBase font;
-
-    public bool IsDay { get; private set; } = true;
-    public bool IsNight { get { return !IsDay; } private set { this.IsDay = !value; } }
+ 
+    public bool IsDay {get; private set;} = true;
+    public bool IsNight {get{return !IsDay;} private set {this.IsDay = !value;}}
 
     private int timeLeft;
     private int tick;
@@ -28,6 +26,9 @@ class DayNightCycle
     private Point windowSize;
     private Vector2 drawVec_text;
     private Vector2 drawVec_countdownText;
+
+    public int dayNumber = 0, nightNumber = 0;
+
 
     public DayNightCycle(Point windowSize)
     {
@@ -49,8 +50,8 @@ class DayNightCycle
         this.tick = currentTick;
 
         int counter = this.tick;
-        int dayNumber = 1;
-        int nightNumber = 1;
+        dayNumber = 1;
+        nightNumber = 1;
 
         while (true)
         {

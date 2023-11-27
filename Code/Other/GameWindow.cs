@@ -79,6 +79,8 @@ public class GameWindow : Game
         Console.WriteLine("Initlizing...");
         base.Initialize();
 
+        Save.Load();
+
     }
 
     protected override void LoadContent()
@@ -264,6 +266,11 @@ public class GameWindow : Game
 
     }
 
+    protected override void OnExiting(object sender, EventArgs args)
+    {
+        base.OnExiting(sender, args);
+        Save.WriteToFile();
+    }
 
 
 }

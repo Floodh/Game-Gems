@@ -19,6 +19,8 @@ class Level
 
     public DayNightCycle dayNightCycle;
 
+    private Player player;
+
     public Level(GameArguments gameArguments)
     {
 
@@ -35,7 +37,7 @@ class Level
 
         ThePortal thePortal = new ThePortal(dayNightCycle);
         thePortal.Place(size.Width / 2 - 1, size.Height / 2 - 1);
-        _ = new Player(new Point(thePortal.GridArea.X - 1, thePortal.GridArea.Y));
+        player = new Player(new Point(thePortal.GridArea.X - 1, thePortal.GridArea.Y));
 
 
         int numberOfMinerals = 4 * 3;
@@ -92,6 +94,10 @@ class Level
         ThemePlayer.ToggleDayTheme(this.dayNightCycle.IsDay);
 
 
+        if (player.IsDead)
+            GameOver();
+
+
     }
 
     //  
@@ -116,5 +122,11 @@ class Level
     private long OverdueTicks()
     {
         return (this.currentTime_s * tickPerSec) - skippedTicks;
+    }
+
+    public void GameOver()
+    {
+        Save.HighscoreNight = Math.Max(Save.HighscoreNight, this.dayNightCycle.nightNumber);
+        this.player = null;
     }
 }
