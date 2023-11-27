@@ -8,17 +8,14 @@ class DayNightCycle
 {
     public const int DayDuration_sec = 200;
     public const int NightDuration_sec = 200;
-    // public const int DayDuration_sec = 160;
-    // public const int NightDuration_sec = 160;
 
     public const int DayDuration_tick = (int)Level.tickPerSec * DayDuration_sec;
     public const int NightDuration_tick = (int)Level.tickPerSec * NightDuration_sec;
 
     private static SpriteFontBase font;
-    
+ 
     public bool IsDay {get; private set;} = true;
     public bool IsNight {get{return !IsDay;} private set {this.IsDay = !value;}}
-    
 
     private int timeLeft;
     private int tick;
@@ -79,7 +76,7 @@ class DayNightCycle
 
         if (this.IsDay)
         {
-            Sunlight.AlterSunlight(0.85f,0.85f,0.85f);
+            Sunlight.AlterSunlight(0.85f, 0.85f, 0.85f);
             this.text = $"Day : {dayNumber}";
             this.countdownText = $"{timeLeft / (int)Level.tickPerSec}";
             this.textColor = Color.Yellow;
@@ -87,7 +84,7 @@ class DayNightCycle
         }
         else
         {
-            Sunlight.AlterSunlight(0.55f ,0.55f,0.55f);
+            Sunlight.AlterSunlight(0.55f, 0.55f, 0.55f);
             this.text = $"Night : {nightNumber}";
             this.countdownText = $"{timeLeft / (int)Level.tickPerSec}";
             this.textColor = Color.DarkCyan;
@@ -107,14 +104,14 @@ class DayNightCycle
     {
         Vector2 textSizeVector = font.MeasureString(text);
         this.drawVec_text = new Vector2(this.windowSize.X / 2 - textSizeVector.X / 2, 50f);
-        Vector2 countdownTextSizeVector = font.MeasureString(countdownText);  
-        this.drawVec_countdownText = new Vector2(this.windowSize.X / 2 - countdownTextSizeVector.X / 2, 100f);      
+        Vector2 countdownTextSizeVector = font.MeasureString(countdownText);
+        this.drawVec_countdownText = new Vector2(this.windowSize.X / 2 - countdownTextSizeVector.X / 2, 100f);
     }
 
     public void Draw()
     {
-        GameWindow.spriteBatch.DrawString(font, this.text, drawVec_text, this.textColor);
-        GameWindow.spriteBatch.DrawString(font, this.countdownText, drawVec_countdownText, this.textColor);
+        GameWindow.spriteBatchUi.DrawString(font, this.text, drawVec_text, this.textColor);
+        GameWindow.spriteBatchUi.DrawString(font, this.countdownText, drawVec_countdownText, this.textColor);
     }
 
 
