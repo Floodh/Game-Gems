@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using FontStashSharp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -27,11 +28,11 @@ class MainMenu
 
     public bool shouldQuit = false;
 
-
-
+    private Point windowSize;
     
     public MainMenu(Point windowSize)
     {
+        this.windowSize = windowSize;
 
         //
         startButton = new MainMenu_Button(windowSize, 0, "Play");
@@ -232,6 +233,7 @@ class MainMenu
 
     public void OnResize(Point windowSize)
     {
+        this.windowSize = windowSize;
         foreach (MainMenu_Option[] options in this.mainMenu_Options)
             foreach (MainMenu_Option option in options)
                 option.AdjustDrawArea(windowSize);
@@ -243,19 +245,27 @@ class MainMenu
     public void Draw()
     {
         if (this.state != State.Loading && this.state != State.InActive)
-        if (this.state != State.Start)
-            foreach (MainMenu_Option option in this.mainMenu_Options[(int)this.state])
-            {
-                option.Draw();
-            }
-        else
         {
-            this.startButton.Draw();
-            this.exitButton.Draw();
+            DynamicSpriteFont font = ResourcesUi.FontSystem.GetFont(46f);
+            string text = $"Highscore night = {Save.HighscoreNight}";
+            Vector2 textSize = font.MeasureString(text);
+            Vector2 position = new Vector2((this.windowSize.X / 2) - (textSize.X / 2), this.startButton.Bounds.Y / 2);
+            Rectangle textBgArea = new Rectangle((int)((this.windowSize.X / 2) - (textSize.X / 2)) - 20, this.startButton.Bounds.Y / 2 - 20, ((int)textSize.X) + 40, ((int)textSize.Y) + 40);
+
+            GameWindow.spriteBatch.Draw(GameWindow.whitePixelTexture, textBgArea, Color.Gray);
+            GameWindow.spriteBatch.DrawString(font, text, position, Color.Black);
+
+            if (this.state != State.Start)
+                foreach (MainMenu_Option option in this.mainMenu_Options[(int)this.state])
+                {
+                    option.Draw();
+                }
+            else
+            {
+                this.startButton.Draw();
+                this.exitButton.Draw();
+            }
         }
     }
-
-
-    
 
 }
