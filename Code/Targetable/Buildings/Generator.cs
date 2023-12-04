@@ -11,8 +11,8 @@ class Generator : UpgradeableBuilding
         new Resources(16,0,0,64),
         new Resources(32,0,0,128),
         new Resources(64,0,0,256),
-        new Resources(128,0,0,512),
-        new Resources(256,0,0,1024),
+        // new Resources(128,0,0,512),
+        // new Resources(256,0,0,1024),
     };
     private static readonly int[] maxHealth = new int[]
     {
@@ -20,7 +20,7 @@ class Generator : UpgradeableBuilding
         200,
         400,
         800,
-        1600,
+        // 1600,
     };
     private static readonly int[] energyTransfer = new int[]
     {   //  keep in mind that the actual transfered energy is trippled
@@ -28,7 +28,7 @@ class Generator : UpgradeableBuilding
         20,
         40,
         80,
-        160,
+        // 160,
     };
 
     private static readonly int[] emitterOffset = new int[]
@@ -68,8 +68,8 @@ class Generator : UpgradeableBuilding
             if (attackCounter >= AttackRate)
             {
                 //Console.WriteLine($"Giving energy to : {target}");
-                Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
-                Projectile projectile = new Projectile(0, energyTransfer[currentTierIndex], 4f, target, sourceVec, 4, 5);
+                Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[CurrentTier]);
+                Projectile projectile = new Projectile(0, energyTransfer[CurrentTier], 4f, target, sourceVec, 4, 5);
                 projectile.Rotate = false;
                 projectile.Scale = 0.075f;
 
@@ -86,7 +86,7 @@ class Generator : UpgradeableBuilding
         if (gridArea != Rectangle.Empty)
         {
             Rectangle rect = new(DrawArea.X + 32, DrawArea.Y - 8 - 64, DrawArea.Width / 2, DrawArea.Height / 2 * 3);
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], rect, Sunlight.Mask);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][CurrentTier], rect, Sunlight.Mask);
             hpBar.Draw();
         }
 
@@ -95,12 +95,15 @@ class Generator : UpgradeableBuilding
 
     protected override void UpdateStats()
     {
-        this.MaxHp = maxHealth[currentTierIndex];
+        this.MaxHp = maxHealth[CurrentTier];
         this.Hp = this.MaxHp;
     }
-    public override Resources GetUpgradeCost()
+    public override Resources? GetUpgradeCost()
     {
-        return costs[currentTierIndex];
+        if (CurrentTier >= this.MaxTierLevel - 1)
+            return null;
+        else
+            return costs[CurrentTier];
     }
     public static new Building CreateNew()
     {

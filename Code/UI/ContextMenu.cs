@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Schema;
 using FontStashSharp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,10 +20,18 @@ class ContextMenu
     Vector2 menuVec;
     Rectangle menuRect;
     protected bool mousePressed = false;
-    private Resources _cost;
+    private Resources? _cost;
 
     private readonly List<UpgradeButton> _buttons = new();
     private readonly List<UpgradeButton> _buttons_boost = new();
+
+    private UpgradeButton btnUpgradeBuilding;
+    private UpgradeButton btnUpgradeBoostBuilding;
+    private UpgradeButton btnUpgradeAllGems;
+    private UpgradeButton btnUpgradeBlueGem;
+    private UpgradeButton btnUpgradeGreenGem;
+    private UpgradeButton btnUpgradePurpleGem;
+    private UpgradeButton btnUpgradeOrangeGem;
 
 
     public ContextMenu()
@@ -31,35 +41,36 @@ class ContextMenu
         this.menuTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/UpgradeBuilding/upgrade-building.png");
         this.menuTextureBoost = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/UI/UpgradeBuilding/upgrade-boost-building.png");
 
-        UpgradeButton button;
-        button = this.AddButton(new Vector2(0, -26));
-        button.OnClick += UpgradeBuilding;
-        button.OnOver += OverBuilding;
+        // Generic Building
+        btnUpgradeBuilding = this.AddButton(new Vector2(0, -26));
+        btnUpgradeBuilding.OnClick += UpgradeBuilding;
+        btnUpgradeBuilding.OnOver += OverBuilding;
 
+        // Boost Building
         int offset = -88;
-        button = this.AddBoostButton(new Vector2(0, offset));
-        button.OnClick += UpgradeBuilding;
-        button.OnOver += OverBuilding;
+        btnUpgradeBoostBuilding = this.AddBoostButton(new Vector2(0, offset));
+        btnUpgradeBoostBuilding.OnClick += UpgradeBuilding;
+        btnUpgradeBoostBuilding.OnOver += OverBuilding;
 
-        button = this.AddBoostButton(new Vector2(0, 390 / 2 + offset));
-        button.OnClick += UpgradeAllGems;
-        button.OnOver += OverAllGems;
+        btnUpgradeAllGems = this.AddBoostButton(new Vector2(0, 390 / 2 + offset));
+        btnUpgradeAllGems.OnClick += UpgradeAllGems;
+        btnUpgradeAllGems.OnOver += OverAllGems;
 
-        button = this.AddBoostButton(new Vector2(-154 / 2, 298 / 2 + offset));
-        button.OnClick += UpgradeBlueGem;
-        button.OnOver += OverBlueGems;
+        btnUpgradeBlueGem = this.AddBoostButton(new Vector2(-154 / 2, 298 / 2 + offset));
+        btnUpgradeBlueGem.OnClick += UpgradeBlueGem;
+        btnUpgradeBlueGem.OnOver += OverBlueGems;
 
-        button = this.AddBoostButton(new Vector2(-51 / 2, 298 / 2 + offset));
-        button.OnClick += UpgradeGreenGem;
-        button.OnOver += OverGreenGems;
+        btnUpgradeGreenGem = this.AddBoostButton(new Vector2(-51 / 2, 298 / 2 + offset));
+        btnUpgradeGreenGem.OnClick += UpgradeGreenGem;
+        btnUpgradeGreenGem.OnOver += OverGreenGems;
 
-        button = this.AddBoostButton(new Vector2(52 / 2, 298 / 2 + offset));
-        button.OnClick += UpgradePurpleGem;
-        button.OnOver += OverPurpleGems;
+        btnUpgradePurpleGem = this.AddBoostButton(new Vector2(52 / 2, 298 / 2 + offset));
+        btnUpgradePurpleGem.OnClick += UpgradePurpleGem;
+        btnUpgradePurpleGem.OnOver += OverPurpleGems;
 
-        button = this.AddBoostButton(new Vector2(157 / 2, 298 / 2 + offset));
-        button.OnClick += UpgradeOrangeGem;
-        button.OnOver += OverOrangeGems;
+        btnUpgradeOrangeGem = this.AddBoostButton(new Vector2(157 / 2, 298 / 2 + offset));
+        btnUpgradeOrangeGem.OnClick += UpgradeOrangeGem;
+        btnUpgradeOrangeGem.OnOver += OverOrangeGems;
     }
 
     public UpgradeButton AddButton(Vector2 vector)
@@ -90,52 +101,57 @@ class ContextMenu
 
     public void OverAllGems(object sender, EventArgs e)
     {
-        _cost = new Resources(1, 1, 1, 1);
+        _cost = Booster.GetGemUpgradeCost(Booster.EGemType.all, _boosterBuilding);
     }
 
     public void UpgradeAllGems(object sender, EventArgs e)
     {
         Console.WriteLine("UpgradeAllGems");
+        Booster.TryUpgrade(Booster.EGemType.all, _boosterBuilding);
     }
 
     public void OverBlueGems(object sender, EventArgs e)
     {
-        _cost = new Resources(1, 0, 0, 0);
+        _cost = Booster.GetGemUpgradeCost(Booster.EGemType.blue, _boosterBuilding);
     }
 
     public void UpgradeBlueGem(object sender, EventArgs e)
     {
         Console.WriteLine("UpgradeBlueGem");
+        Booster.TryUpgrade(Booster.EGemType.blue, _boosterBuilding);
     }
 
     public void OverGreenGems(object sender, EventArgs e)
     {
-        _cost = new Resources(0, 1, 0, 0);
+        _cost = Booster.GetGemUpgradeCost(Booster.EGemType.green, _boosterBuilding);
     }
 
     public void UpgradeGreenGem(object sender, EventArgs e)
     {
         Console.WriteLine("UpgradeGreenGem");
+        Booster.TryUpgrade(Booster.EGemType.green, _boosterBuilding);
     }
 
     public void OverPurpleGems(object sender, EventArgs e)
     {
-        _cost = new Resources(0, 0, 1, 0);
+        _cost = Booster.GetGemUpgradeCost(Booster.EGemType.purple, _boosterBuilding);
     }
 
     public void UpgradePurpleGem(object sender, EventArgs e)
     {
         Console.WriteLine("UpgradePurpleGem");
+        Booster.TryUpgrade(Booster.EGemType.purple, _boosterBuilding);
     }
 
     public void OverOrangeGems(object sender, EventArgs e)
     {
-        _cost = new Resources(0, 0, 0, 1);
+        _cost = Booster.GetGemUpgradeCost(Booster.EGemType.orange, _boosterBuilding);
     }
 
     public void UpgradeOrangeGem(object sender, EventArgs e)
     {
         Console.WriteLine("UpgradeOrangeGem");
+        Booster.TryUpgrade(Booster.EGemType.orange, _boosterBuilding);
     }
 
     public bool Update()
@@ -160,8 +176,7 @@ class ContextMenu
             {
                 if (_boosterBuilding == null)
                 {
-                    foreach (UpgradeButton button in _buttons)
-                        button.Update(vec);
+                    btnUpgradeBuilding.Update(vec);
                 }
                 else
                 {
@@ -180,8 +195,6 @@ class ContextMenu
         if (_building != null && _building.State == Building.EState.Selected)
         {
             var upgradableBuilding = _building as UpgradeableBuilding;
-            if (upgradableBuilding.Tier >= upgradableBuilding.MaxTier)
-                return;
 
             // Draw marking of grid
             var blankTexture = new Texture2D(GameWindow.graphicsDevice, 1, 1);
@@ -201,27 +214,39 @@ class ContextMenu
             SpriteFontBase font18 = ResourcesUi.FontSystem.GetFont(18);
             Vector2 menuVec = this.menuVec;
             menuVec += new Vector2(40, 79);
-            GameWindow.spriteBatchUi.DrawString(font18, _cost.blue.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatchUi.DrawString(font18, _cost == null ? "Max" : _cost.Value.blue.ToString(), menuVec, Color.Black);
             menuVec += new Vector2(108, 0);
-            GameWindow.spriteBatchUi.DrawString(font18, _cost.green.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatchUi.DrawString(font18, _cost == null ? "Max" : _cost.Value.green.ToString(), menuVec, Color.Black);
             menuVec += new Vector2(-108, 42);
-            GameWindow.spriteBatchUi.DrawString(font18, _cost.purple.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatchUi.DrawString(font18, _cost == null ? "Max" : _cost.Value.purple.ToString(), menuVec, Color.Black);
             menuVec += new Vector2(108, 0);
-            GameWindow.spriteBatchUi.DrawString(font18, _cost.orange.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatchUi.DrawString(font18, _cost == null ? "Max" : _cost.Value.orange.ToString(), menuVec, Color.Black);
 
             // Draw buttons
             if (_boosterBuilding == null)
             {
-                foreach (UpgradeButton button in _buttons)
-                    button.Draw();
+                if (upgradableBuilding.Tier < upgradableBuilding.MaxTierLevel - 1)
+                    btnUpgradeBuilding.Draw();
             }
             else
             {
-                foreach (UpgradeButton button in _buttons_boost)
-                    button.Draw();
+                if (upgradableBuilding.Tier < upgradableBuilding.MaxTierLevel - 1)
+                    btnUpgradeBoostBuilding.Draw();
+
+                if (Booster.GemTier.Any(n => n < Booster.GetGemMaxTier(_boosterBuilding) - 1))
+                {
+                    btnUpgradeAllGems.Draw();
+                }
+
+                if (Booster.GemTier[(int)Booster.EGemType.blue] < Booster.GetGemMaxTier(_boosterBuilding) - 1)
+                    btnUpgradeBlueGem.Draw();
+                if (Booster.GemTier[(int)Booster.EGemType.green] < Booster.GetGemMaxTier(_boosterBuilding) - 1)
+                    btnUpgradeGreenGem.Draw();
+                if (Booster.GemTier[(int)Booster.EGemType.purple] < Booster.GetGemMaxTier(_boosterBuilding) - 1)
+                    btnUpgradePurpleGem.Draw();
+                if (Booster.GemTier[(int)Booster.EGemType.orange] < Booster.GetGemMaxTier(_boosterBuilding) - 1)
+                    btnUpgradeOrangeGem.Draw();
             }
         }
     }
-
-
 }

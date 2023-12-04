@@ -11,8 +11,8 @@ class Healer : UpgradeableBuilding
         new Resources(16,64,0,0),
         new Resources(32,128,0,0),
         new Resources(64,256,0,0),
-        new Resources(128,512,0,0),
-        new Resources(256,1024,0,0),
+        // new Resources(128,512,0,0),
+        // new Resources(256,1024,0,0),
     };
 
     private static readonly int[] healing = new int[]
@@ -21,7 +21,7 @@ class Healer : UpgradeableBuilding
         20,
         40,
         80,
-        160,
+        // 160,
     };
     private static readonly int[] maxHealth = new int[]
     {
@@ -29,7 +29,7 @@ class Healer : UpgradeableBuilding
         200,
         400,
         800,
-        1600,
+        // 1600,
     };
     private static readonly int[] maxEnergy = new int[]
     {
@@ -37,7 +37,7 @@ class Healer : UpgradeableBuilding
         200,
         400,
         800,
-        1600,
+        // 1600,
     };
 
     private static readonly int[] emitterOffset = new int[]
@@ -75,11 +75,11 @@ class Healer : UpgradeableBuilding
         {
             attackCounter++;
             if (attackCounter >= AttackRate)
-                if (this.Energy >= healing[currentTierIndex])
+                if (this.Energy >= healing[CurrentTier])
                 {
-                    Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
-                    this.Energy -= healing[currentTierIndex];
-                    Projectile projectile = new(-healing[currentTierIndex], 0, 4f, target, sourceVec, 3, 5);
+                    Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[CurrentTier]);
+                    this.Energy -= healing[CurrentTier];
+                    Projectile projectile = new(-healing[CurrentTier], 0, 4f, target, sourceVec, 3, 5);
                     projectile.Rotate = false;
                     projectile.Scale = 0.075f;
                     attackCounter = 0;
@@ -97,7 +97,7 @@ class Healer : UpgradeableBuilding
         if (gridArea != Rectangle.Empty)
         {
             Rectangle rect = new(DrawArea.X + 32, DrawArea.Y - 8 - 64, DrawArea.Width / 2, DrawArea.Height / 2 * 3);
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], rect, Sunlight.Mask);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][CurrentTier], rect, Sunlight.Mask);
             hpBar.Draw();
         }
         this.energyBar.Draw();
@@ -105,14 +105,17 @@ class Healer : UpgradeableBuilding
 
     protected override void UpdateStats()
     {
-        this.MaxEnergy = maxEnergy[currentTierIndex];
-        this.MaxHp = maxHealth[currentTierIndex];
+        this.MaxEnergy = maxEnergy[CurrentTier];
+        this.MaxHp = maxHealth[CurrentTier];
         this.Hp = this.MaxHp;
         this.Energy = this.MaxEnergy;
     }
-    public override Resources GetUpgradeCost()
+    public override Resources? GetUpgradeCost()
     {
-        return costs[currentTierIndex];
+        if (CurrentTier >= this.MaxTierLevel - 1)
+            return null;
+        else
+            return costs[CurrentTier];
     }
     public static new Building CreateNew()
     {
