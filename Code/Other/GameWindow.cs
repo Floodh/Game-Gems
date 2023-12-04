@@ -52,6 +52,7 @@ public class GameWindow : Game
     private ResourcesUi resourcesUi;
     private ContextMenu contextMenu;
     private MainMenu mainMenu;
+    private GameOverScreen gameOverScreen;
 
 
     private Camera _camera;
@@ -200,6 +201,10 @@ public class GameWindow : Game
             _camera.UpdateCenterByInput(clampToMap: true);
             _camera.UpdateZoom(clampToMap: true);
             WorldTranslation = _camera.TranslationMatrix;
+
+            if (this.level.IsGameOver)
+                this.gameOverScreen = new GameOverScreen(Save.HighscoreNight, windowSize);
+            this.gameOverScreen?.Update(contextMouseState);
         }
 
 
@@ -246,6 +251,7 @@ public class GameWindow : Game
             if (!InteractingWithUI)
                 this.contextMenu.Draw();
             this.buildingSelector.Draw();
+            this.gameOverScreen?.Draw();
         }
 
         spriteBatch.End();
@@ -257,12 +263,14 @@ public class GameWindow : Game
 
     public void OnResize(Object sender, EventArgs e)
     {
+        
         Console.WriteLine("Updating");
         windowSize = this.Window.ClientBounds.Size;
         if (this.background != null)
             this.background.windowSize = windowSize;
         this.level?.dayNightCycle.SetWindowSize(windowSize);
         this.mainMenu.OnResize(windowSize);
+        this.gameOverScreen?.AdjustDrawArea(windowSize);
 
     }
 
