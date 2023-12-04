@@ -41,19 +41,22 @@ class Wall : UpgradeableBuilding
         if (gridArea != Rectangle.Empty)
         {
             Rectangle rect = new(DrawArea.Location, DrawArea.Size);
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], rect, Sunlight.Mask);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][CurrentTier], rect, Sunlight.Mask);
             hpBar.Draw();
         }
     }
 
     protected override void UpdateStats()
     {
-        this.MaxHp = maxHealth[currentTierIndex];
+        this.MaxHp = maxHealth[CurrentTier];
         this.Hp = this.MaxHp;
     }
-    public override Resources GetUpgradeCost()
+    public override Resources? GetUpgradeCost()
     {
-        return costs[currentTierIndex];
+        if (CurrentTier >= this.MaxTierLevel - 1)
+            return null;
+        else
+            return costs[CurrentTier];
     }
     public static new Building CreateNew()
     {

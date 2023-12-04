@@ -13,8 +13,8 @@ class Cannon : UpgradeableBuilding
         new Resources(16,0,64,0),
         new Resources(32,0,128,0),
         new Resources(64,0,256,0),
-        new Resources(128,0,512,0),
-        new Resources(256,0,1024,0),
+        // new Resources(128,0,512,0),
+        // new Resources(256,0,1024,0),
     };
     private static readonly int[] dmg = new int[]
     {
@@ -22,7 +22,7 @@ class Cannon : UpgradeableBuilding
         20,
         40,
         80,
-        160,
+        // 160,
     };
     private static readonly int[] maxHealth = new int[]
     {
@@ -30,7 +30,7 @@ class Cannon : UpgradeableBuilding
         200,
         400,
         800,
-        1600,
+        // 1600,
     };
     private static readonly int[] maxEnergy = new int[]
     {
@@ -38,7 +38,7 @@ class Cannon : UpgradeableBuilding
         200,
         400,
         800,
-        1600,
+        // 1600,
     };
 
     private static readonly int[] emitterOffset = new int[]
@@ -76,7 +76,7 @@ class Cannon : UpgradeableBuilding
             int dy = this.target.TargetPosition.X - this.TargetPosition.X;
             int distanceSquared = dx * dx + dy * dy;
             if (initative++ > requiredInitative)
-                if (this.Energy >= dmg[currentTierIndex])
+                if (this.Energy >= dmg[CurrentTier])
                     if (distanceSquared > this.range * this.range)
                     {
                         this.target = null;
@@ -84,9 +84,9 @@ class Cannon : UpgradeableBuilding
                     }
                     else
                     {
-                        Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[currentTierIndex]);
-                        this.Energy -= dmg[currentTierIndex];
-                        _ = new Projectile(dmg[currentTierIndex], 0, 3.13f, this.target, sourceVec, 2, 5, this.OnHit);
+                        Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[CurrentTier]);
+                        this.Energy -= dmg[CurrentTier];
+                        _ = new Projectile(dmg[CurrentTier], 0, 3.13f, this.target, sourceVec, 2, 5, this.OnHit);
                         initative = 0;
                         if (this.target.IsDead)
                             this.target = null;
@@ -114,7 +114,7 @@ class Cannon : UpgradeableBuilding
         if (gridArea != Rectangle.Empty)
         {
             Rectangle rect = new(DrawArea.X + 32, DrawArea.Y - 8 - 64, DrawArea.Width / 2, DrawArea.Height / 2 * 3);
-            GameWindow.spriteBatch.Draw(baseTextures[textureSet][currentTierIndex], rect, Sunlight.Mask);
+            GameWindow.spriteBatch.Draw(baseTextures[textureSet][CurrentTier], rect, Sunlight.Mask);
             hpBar.Draw();
         }
         this.energyBar.Draw();
@@ -130,15 +130,18 @@ class Cannon : UpgradeableBuilding
 
     protected override void UpdateStats()
     {
-        this.MaxEnergy = maxEnergy[currentTierIndex];
-        this.MaxHp = maxHealth[currentTierIndex];
-        this.AttackDmg = dmg[currentTierIndex];
+        this.MaxEnergy = maxEnergy[CurrentTier];
+        this.MaxHp = maxHealth[CurrentTier];
+        this.AttackDmg = dmg[CurrentTier];
         this.Hp = this.MaxHp;
         this.Energy = this.MaxEnergy;
     }
-    public override Resources GetUpgradeCost()
+    public override Resources? GetUpgradeCost()
     {
-        return costs[currentTierIndex + 1];
+        if (CurrentTier >= this.MaxTierLevel - 1)
+            return null;
+        else
+            return costs[CurrentTier];
     }
     public static new Building CreateNew()
     {
