@@ -27,7 +27,11 @@ class MainMenu_Button
     private const int numberOfOptions = 2;
 
     private Texture2D optionTexture;
-    private String text;
+    private string text;
+
+    private static readonly Color frameColor = ColorConfig.pallet0[0];
+    private static readonly Color fillColor = ColorConfig.pallet0[1];
+    private static readonly Color textColor = Color.Black;
 
     
 
@@ -71,15 +75,15 @@ class MainMenu_Button
 
     public void Draw()
     {
-        GameWindow.spriteBatch.Draw(GameWindow.whitePixelTexture, this.drawArea, Color.Gray);
-        GameWindow.spriteBatch.Draw(GameWindow.whitePixelTexture, this.textureDrawArea, Color.Red);
+        GameWindow.spriteBatch.Draw(GameWindow.whitePixelTexture, this.drawArea, frameColor);
+        GameWindow.spriteBatch.Draw(GameWindow.whitePixelTexture, this.textureDrawArea, fillColor);
 
-        int fontSize = 56;
+        int fontSize = 86;
         SpriteFontBase font = ResourcesUi.FontSystem.GetFont(fontSize);
         Vector2 centerOfButtonVec = this.textureDrawArea.Center.ToVector2();
         Vector2 fontVec = new(font.MeasureString(text).Length() / 2, fontSize / 2);
         Vector2 vec = centerOfButtonVec - fontVec;
-        GameWindow.spriteBatch.DrawString(font, this.text, vec, Color.Black);   
+        GameWindow.spriteBatch.DrawString(font, this.text, vec, textColor);   
     }
 
 }

@@ -60,10 +60,6 @@ class Booster : UpgradeableBuilding
 
     public static bool TryUpgrade(EGemType gemType, Booster boostBuilding)
     {
-        string txt = "";
-        for (int i = 0; i < _currentGemTier.Length; i++)
-            txt += _currentGemTier[i].ToString();
-        Console.Write("A:" + txt);
         bool result = false;
 
         // As long as any gem can be upgraded, upgrade all can be used
@@ -94,10 +90,6 @@ class Booster : UpgradeableBuilding
                 }
             }
         }
-        txt = "";
-        for (int i = 0; i < _currentGemTier.Length; i++)
-            txt += _currentGemTier[i].ToString();
-        Console.WriteLine(" B:" + txt);
         return result;
     }
 
