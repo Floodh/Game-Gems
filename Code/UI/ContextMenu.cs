@@ -233,11 +233,6 @@ class ContextMenu
                 if (upgradableBuilding.Tier < upgradableBuilding.MaxTierLevel - 1)
                     btnUpgradeBoostBuilding.Draw();
 
-                if (Booster.GemTier.Any(n => n < Booster.GetGemMaxTier(_boosterBuilding) - 1))
-                {
-                    btnUpgradeAllGems.Draw();
-                }
-
                 if (Booster.GemTier[(int)Booster.EGemType.blue] < Booster.GetGemMaxTier(_boosterBuilding) - 1)
                     btnUpgradeBlueGem.Draw();
                 if (Booster.GemTier[(int)Booster.EGemType.green] < Booster.GetGemMaxTier(_boosterBuilding) - 1)
@@ -246,6 +241,8 @@ class ContextMenu
                     btnUpgradePurpleGem.Draw();
                 if (Booster.GemTier[(int)Booster.EGemType.orange] < Booster.GetGemMaxTier(_boosterBuilding) - 1)
                     btnUpgradeOrangeGem.Draw();
+                if (Booster.GemTier[(int)Booster.EGemType.all] < Booster.GetGemMaxTier(_boosterBuilding) - 1)
+                    btnUpgradeAllGems.Draw();
             }
         }
     }

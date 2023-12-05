@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,47 +15,46 @@ class Booster : UpgradeableBuilding
         blue, green, purple, orange, all
     }
     private const int _maxGemTier = 5;
-    private static int[] _currentGemTier = { 0, 0, 0, 0 };
+    private static int[] _currentGemTier = { 0, 0, 0, 0, 0 };
     public static int[] GemTier { get { return _currentGemTier; } }
     public static int GetGemMaxTier(Booster boostBuilding)
     {
         return Math.Min(_maxGemTier, boostBuilding.CurrentTier + 2);
     }
 
-    public static Resources? GetGemUpgradeCost(EGemType gemType, Booster boostBuilding)
+    public static int GetGemBonus(EGemType gemType)
     {
-
         if (gemType == EGemType.all)
-        {
-            if (GemTier.Min() >= GetGemMaxTier(boostBuilding) - 1)
-                return null;
-            else
-            {
-                int highestTier = GemTier.Max();
-                int value = Convert.ToInt32(Math.Pow(2, highestTier + 2));
-                value *= 4;
-                return new Resources(value, value, value, value);
-            }
-        }
+            throw new NotSupportedException("You cant mina ALL gems!");
         else
         {
-            int tier = GemTier[(int)gemType];
-            if (tier >= GetGemMaxTier(boostBuilding) - 1)
-                return null;
-            else
-            {
-                int value = Convert.ToInt32(Math.Pow(2, tier + 2));
-                value *= 8;
-                if (gemType == EGemType.blue)
-                    return new Resources(value, 0, 0, 0);
-                if (gemType == EGemType.green)
-                    return new Resources(0, value, 0, 0);
-                if (gemType == EGemType.purple)
-                    return new Resources(0, 0, value, 0);
-                if (gemType == EGemType.orange)
-                    return new Resources(0, 0, 0, value);
-            }
+            int seletedGemTier = GemTier[(int)gemType];
+            int allGemTier = GemTier[4];
+            return seletedGemTier + allGemTier;
         }
+    }
+
+    public static Resources? GetGemUpgradeCost(EGemType gemType, Booster boostBuilding)
+    {
+        int tier = GemTier[(int)gemType];
+        if (tier >= GetGemMaxTier(boostBuilding) - 1)
+            return null;
+        else
+        {
+            int value = Convert.ToInt32(Math.Pow(2, tier + 2));
+            value *= 8;
+            if (gemType == EGemType.blue)
+                return new Resources(value, 0, 0, 0);
+            if (gemType == EGemType.green)
+                return new Resources(0, value, 0, 0);
+            if (gemType == EGemType.purple)
+                return new Resources(0, 0, value, 0);
+            if (gemType == EGemType.orange)
+                return new Resources(0, 0, 0, value);
+            if (gemType == EGemType.all)
+                return new Resources(value, value, value, value);
+        }
+        // }
         throw new NotSupportedException();
     }
 
@@ -62,14 +62,7 @@ class Booster : UpgradeableBuilding
     {
         bool result = false;
 
-        // As long as any gem can be upgraded, upgrade all can be used
-        int gemTier;
-        if (gemType == EGemType.all)
-            gemTier = GemTier.Min();
-        else
-            gemTier = GemTier[(int)gemType];
-
-        int currentAllowedMaxTier = Math.Min(_maxGemTier, boostBuilding.CurrentTier + 2);
+        int gemTier = GemTier[(int)gemType];
 
         if (gemTier < GetGemMaxTier(boostBuilding) - 1)
         {
@@ -77,17 +70,7 @@ class Booster : UpgradeableBuilding
 
             if (result)
             {
-
-                if (gemType == EGemType.all)
-                {
-                    for (int i = 0; i < _currentGemTier.Length; i++)
-                        if (_currentGemTier[i] < currentAllowedMaxTier - 1)
-                            _currentGemTier[i]++;
-                }
-                else
-                {
-                    _currentGemTier[(int)gemType]++;
-                }
+                _currentGemTier[(int)gemType]++;
             }
         }
         return result;
