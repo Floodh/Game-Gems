@@ -10,6 +10,7 @@ class Cannon : UpgradeableBuilding
 
     public static readonly Resources[] costs = new Resources[]
     {
+        new Resources(8,0,32,0),
         new Resources(16,0,64,0),
         new Resources(32,0,128,0),
         new Resources(64,0,256,0),

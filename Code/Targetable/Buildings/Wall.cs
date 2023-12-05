@@ -8,6 +8,7 @@ class Wall : UpgradeableBuilding
 
     public static readonly Resources[] costs = new Resources[]
     {
+        new Resources(32,0,0,0),
         new Resources(64,0,0,0),
         new Resources(128,0,0,0),
         new Resources(256,0,0,0),

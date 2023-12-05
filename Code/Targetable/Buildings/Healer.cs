@@ -8,6 +8,7 @@ class Healer : UpgradeableBuilding
 
     public static readonly Resources[] costs = new Resources[]
     {
+        new Resources(8,32,0,0),
         new Resources(16,64,0,0),
         new Resources(32,128,0,0),
         new Resources(64,256,0,0),
