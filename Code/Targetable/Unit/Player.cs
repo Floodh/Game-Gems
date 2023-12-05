@@ -58,7 +58,8 @@ class Player : Unit
                     this.currentTarget.PlayerInteraction();
                     if (this.currentTarget.mineralType != null)
                     {
-                        this.numberAnimation = new NumberAnimation(Grid.ToDrawArea(this.GridArea), "+1", Mineral.ToMineralColor((Mineral.Type)this.currentTarget.mineralType));
+                        int number = Booster.GetGemBonus((Mineral.Type)this.currentTarget.mineralType);
+                        this.numberAnimation = new NumberAnimation(Grid.ToDrawArea(this.GridArea), $"+{number}", Mineral.ToMineralColor((Mineral.Type)this.currentTarget.mineralType));
                         this.numberAnimation.drawArea = this.DrawArea;
                         this.numberAnimation.drawArea.Offset(0, -this.DrawArea.Height * 0.85f);
                         this.numberAnimation.Play();

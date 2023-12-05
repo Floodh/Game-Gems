@@ -101,57 +101,57 @@ class ContextMenu
 
     public void OverAllGems(object sender, EventArgs e)
     {
-        _cost = Booster.GetGemUpgradeCost(Booster.EGemType.all, _boosterBuilding);
+        _cost = Booster.GetGemUpgradeCost(Mineral.Type.All, _boosterBuilding);
     }
 
     public void UpgradeAllGems(object sender, EventArgs e)
     {
         Console.WriteLine("UpgradeAllGems");
-        Booster.TryUpgrade(Booster.EGemType.all, _boosterBuilding);
+        Booster.TryUpgrade(Mineral.Type.All, _boosterBuilding);
     }
 
     public void OverBlueGems(object sender, EventArgs e)
     {
-        _cost = Booster.GetGemUpgradeCost(Booster.EGemType.blue, _boosterBuilding);
+        _cost = Booster.GetGemUpgradeCost(Mineral.Type.Blue, _boosterBuilding);
     }
 
     public void UpgradeBlueGem(object sender, EventArgs e)
     {
         Console.WriteLine("UpgradeBlueGem");
-        Booster.TryUpgrade(Booster.EGemType.blue, _boosterBuilding);
+        Booster.TryUpgrade(Mineral.Type.Blue, _boosterBuilding);
     }
 
     public void OverGreenGems(object sender, EventArgs e)
     {
-        _cost = Booster.GetGemUpgradeCost(Booster.EGemType.green, _boosterBuilding);
+        _cost = Booster.GetGemUpgradeCost(Mineral.Type.Green, _boosterBuilding);
     }
 
     public void UpgradeGreenGem(object sender, EventArgs e)
     {
         Console.WriteLine("UpgradeGreenGem");
-        Booster.TryUpgrade(Booster.EGemType.green, _boosterBuilding);
+        Booster.TryUpgrade(Mineral.Type.Green, _boosterBuilding);
     }
 
     public void OverPurpleGems(object sender, EventArgs e)
     {
-        _cost = Booster.GetGemUpgradeCost(Booster.EGemType.purple, _boosterBuilding);
+        _cost = Booster.GetGemUpgradeCost(Mineral.Type.Purple, _boosterBuilding);
     }
 
     public void UpgradePurpleGem(object sender, EventArgs e)
     {
         Console.WriteLine("UpgradePurpleGem");
-        Booster.TryUpgrade(Booster.EGemType.purple, _boosterBuilding);
+        Booster.TryUpgrade(Mineral.Type.Purple, _boosterBuilding);
     }
 
     public void OverOrangeGems(object sender, EventArgs e)
     {
-        _cost = Booster.GetGemUpgradeCost(Booster.EGemType.orange, _boosterBuilding);
+        _cost = Booster.GetGemUpgradeCost(Mineral.Type.Orange, _boosterBuilding);
     }
 
     public void UpgradeOrangeGem(object sender, EventArgs e)
     {
         Console.WriteLine("UpgradeOrangeGem");
-        Booster.TryUpgrade(Booster.EGemType.orange, _boosterBuilding);
+        Booster.TryUpgrade(Mineral.Type.Orange, _boosterBuilding);
     }
 
     public bool Update()
@@ -233,15 +233,15 @@ class ContextMenu
                 if (upgradableBuilding.Tier < upgradableBuilding.MaxTierLevel - 1)
                     btnUpgradeBoostBuilding.Draw();
 
-                if (Booster.GemTier[(int)Booster.EGemType.blue] < Booster.GetGemMaxTier(_boosterBuilding) - 1)
+                if (Booster.GetGemUppgrade(Mineral.Type.Blue) < Booster.GetGemMaxTier(_boosterBuilding) - 1)
                     btnUpgradeBlueGem.Draw();
-                if (Booster.GemTier[(int)Booster.EGemType.green] < Booster.GetGemMaxTier(_boosterBuilding) - 1)
+                if (Booster.GetGemUppgrade(Mineral.Type.Green) < Booster.GetGemMaxTier(_boosterBuilding) - 1)
                     btnUpgradeGreenGem.Draw();
-                if (Booster.GemTier[(int)Booster.EGemType.purple] < Booster.GetGemMaxTier(_boosterBuilding) - 1)
+                if (Booster.GetGemUppgrade(Mineral.Type.Purple) < Booster.GetGemMaxTier(_boosterBuilding) - 1)
                     btnUpgradePurpleGem.Draw();
-                if (Booster.GemTier[(int)Booster.EGemType.orange] < Booster.GetGemMaxTier(_boosterBuilding) - 1)
+                if (Booster.GetGemUppgrade(Mineral.Type.Orange) < Booster.GetGemMaxTier(_boosterBuilding) - 1)
                     btnUpgradeOrangeGem.Draw();
-                if (Booster.GemTier[(int)Booster.EGemType.all] < Booster.GetGemMaxTier(_boosterBuilding) - 1)
+                if (Booster.GetGemUppgrade(Mineral.Type.All) < Booster.GetGemMaxTier(_boosterBuilding) - 1)
                     btnUpgradeAllGems.Draw();
             }
         }
