@@ -9,6 +9,7 @@ class Level
     public const long tickPerSec = 30;
     public const long slowDownThreashold = 10;
 
+    public bool IsGameOver {get; private set;} = false;
     public long CurrentTick { get; private set; } = 0;
 
     private long startTime_s;
@@ -94,7 +95,7 @@ class Level
         ThemePlayer.ToggleDayTheme(this.dayNightCycle.IsDay);
 
 
-        if (player.IsDead)
+        if (player.IsDead && (this.IsGameOver == false))
             GameOver();
 
 
@@ -124,9 +125,9 @@ class Level
         return (this.currentTime_s * tickPerSec) - skippedTicks;
     }
 
-    public void GameOver()
+    private void GameOver()
     {
         Save.HighscoreNight = Math.Max(Save.HighscoreNight, this.dayNightCycle.nightNumber);
-        this.player = null;
+        this.IsGameOver = true;
     }
 }
