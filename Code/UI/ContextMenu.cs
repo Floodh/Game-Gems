@@ -214,13 +214,13 @@ class ContextMenu
             SpriteFontBase font18 = ResourcesUi.FontSystem.GetFont(18);
             Vector2 menuVec = this.menuVec;
             menuVec += new Vector2(40, 79);
-            GameWindow.spriteBatchUi.DrawString(font18, _cost == null ? "Max" : _cost.Value.blue.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatchUi.DrawString(font18, _cost == null ? "-" : _cost.Value.blue.ToString(), menuVec, Color.Black);
             menuVec += new Vector2(108, 0);
-            GameWindow.spriteBatchUi.DrawString(font18, _cost == null ? "Max" : _cost.Value.green.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatchUi.DrawString(font18, _cost == null ? "-" : _cost.Value.green.ToString(), menuVec, Color.Black);
             menuVec += new Vector2(-108, 42);
-            GameWindow.spriteBatchUi.DrawString(font18, _cost == null ? "Max" : _cost.Value.purple.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatchUi.DrawString(font18, _cost == null ? "-" : _cost.Value.purple.ToString(), menuVec, Color.Black);
             menuVec += new Vector2(108, 0);
-            GameWindow.spriteBatchUi.DrawString(font18, _cost == null ? "Max" : _cost.Value.orange.ToString(), menuVec, Color.Black);
+            GameWindow.spriteBatchUi.DrawString(font18, _cost == null ? "-" : _cost.Value.orange.ToString(), menuVec, Color.Black);
 
             // Draw buttons
             if (_boosterBuilding == null)

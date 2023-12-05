@@ -78,9 +78,10 @@ class Booster : UpgradeableBuilding
 
     public static readonly Resources[] costs = new Resources[]
     {
-        new Resources(64,64,64,64),
-        new Resources(128,128,128,128),
-        new Resources(256,256,256,256),
+        new Resources(64,32,32,32),
+        new Resources(128,64,64,64),
+        new Resources(256,128,128,128),
+        new Resources(512,256,256,256),
         // new Resources(512,512,512,512),
         // new Resources(1024,1024,1024,1024),
     };

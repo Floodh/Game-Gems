@@ -1,3 +1,4 @@
+using System;
 using FontStashSharp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -39,8 +40,10 @@ class GameOverScreen
         {
             if (mouseState.LeftButton == ButtonState.Released)
             {
+                Console.WriteLine($"1   {this.GetHashCode()}");
                 if (backToMenu.Bounds.Contains(mouseState.Position))
                 {
+                    Console.WriteLine("     contains");
                     this.shouldExitToMenu = true;
                 }
 
@@ -52,9 +55,12 @@ class GameOverScreen
         {
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
+                Console.WriteLine($"2   {this.GetHashCode()}");
                 if (backToMenu.Bounds.Contains(mouseState.Position))
                 {
+                    Console.WriteLine($"     contains {potentialSelection}");
                     this.potentialSelection = true;
+                    Console.WriteLine($"     contains {potentialSelection}");
                 }                
             }
         }

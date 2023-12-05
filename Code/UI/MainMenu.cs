@@ -252,8 +252,8 @@ class MainMenu
             Vector2 position = new Vector2((this.windowSize.X / 2) - (textSize.X / 2), this.startButton.Bounds.Y / 2);
             Rectangle textBgArea = new Rectangle((int)((this.windowSize.X / 2) - (textSize.X / 2)) - 20, this.startButton.Bounds.Y / 2 - 20, ((int)textSize.X) + 40, ((int)textSize.Y) + 40);
 
-            GameWindow.spriteBatch.Draw(GameWindow.whitePixelTexture, textBgArea, ColorConfig.pallet0[0]);
-            GameWindow.spriteBatch.DrawString(font, text, position, Color.Black);
+            GameWindow.spriteBatchUi.Draw(GameWindow.whitePixelTexture, textBgArea, ColorConfig.pallet0[0]);
+            GameWindow.spriteBatchUi.DrawString(font, text, position, Color.Black);
 
             if (this.state != State.Start)
                 foreach (MainMenu_Option option in this.mainMenu_Options[(int)this.state])

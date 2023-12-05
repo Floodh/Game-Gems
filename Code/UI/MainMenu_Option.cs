@@ -97,8 +97,8 @@ class MainMenu_Option
 
     public void Draw()
     {
-        GameWindow.spriteBatch.Draw(optionTexture, this.textureDrawArea, Color.White);
-        GameWindow.spriteBatch.Draw(frameTexture, this.drawArea, Color.White);
+        GameWindow.spriteBatchUi.Draw(optionTexture, this.textureDrawArea, Color.White);
+        GameWindow.spriteBatchUi.Draw(frameTexture, this.drawArea, Color.White);
     }
 
     // public T GetValue()
