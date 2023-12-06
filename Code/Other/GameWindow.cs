@@ -136,10 +136,11 @@ public class GameWindow : Game
         contextKeyboardState = Keyboard.GetState();
         contextMouseState = Mouse.GetState();
 
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+        if (this.mainMenu.shouldQuit)
         {
             Exit();
         }
+
 
         // TODO: Add your update logic here
         //Console.WriteLine($"Mouse coords: {contextMouseState.X}, {contextMouseState.Y}");
@@ -203,19 +204,26 @@ public class GameWindow : Game
             WorldTranslation = _camera.TranslationMatrix;
 
             if (this.level.IsGameOver)
-                this.gameOverScreen = new GameOverScreen(Save.HighscoreNight, windowSize);
+                this.gameOverScreen ??= new GameOverScreen(Save.HighscoreNight, windowSize);
             this.gameOverScreen?.Update(contextMouseState);
+            if (this.gameOverScreen != null)
+            {
+                //Console.WriteLine(this.gameOverScreen.shouldExitToMenu);
+                if (this.gameOverScreen.shouldExitToMenu)
+                {
+                    this.level = null;
+                    this.map = null;
+                    this.mainMenu = new MainMenu(windowSize);
+                    this.gameOverScreen = null;
+                    Unit.allUnits.Clear();
+                    Building.allBuildings.Clear();
+                    this.state = State.MainMenu;
+                    ThemePlayer.StopPlayingTheme();
+                    ThemePlayer.Start_PlayTheme_MainMenu();
+                    Sunlight.Mask = Color.LightGray;
+                }
+            }
         }
-
-
-
-        // if (Building.grid.hasUpdated && this.map.RenderGrid)    //  this is ugly, but it works
-        // {
-        //     Building.grid.hasUpdated = false;
-        //     this.map.RenderGrid = true; //  force update
-        // }
-
-
 
         base.Update(gameTime);
     }
@@ -225,10 +233,13 @@ public class GameWindow : Game
 
         // TODO: Add your drawing code here
         //Console.WriteLine("Drawing...");
+        spriteBatchUi.Begin();
+        this.background.Draw();
+        spriteBatchUi.End();
+
         spriteBatch.Begin(transformMatrix: WorldTranslation);
         spriteBatchUi.Begin();
 
-        this.background.Draw();
         this.map?.Draw();
 
         Building.DrawAll();

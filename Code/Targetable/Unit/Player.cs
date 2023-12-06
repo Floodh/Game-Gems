@@ -5,7 +5,10 @@ using Microsoft.Xna.Framework.Input;
 
 class Player : Unit
 {
-    public const string Path_BaseTexture = "Data/Texture/Units/wizard1.png";
+    public const string Path_BaseTexture_0 = "Data/Texture/Units/wizard1.png";
+    public const string Path_BaseTexture_1 = "Data/Texture/Units/smileyOrb.png";
+
+    //Data\Texture\Units\smileyOrb.png
 
 
     public Point GridLocation { get { return this.GridArea.Location; } }
@@ -17,17 +20,24 @@ class Player : Unit
 
 
     private Animation numberAnimation;
+    private Mineral.Type collectionBonus;
 
 
 
 
 
-    public Player(Point spawnGridPosition)
+    public Player(Point spawnGridPosition, Mineral.Type collectionBonus, GameArguments.Avatar avatar)
         : base(Faction.Player, spawnGridPosition)
     {
-        this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
+        if (avatar == GameArguments.Avatar.Wizard)
+            this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture_0);
+        else if (avatar == GameArguments.Avatar.Orb)
+            this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture_1);
+        else
+            throw new ArgumentException($"Invalid avatar : {avatar}");
         this.gridDestination = GridLocation;
         this.MoveTo(gridDestination);
+        this.collectionBonus = collectionBonus;
     }
 
     public override void Draw()
@@ -58,10 +68,17 @@ class Player : Unit
                     this.currentTarget.PlayerInteraction();
                     if (this.currentTarget.mineralType != null)
                     {
-                        this.numberAnimation = new NumberAnimation(Grid.ToDrawArea(this.GridArea), "+1", Mineral.ToMineralColor((Mineral.Type)this.currentTarget.mineralType));
+                        int number = Booster.GetGemBonus((Mineral.Type)this.currentTarget.mineralType);
+                        this.numberAnimation = new NumberAnimation(Grid.ToDrawArea(this.GridArea), $"+{number}", Mineral.ToMineralColor((Mineral.Type)this.currentTarget.mineralType));
                         this.numberAnimation.drawArea = this.DrawArea;
                         this.numberAnimation.drawArea.Offset(0, -this.DrawArea.Height * 0.85f);
                         this.numberAnimation.Play();
+
+                        //  collection bonus
+                        if (this.currentTarget.mineralType == this.collectionBonus)
+                        {
+                            this.opertunityCounter = movementRate / 3;
+                        }
                     }
 
                 }

@@ -10,59 +10,59 @@ using Microsoft.Xna.Framework.Input;
 class Booster : UpgradeableBuilding
 {
 
-    public enum EGemType
-    {
-        blue, green, purple, orange, all
-    }
+
     private const int _maxGemTier = 5;
     private static int[] _currentGemTier = { 0, 0, 0, 0, 0 };
-    public static int[] GemTier { get { return _currentGemTier; } }
     public static int GetGemMaxTier(Booster boostBuilding)
     {
         return Math.Min(_maxGemTier, boostBuilding.CurrentTier + 2);
     }
 
-    public static int GetGemBonus(EGemType gemType)
+    public static int GetGemBonus(Mineral.Type gemType)
     {
-        if (gemType == EGemType.all)
+        if (gemType == Mineral.Type.All)
             throw new NotSupportedException("You cant mina ALL gems!");
         else
         {
-            int seletedGemTier = GemTier[(int)gemType];
-            int allGemTier = GemTier[4];
-            return seletedGemTier + allGemTier;
+            int seletedGemTier = _currentGemTier[(int)gemType];
+            int allGemTier = _currentGemTier[4];
+            return 1 + seletedGemTier + allGemTier;
         }
     }
-
-    public static Resources? GetGemUpgradeCost(EGemType gemType, Booster boostBuilding)
+    public static int GetGemUppgrade(Mineral.Type gemType)
     {
-        int tier = GemTier[(int)gemType];
+        return _currentGemTier[(int)gemType];
+    }
+
+    public static Resources? GetGemUpgradeCost(Mineral.Type gemType, Booster boostBuilding)
+    {
+        int tier = _currentGemTier[(int)gemType];
         if (tier >= GetGemMaxTier(boostBuilding) - 1)
             return null;
         else
         {
             int value = Convert.ToInt32(Math.Pow(2, tier + 2));
             value *= 8;
-            if (gemType == EGemType.blue)
+            if (gemType == Mineral.Type.Blue)
                 return new Resources(value, 0, 0, 0);
-            if (gemType == EGemType.green)
+            if (gemType == Mineral.Type.Green)
                 return new Resources(0, value, 0, 0);
-            if (gemType == EGemType.purple)
+            if (gemType == Mineral.Type.Purple)
                 return new Resources(0, 0, value, 0);
-            if (gemType == EGemType.orange)
+            if (gemType == Mineral.Type.Orange)
                 return new Resources(0, 0, 0, value);
-            if (gemType == EGemType.all)
+            if (gemType == Mineral.Type.All)
                 return new Resources(value, value, value, value);
         }
         // }
         throw new NotSupportedException();
     }
 
-    public static bool TryUpgrade(EGemType gemType, Booster boostBuilding)
+    public static bool TryUpgrade(Mineral.Type gemType, Booster boostBuilding)
     {
         bool result = false;
 
-        int gemTier = GemTier[(int)gemType];
+        int gemTier = _currentGemTier[(int)gemType];
 
         if (gemTier < GetGemMaxTier(boostBuilding) - 1)
         {
@@ -78,9 +78,10 @@ class Booster : UpgradeableBuilding
 
     public static readonly Resources[] costs = new Resources[]
     {
-        new Resources(64,64,64,64),
-        new Resources(128,128,128,128),
-        new Resources(256,256,256,256),
+        new Resources(64,32,32,32),
+        new Resources(128,64,64,64),
+        new Resources(256,128,128,128),
+        new Resources(512,256,256,256),
         // new Resources(512,512,512,512),
         // new Resources(1024,1024,1024,1024),
     };

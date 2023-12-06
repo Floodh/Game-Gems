@@ -1,3 +1,4 @@
+using System;
 using FontStashSharp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -43,7 +44,6 @@ class GameOverScreen
                 {
                     this.shouldExitToMenu = true;
                 }
-
                 potentialSelection = false;
 
             }
@@ -53,9 +53,7 @@ class GameOverScreen
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
                 if (backToMenu.Bounds.Contains(mouseState.Position))
-                {
-                    this.potentialSelection = true;
-                }                
+                    this.potentialSelection = true;              
             }
         }
 
@@ -65,7 +63,9 @@ class GameOverScreen
     {
         DynamicSpriteFont font = ResourcesUi.FontSystem.GetFont(fontSize);
         Vector2 position = new Vector2((this.windowSize.X / 2) - (textSize.X / 2), this.windowSize.Y / 3);
-        GameWindow.spriteBatchUi.DrawString(font, text, position, Color.Black);
+        Rectangle textBgArea = new Rectangle((int)position.X - 8, (int)position.Y - 8, ((int)textSize.X) + 16, ((int)textSize.Y) + 16);
+        GameWindow.spriteBatchUi.Draw(GameWindow.whitePixelTexture, textBgArea, ColorConfig.pallet0[0]);        
+        GameWindow.spriteBatchUi.DrawString(font, text, position, ColorConfig.pallet0[2]);
         this.backToMenu.Draw();
     }
 

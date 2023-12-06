@@ -30,7 +30,7 @@ static class ThemePlayer
     static SoundEffectInstance dayEffectInstance;
     static SoundEffectInstance nightEffectInstance;
 
-    static readonly Thread thread = new Thread(PlayTheme_MainMenu);
+    static Thread thread;
 
     public static MainMenu.State MainMenuState {get; set;}
 
@@ -56,6 +56,7 @@ static class ThemePlayer
 
     public static void Start_PlayTheme_MainMenu(MainMenu.State mainMenuState = MainMenu.State.Start)
     {
+        thread = new Thread(PlayTheme_MainMenu);
         MainMenuState = mainMenuState;
         thread.Start();
     }
@@ -173,6 +174,12 @@ static class ThemePlayer
                 nightEffectInstance.Play();            
             }
         }
+    }
+
+    public static void StopPlayingTheme()
+    {
+        nightEffectInstance.Stop();
+        dayEffectInstance.Stop();
     }
 
 

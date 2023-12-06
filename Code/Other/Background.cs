@@ -23,7 +23,7 @@ class Background
 
     public void Draw()
     {
-        GameWindow.spriteBatch.Draw(this.texture, DrawArea, Sunlight.Mask);
+        GameWindow.spriteBatchUi.Draw(this.texture, DrawArea, Sunlight.Mask);
     }
 
 }

@@ -51,14 +51,34 @@ class MainMenu_Option
         : this(windowSize, (int)GameArguments.Avatar.Length, (int)avatar)
     {
         if (avatar == GameArguments.Avatar.Wizard)
-            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Player.Path_BaseTexture);
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Player.Path_BaseTexture_0);
         if (avatar == GameArguments.Avatar.Orb)
-            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, MainMenu.PATH_MAPDATA_PREVIEW + "Placeholder.jpg");            
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Player.Path_BaseTexture_1);            
     }
-    public MainMenu_Option(Point windowSize, GameArguments.CollectionBonus collectionBonus)
-        : this(windowSize, (int)GameArguments.CollectionBonus.Length, (int)collectionBonus)
+    public MainMenu_Option(Point windowSize, Mineral.Type collectionBonus)
+        : this(windowSize, (int)Mineral.Type.All, (int)collectionBonus)
     {
-        this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, MainMenu.PATH_MAPDATA_PREVIEW + "Placeholder.jpg");    
+
+        if (collectionBonus == Mineral.Type.Blue)
+        {
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-blue4.png"); 
+        }
+        else if (collectionBonus == Mineral.Type.Green)
+        {
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-green4.png"); 
+        }
+        else if (collectionBonus == Mineral.Type.Purple)
+        {
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-purple4.png"); 
+        }         
+        else if (collectionBonus == Mineral.Type.Orange)
+        {
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-orange4.png"); 
+        }  
+        else
+        {
+            throw new ArgumentException($"No texture for collectionbonus : {collectionBonus}");
+        }               
 
     }
 
@@ -97,8 +117,9 @@ class MainMenu_Option
 
     public void Draw()
     {
-        GameWindow.spriteBatch.Draw(optionTexture, this.textureDrawArea, Color.White);
-        GameWindow.spriteBatch.Draw(frameTexture, this.drawArea, Color.White);
+        GameWindow.spriteBatchUi.Draw(GameWindow.whitePixelTexture, this.textureDrawArea, ColorConfig.pallet0[1]);
+        GameWindow.spriteBatchUi.Draw(optionTexture, this.textureDrawArea, Color.White);
+        GameWindow.spriteBatchUi.Draw(frameTexture, this.drawArea, Color.White);
     }
 
     // public T GetValue()

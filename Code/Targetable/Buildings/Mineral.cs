@@ -30,6 +30,7 @@ class Mineral : Building
         Green = 1,
         Purple = 2,
         Orange = 3,
+        All = 4
     }
     public readonly Type type;
 
@@ -84,19 +85,21 @@ class Mineral : Building
     {
         base.PlayerInteraction();
 
+        int collectedMinerals = Booster.GetGemBonus(this.type);
+
         switch (this.type)
         {
             case Type.Blue:
-                Resources.Gain(1, 0, 0, 0);
+                Resources.Gain(collectedMinerals, 0, 0, 0);
                 break;
             case Type.Green:
-                Resources.Gain(0, 1, 0, 0);
+                Resources.Gain(0, collectedMinerals, 0, 0);
                 break;
             case Type.Purple:
-                Resources.Gain(0, 0, 1, 0);
+                Resources.Gain(0, 0, collectedMinerals, 0);
                 break;
             case Type.Orange:
-                Resources.Gain(0, 0, 0, 1);
+                Resources.Gain(0, 0, 0, collectedMinerals);
                 break;
         }
 
