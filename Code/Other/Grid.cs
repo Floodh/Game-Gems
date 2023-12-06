@@ -166,7 +166,6 @@ class Grid
 
     public void CalculateEnemyValue()
     {
-        Console.WriteLine("Calculateing enemy value");
 
         HideUnits();
         ClearValue(this.enemyValue);

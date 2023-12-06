@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 class Healer : UpgradeableBuilding
 {
 
+    private const int healingMultiplier = 2;
+
     public static readonly Resources[] costs = new Resources[]
     {
         new Resources(8,32,0,0),
@@ -92,7 +94,7 @@ class Healer : UpgradeableBuilding
                 {
                     Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[CurrentTier]);
                     this.Energy -= healing[CurrentTier];
-                    Projectile projectile = new(-healing[CurrentTier], 0, 4f, target, sourceVec, 3, 5);
+                    Projectile projectile = new(-healing[CurrentTier] * healingMultiplier, 0, 4f, target, sourceVec, 3, 5);
                     projectile.Rotate = false;
                     projectile.Scale = 0.075f;
                     attackCounter = 0;

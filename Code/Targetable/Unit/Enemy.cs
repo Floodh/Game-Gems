@@ -6,6 +6,14 @@ using Microsoft.Xna.Framework.Input;
 
 abstract class Enemy : Unit
 {
+    public enum Type
+    {
+        Fighter,
+        Imp,
+        Demon,
+        GreaterDemon
+    }
+
     protected const int sunDmg = 100;
     public static int NumberOfEnemies { get; protected set; }
     protected Texture2D baseTexture;
@@ -21,16 +29,18 @@ abstract class Enemy : Unit
         this.MoveTo(spawnGridPosition);
     }
 
-    public static Enemy CreateNewEnemy(Point spawnGridPosition, NightDifficulty.DiffucultyModifier diffucultyModifier)
+    public static Enemy CreateNewEnemy(Point spawnGridPosition, NightDifficulty.DiffucultyModifier diffucultyModifier, Type type)
     {
-        if (NumberOfEnemies % 4 == 0)
+        if (type == Type.Fighter)
             return new Fighter(spawnGridPosition, diffucultyModifier);
-        else if ((NumberOfEnemies + 1) % 4 == 0)
+        else if (type == Type.Imp)
             return new Imp(spawnGridPosition, diffucultyModifier);
-        else if ((NumberOfEnemies + 2) % 4 == 0)
+        else if (type == Type.Demon)
             return new Demon(spawnGridPosition, diffucultyModifier);
-        else
+        else if (type == Type.GreaterDemon)
             return new GreaterDemon(spawnGridPosition, diffucultyModifier);
+        else
+            throw new ArgumentException($"Invalid enemy type : {type}");
     }
 
     public virtual void Draw(Rectangle enemyRect)
@@ -50,56 +60,61 @@ abstract class Enemy : Unit
         base.Tick();
         // Calculate the movement
 
-        // Figure out an available tile
-
-        int currentValue = Building.grid.GetEnemyValue(GridArea.X, GridArea.Y);
-        if (currentValue == int.MaxValue)
-        {
-            this.target ??= this.FindTarget(this, Faction.Player, false, false);
-            if (this.target.IsDead)
-            {
-                Console.WriteLine("Warning! : Attacking dead target");
-                this.target = null;
-                return;
-            }
-            //  perform attack
-            _weapon?.Tick(target, ref opertunityCounter);
-        }
-        else
+        if (!this.IsDead)
         {
 
-            if (opertunityCounter++ > movementRate)
-            {
-                opertunityCounter = 0;
-                this.target = null;
+            // Figure out an available tile
 
-                int nextValue = currentValue - 2;
-                Point nextPos = this.GridArea.Location;
-                for (int i = 0; i < Grid.offsets.Length / 2; i++)
+            int currentValue = Building.grid.GetEnemyValue(GridArea.X, GridArea.Y);
+            if (currentValue == int.MaxValue)
+            {
+                this.target ??= this.FindTarget(this, Faction.Player, false, false);
+                if (this.target.IsDead)
                 {
-                    int newX = GridArea.X + Grid.offsets[i * 2];
-                    int newY = GridArea.Y + Grid.offsets[i * 2 + 1];
-                    int newValue = Building.grid.GetEnemyValue(newX, newY);
-                    if (new Point(newX, newY) == previusGridPoint)
-                        newValue--; //  this is safe since the condition can't be true if newValue = int.MinValue    
-                    if (newValue >= nextValue)
+                    Console.WriteLine("Warning! : Attacking dead target");
+                    this.target = null;
+                    return;
+                }
+                //  perform attack
+                _weapon?.Tick(target, ref opertunityCounter);
+            }
+            else
+            {
+
+                if (opertunityCounter++ > movementRate)
+                {
+                    opertunityCounter = 0;
+                    this.target = null;
+
+                    int nextValue = currentValue - 2;
+                    Point nextPos = this.GridArea.Location;
+                    for (int i = 0; i < Grid.offsets.Length / 2; i++)
                     {
-                        if (Building.grid.IsTileTaken(newX, newY) == false)
+                        int newX = GridArea.X + Grid.offsets[i * 2];
+                        int newY = GridArea.Y + Grid.offsets[i * 2 + 1];
+                        int newValue = Building.grid.GetEnemyValue(newX, newY);
+                        if (new Point(newX, newY) == previusGridPoint)
+                            newValue--; //  this is safe since the condition can't be true if newValue = int.MinValue    
+                        if (newValue >= nextValue)
                         {
-                            nextValue = newValue;
-                            nextPos = new Point(newX, newY);
+                            if (Building.grid.IsTileTaken(newX, newY) == false)
+                            {
+                                nextValue = newValue;
+                                nextPos = new Point(newX, newY);
+                            }
                         }
+                    }
+
+                    //  verification of the new position has already been done
+                    if (nextPos != this.GridArea.Location)
+                    {
+                        this.MoveToFrom(nextPos, this.GridArea.Location);
+                        this.previusGridPoint = this.GridArea.Location;
+                        this.GridArea = new Rectangle(nextPos, new Point(1, 1));
+
                     }
                 }
 
-                //  verification of the new position has already been done
-                if (nextPos != this.GridArea.Location)
-                {
-                    this.MoveToFrom(nextPos, this.GridArea.Location);
-                    this.previusGridPoint = this.GridArea.Location;
-                    this.GridArea = new Rectangle(nextPos, new Point(1, 1));
-
-                }
             }
 
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -6,7 +7,9 @@ class ThePortal : Building
 {
 
     private const string Path_BaseTexture = "Data/Texture/portal2.png";
-    private const int MaxSpawnedUnits = 12;
+    private const int MaxSpawnedUnits = 24;
+
+    private readonly Random random = new Random();
 
     Texture2D baseTexture;
 
@@ -31,7 +34,7 @@ class ThePortal : Building
 
 
     private int spawnCounter = 0;
-    private const int threshHold = 200;
+    private const int threshHold = 125;
 
     public override void Tick()
     {
@@ -40,13 +43,26 @@ class ThePortal : Building
             if (Enemy.NumberOfEnemies < MaxSpawnedUnits)
                 if (this.dayNightCycle.IsNight)
                 {
-                    foreach (Point spawnLocation in this.EligibleSpawns())
-                        if (!grid.IsTileTaken(spawnLocation))
-                        {
-                            spawnCounter = 0;
-                            Enemy.CreateNewEnemy(spawnLocation, NightDifficulty.GetModifier(this.dayNightCycle.nightNumber));
-                            break;
-                        }
+                    Point[] eligibleSpawns = this.EligibleSpawns();
+                    foreach (int i in Enumerable.Range(0, eligibleSpawns.Length).OrderBy(x => random.Next()))
+                        if (!grid.IsTileTaken(eligibleSpawns[i]))
+                    {
+                        spawnCounter = 0;
+
+                        int number = random.Next(6) + Sunlight.dayNightCycle.nightNumber;
+                        Enemy.Type enemyType;
+                        if (number < 3)
+                            enemyType = Enemy.Type.Fighter;
+                        else if (number < 7)
+                            enemyType = Enemy.Type.Imp;
+                        else if (number < 12)
+                            enemyType = Enemy.Type.Demon;
+                        else
+                            enemyType = Enemy.Type.GreaterDemon;
+
+                        Enemy.CreateNewEnemy(eligibleSpawns[i], NightDifficulty.GetModifier(this.dayNightCycle.nightNumber), enemyType);
+                        break;
+                    }
 
                 }
     }
@@ -67,18 +83,13 @@ class ThePortal : Building
         Point[] results = new Point[outerShell.Width * outerShell.Height - this.GridArea.Width * this.GridArea.Height];
         int index = 0;
 
-        // Console.WriteLine(results.Length);
-        // Console.WriteLine(outerShell);
-
         for (int x = outerShell.Left; x < outerShell.Right; x++)
         {
-            //Console.WriteLine($"x {x}");
             results[index++] = new Point(x, outerShell.Top);
             results[index++] = new Point(x, outerShell.Bottom);
         }
         for (int y = this.GridArea.Top; y < this.GridArea.Bottom; y++)
         {
-            //Console.WriteLine($"y {y}");
             results[index++] = new Point(outerShell.Left, y);
             results[index++] = new Point(outerShell.Right, y);
         }

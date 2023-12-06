@@ -182,7 +182,7 @@ abstract class Building : Targetable
                 {
                     Building.selectedBuilding = building;
                     Building.selectedBuilding.State = EState.Normal;
-                    Console.WriteLine("Press on: " + building.ToString());
+                    //Console.WriteLine("Press on: " + building.ToString());
                     mouseOnSelectableBuilding = true;
                 }
             }
@@ -197,7 +197,7 @@ abstract class Building : Targetable
                 {
                     Building.selectedBuilding.State = EState.Selected;
 
-                    Console.WriteLine("Selected: " + Building.selectedBuilding.ToString());
+                    //Console.WriteLine("Selected: " + Building.selectedBuilding.ToString());
                 }
             }
         }

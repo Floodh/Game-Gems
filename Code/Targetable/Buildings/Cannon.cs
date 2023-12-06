@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 class Cannon : UpgradeableBuilding
 {
+    private const int damageMultipler = 10;
 
     public static readonly Resources[] costs = new Resources[]
     {
@@ -19,10 +20,10 @@ class Cannon : UpgradeableBuilding
     };
     private static readonly int[] dmg = new int[]
     {
-        60,
-        60,
-        60,
-        60,
+        5,
+        5,
+        5,
+        5,
         // 10,
         // 20,
         // 40,
@@ -68,7 +69,6 @@ class Cannon : UpgradeableBuilding
     private Targetable target = null;
     private readonly int range = 400;
 
-    private readonly int requiredInitative = 80;
     private int initative = 0;
 
     public Cannon()
@@ -87,18 +87,18 @@ class Cannon : UpgradeableBuilding
             int dx = this.target.TargetPosition.X - this.TargetPosition.X;
             int dy = this.target.TargetPosition.X - this.TargetPosition.X;
             int distanceSquared = dx * dx + dy * dy;
-            if (initative++ > requiredInitative)
+            if (initative++ > this.AttackRate)
                 if (this.Energy >= dmg[CurrentTier])
                     if (distanceSquared > this.range * this.range)
                     {
                         this.target = null;
-                        initative = requiredInitative / 2;
+                        initative = this.AttackRate / 2;
                     }
                     else
                     {
                         Vector2 sourceVec = this.TargetPosition.ToVector2() + new Vector2(0, -emitterOffset[CurrentTier]);
                         this.Energy -= dmg[CurrentTier];
-                        _ = new Projectile(dmg[CurrentTier], 0, 3.13f, this.target, sourceVec, 2, 5, this.OnHit);
+                        _ = new Projectile(dmg[CurrentTier] * damageMultipler, 0, 3.13f, this.target, sourceVec, 2, 5, this.OnHit);
                         initative = 0;
                         if (this.target.IsDead)
                             this.target = null;

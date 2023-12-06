@@ -33,8 +33,9 @@ abstract class Unit : Targetable
         for (int i = 0; i < allUnits.Count; i++)
         {
             Unit unit = allUnits[i];
-            unit.Tick();
-            if (unit.IsDead)
+            if (!unit.IsDead)
+                unit.Tick();
+            else
                 i--;
         }
     }
@@ -107,14 +108,14 @@ abstract class Unit : Targetable
     protected void MoveTo(Point gridDestination)
     {
         if (Building.grid.IsTileTaken(gridDestination))
-            throw new ArgumentException("Tried to move to a taken tile!");
+            throw new ArgumentException($"Tried to move to a taken tile! {gridDestination}");
 
         Building.grid.Mark(gridDestination, true);
     }
     protected void MoveFrom(Point gridOrigin)
     {
         if (!Building.grid.IsTileTaken(gridOrigin))
-            throw new ArgumentException("Tried to move from a position that isn't taken by anything!");
+            throw new ArgumentException($"Tried to move from a position that isn't taken by anything! {gridOrigin}");
         Building.grid.Mark(gridOrigin, false);
     }
     protected void MoveToFrom(Point gridDestination, Point gridOrigin)
