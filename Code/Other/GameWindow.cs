@@ -1,6 +1,7 @@
 ﻿﻿using System;
 using System.Net;
 using System.Threading;
+using FontStashSharp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -263,6 +264,15 @@ public class GameWindow : Game
                 this.contextMenu.Draw();
             this.buildingSelector.Draw();
             this.gameOverScreen?.Draw();
+
+
+            string tipText = "Hold \"Shift\" key to build";
+            Vector2 textSize = ResourcesUi.FontSystem.GetFont(40).MeasureString(tipText);
+            Vector2 textPos;
+            textPos.X = (-textSize.X + windowSize.X) / 2;
+            textPos.Y = windowSize.Y - textSize.Y - 40;
+
+            spriteBatchUi.DrawString(ResourcesUi.FontSystem.GetFont(40) ,"Hold \"Shift\" key to build", textPos, Color.Cyan);
         }
 
         spriteBatch.End();
