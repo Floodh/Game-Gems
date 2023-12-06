@@ -13,7 +13,7 @@ class Fighter : Enemy
     {
         this.MaxHp = (int)(100 * diffucultyModifier.healthModifier);
         this.Hp = this.MaxHp;
-        this.Regen_Health = 1;    
+        this.Regen_Health = 0;    
         this.AttackDmg = (int)(10 * diffucultyModifier.damageModifier);    
         _weapon = new Weapon(this, 6, AttackDmg);
         _weapon.Scale = 0.4f;

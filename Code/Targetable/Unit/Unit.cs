@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -8,10 +9,14 @@ using Size = System.Drawing.Size;
 
 abstract class Unit : Targetable
 {
+    private const string Path_DeathSoundEffect = "Data/Audio/SoundEffects/EnemyDeath.wav";
+
     protected const int movementRate = 26;
 
     public static List<Unit> allUnits = new List<Unit>();
 
+    private static SoundEffect deathSoundSeffect;
+    private static SoundEffectInstance deathSoundSeffect_instance;
     
     
 
@@ -79,8 +84,13 @@ abstract class Unit : Targetable
         this.IsDead = true;
         allUnits.Remove(this);
         this.MoveFrom(this.GridArea.Location);
-        //  consider spawning death animation
-        Console.WriteLine("A unit has died!");
+        if (deathSoundSeffect == null)
+        {
+            deathSoundSeffect = SoundEffect.FromFile(Path_DeathSoundEffect);
+            deathSoundSeffect_instance = deathSoundSeffect.CreateInstance();
+            deathSoundSeffect_instance.Volume = 0.2f;
+        }
+        deathSoundSeffect_instance.Play();        
     }
 
     //  returns true if health is negative

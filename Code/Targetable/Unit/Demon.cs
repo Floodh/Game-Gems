@@ -13,7 +13,7 @@ class Demon : Enemy
     {
         this.MaxHp = (int)(85 * diffucultyModifier.healthModifier);
         this.Hp = this.MaxHp;
-        this.Regen_Health = 1;    
+        this.Regen_Health = 0;    
         this.AttackDmg = (int)(12.5 * diffucultyModifier.damageModifier);      
         _weapon = new Weapon(this, 5, AttackDmg);
         _weapon.Scale = 0.15f;

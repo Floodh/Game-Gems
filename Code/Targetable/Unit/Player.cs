@@ -127,10 +127,8 @@ class Player : Unit
                     if (!Building.grid.IsTileTaken(gridPoint))
                     {
                         this.currentTarget = null;
-                        Console.WriteLine("     Recalculateing player destination...");
                         this.gridDestination = gridPoint;
                         Building.grid.CalculatePlayerValue(this.gridDestination, this.GridLocation);
-                        Console.WriteLine("     Done!");
                     }
                     else
                     {
@@ -138,13 +136,10 @@ class Player : Unit
                         Targetable ocupant = Building.grid.FindOcupant(gridPoint);
                         if (ocupant != null)
                         {
-                            Console.WriteLine($"     Trying to go next to a target! {ocupant.GridArea}");
                             if (currentTarget != ocupant)
                                 Building.grid.CalculatePlayerValue(ocupant, this.GridLocation);
                             this.currentTarget = ocupant;
                         }
-                        else
-                            Console.WriteLine("     Tried to go to water!");
 
                     }
 
@@ -156,6 +151,5 @@ class Player : Unit
     {
         base.Die();
         Building.grid.CalculateEnemyValue();
-        Console.WriteLine("The player Wizard has died!");
     }
 }

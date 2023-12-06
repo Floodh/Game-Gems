@@ -19,12 +19,23 @@ class Cannon : UpgradeableBuilding
     };
     private static readonly int[] dmg = new int[]
     {
-        10,
-        20,
-        40,
-        80,
+        60,
+        60,
+        60,
+        60,
+        // 10,
+        // 20,
+        // 40,
+        // 80,
         // 160,
     };
+    private static readonly int[] attackTickCost = new int[]
+    {
+        80,
+        40,
+        20,
+        10,
+    };    
     private static readonly int[] maxHealth = new int[]
     {
         100,
@@ -131,6 +142,7 @@ class Cannon : UpgradeableBuilding
 
     protected override void UpdateStats()
     {
+        this.AttackRate = attackTickCost[CurrentTier];
         this.MaxEnergy = maxEnergy[CurrentTier];
         this.MaxHp = maxHealth[CurrentTier];
         this.AttackDmg = dmg[CurrentTier];

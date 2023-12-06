@@ -18,12 +18,25 @@ class Healer : UpgradeableBuilding
 
     private static readonly int[] healing = new int[]
     {
-        10,
-        20,
-        40,
-        80,
+        5,
+        5,
+        5,
+        5,
+        // 10,
+        // 20,
+        // 40,
+        // 80,
         // 160,
     };
+
+    private static readonly int[] attackTickCost = new int[]
+    {
+        80,
+        40,
+        20,
+        10,
+    };
+
     private static readonly int[] maxHealth = new int[]
     {
         100,
@@ -60,7 +73,6 @@ class Healer : UpgradeableBuilding
         : base("healing-tower1", textureSet)
     {
         this.energyBar = new EnergyBar(this);
-        this.AttackRate = 10;
     }
 
     int attackCounter = 0;
@@ -106,6 +118,7 @@ class Healer : UpgradeableBuilding
 
     protected override void UpdateStats()
     {
+        this.AttackRate = attackTickCost[CurrentTier];
         this.MaxEnergy = maxEnergy[CurrentTier];
         this.MaxHp = maxHealth[CurrentTier];
         this.Hp = this.MaxHp;

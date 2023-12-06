@@ -25,11 +25,23 @@ class Generator : UpgradeableBuilding
     };
     private static readonly int[] energyTransfer = new int[]
     {   //  keep in mind that the actual transfered energy is trippled
-        10,
-        20,
-        40,
-        80,
+        15,
+        15,
+        15,
+        15,    
+        // 10,
+        // 20,
+        // 40,
+        // 80,
         // 160,
+    };
+
+    private static readonly int[] attackTickCost = new int[]
+    {
+        80,
+        40,
+        20,
+        10,
     };
 
     private static readonly int[] emitterOffset = new int[]
@@ -52,7 +64,6 @@ class Generator : UpgradeableBuilding
         this.energyBar = new EnergyBar(this);
         this.MaxEnergy = 1;
         this.Energy = 1;
-        this.AttackRate = 10;
     }
 
     int attackCounter = 0;
@@ -96,6 +107,7 @@ class Generator : UpgradeableBuilding
 
     protected override void UpdateStats()
     {
+        this.AttackRate = attackTickCost[CurrentTier];
         this.MaxHp = maxHealth[CurrentTier];
         this.Hp = this.MaxHp;
     }
