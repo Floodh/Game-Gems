@@ -65,12 +65,12 @@ class MainMenu
         //
 
         //
-        mainMenu_Options[3] = new MainMenu_Option[((int)GameArguments.CollectionBonus.Length) - 2];
+        mainMenu_Options[3] = new MainMenu_Option[4];
             //mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.None);
-            mainMenu_Options[3][0] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Blue);
-            mainMenu_Options[3][1] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Green);
-            mainMenu_Options[3][2] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Purple);
-            mainMenu_Options[3][3] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.Orange);
+            mainMenu_Options[3][0] = new MainMenu_Option(windowSize, Mineral.Type.Blue);
+            mainMenu_Options[3][1] = new MainMenu_Option(windowSize, Mineral.Type.Green);
+            mainMenu_Options[3][2] = new MainMenu_Option(windowSize, Mineral.Type.Purple);
+            mainMenu_Options[3][3] = new MainMenu_Option(windowSize, Mineral.Type.Orange);
             //mainMenu_Options[3][5] = new MainMenu_Option(windowSize, GameArguments.CollectionBonus.All);
         //
 
@@ -209,7 +209,7 @@ class MainMenu
                 this.gameArguments.avatar = (GameArguments.Avatar)index;
                 break;
             case State.SelectCollcectionBonus:
-                this.gameArguments.collectionBonus = (GameArguments.CollectionBonus)index;
+                this.gameArguments.collectionBonus = (Mineral.Type)index;
                 break; 
             case State.Loading:
                 break;

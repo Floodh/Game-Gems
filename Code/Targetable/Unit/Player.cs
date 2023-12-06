@@ -17,17 +17,19 @@ class Player : Unit
 
 
     private Animation numberAnimation;
+    private Mineral.Type collectionBonus;
 
 
 
 
 
-    public Player(Point spawnGridPosition)
+    public Player(Point spawnGridPosition, Mineral.Type collectionBonus)
         : base(Faction.Player, spawnGridPosition)
     {
         this.baseTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Path_BaseTexture);
         this.gridDestination = GridLocation;
         this.MoveTo(gridDestination);
+        this.collectionBonus = collectionBonus;
     }
 
     public override void Draw()
@@ -63,6 +65,12 @@ class Player : Unit
                         this.numberAnimation.drawArea = this.DrawArea;
                         this.numberAnimation.drawArea.Offset(0, -this.DrawArea.Height * 0.85f);
                         this.numberAnimation.Play();
+
+                        //  collection bonus
+                        if (this.currentTarget.mineralType == this.collectionBonus)
+                        {
+                            this.opertunityCounter = movementRate / 3;
+                        }
                     }
 
                 }

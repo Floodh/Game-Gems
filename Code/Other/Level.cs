@@ -38,7 +38,7 @@ class Level
 
         ThePortal thePortal = new ThePortal(dayNightCycle);
         thePortal.Place(size.Width / 2 - 1, size.Height / 2 - 1);
-        player = new Player(new Point(thePortal.GridArea.X - 1, thePortal.GridArea.Y));
+        player = new Player(new Point(thePortal.GridArea.X - 1, thePortal.GridArea.Y), gameArguments.collectionBonus);
 
 
         int numberOfMinerals = 4 * 3;

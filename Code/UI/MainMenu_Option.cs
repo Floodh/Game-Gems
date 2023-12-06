@@ -55,23 +55,23 @@ class MainMenu_Option
         if (avatar == GameArguments.Avatar.Orb)
             this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, MainMenu.PATH_MAPDATA_PREVIEW + "Placeholder.jpg");            
     }
-    public MainMenu_Option(Point windowSize, GameArguments.CollectionBonus collectionBonus)
-        : this(windowSize, (int)GameArguments.CollectionBonus.Length, (int)collectionBonus)
+    public MainMenu_Option(Point windowSize, Mineral.Type collectionBonus)
+        : this(windowSize, (int)Mineral.Type.All, (int)collectionBonus)
     {
 
-        if (collectionBonus == GameArguments.CollectionBonus.Blue)
+        if (collectionBonus == Mineral.Type.Blue)
         {
             this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-blue4.png"); 
         }
-        else if (collectionBonus == GameArguments.CollectionBonus.Green)
+        else if (collectionBonus == Mineral.Type.Green)
         {
             this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-green4.png"); 
         }
-        else if (collectionBonus == GameArguments.CollectionBonus.Purple)
+        else if (collectionBonus == Mineral.Type.Purple)
         {
             this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-purple4.png"); 
         }         
-        else if (collectionBonus == GameArguments.CollectionBonus.Orange)
+        else if (collectionBonus == Mineral.Type.Orange)
         {
             this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-orange4.png"); 
         }  

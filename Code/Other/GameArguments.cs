@@ -9,19 +9,21 @@ struct GameArguments
         Orb,
         Length
     }
-    public enum CollectionBonus
-    {
-        None,
-        Blue,
-        Green,
-        Purple,
-        Orange,
-        All,
-        Length
-    }
+
+    // using collectionBonus = 
+    // public enum CollectionBonus
+    // {
+    //     None,
+    //     Blue,
+    //     Green,
+    //     Purple,
+    //     Orange,
+    //     All,
+    //     Length
+    // }
 
     public string mapPath;
     public Avatar avatar;
-    public CollectionBonus collectionBonus;
+    public Mineral.Type collectionBonus;
 
 }
