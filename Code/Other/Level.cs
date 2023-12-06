@@ -34,6 +34,16 @@ class Level
         this.dayNightCycle = new(GameWindow.windowSize);
 
         Size size = bitmap.Size * Map.mapPixelToGridTile_Multiplier;
+        int playableTiles = 0;
+        
+        for (int y = 0; y < bitmap.Size.Height; y++)
+        for (int x = 0; x < bitmap.Size.Width; x++)
+        {
+            System.Drawing.Color pixel = bitmap.GetPixel(x, y);
+            if ((Map.TilesRGB)pixel.ToArgb() != Map.TilesRGB.Water)
+                playableTiles++;
+        }
+        Console.WriteLine(playableTiles);
 
 
         ThePortal thePortal = new ThePortal(dayNightCycle);
@@ -41,8 +51,8 @@ class Level
         player = new Player(new Point(thePortal.GridArea.X - 1, thePortal.GridArea.Y), gameArguments.collectionBonus, gameArguments.avatar);
 
 
-        int numberOfMinerals = 4 * 3;
-        int numberOfRocks = 1000;
+        int numberOfMinerals = (playableTiles / 160) * 4;
+        int numberOfRocks = playableTiles * 100;
 
         for (int i = 0; i < numberOfMinerals; i++)
         {

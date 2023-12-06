@@ -6,15 +6,19 @@ using Microsoft.Xna.Framework.Input;
 
 using Size = System.Drawing.Size;
 using Bitmap = System.Drawing.Bitmap;
+using Microsoft.Xna.Framework.Audio;
 
 
 abstract class Building : Targetable
 {
 
+    private const string Path_DeathSoundEffect = "Data/Audio/SoundEffects/Rocks.wav";
+
     public static List<Building> allBuildings = new List<Building>();
     public static Grid grid;
 
-
+    private static SoundEffect deathSoundSeffect;
+    private static SoundEffectInstance deathSoundSeffect_instance;
 
     public static void SetGrid(Bitmap sourceImage)
     {
@@ -147,6 +151,16 @@ abstract class Building : Targetable
         //Console.WriteLine($"died {}");
         allBuildings.Remove(this);  //  consider delaying the removal of this object from the list for potential death animation
         grid.RemoveBuilding(this);
+
+        if (deathSoundSeffect == null)
+        {
+            deathSoundSeffect = SoundEffect.FromFile(Path_DeathSoundEffect);
+            deathSoundSeffect_instance = deathSoundSeffect.CreateInstance();
+            deathSoundSeffect_instance.Volume = 0.2f;
+        }
+        deathSoundSeffect_instance.Play();
+        
+
     }
 
     public static bool UpdateAllByMouse(MouseState mouseState)
