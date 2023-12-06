@@ -51,9 +51,9 @@ class MainMenu_Option
         : this(windowSize, (int)GameArguments.Avatar.Length, (int)avatar)
     {
         if (avatar == GameArguments.Avatar.Wizard)
-            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Player.Path_BaseTexture);
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Player.Path_BaseTexture_0);
         if (avatar == GameArguments.Avatar.Orb)
-            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, MainMenu.PATH_MAPDATA_PREVIEW + "Placeholder.jpg");            
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, Player.Path_BaseTexture_1);            
     }
     public MainMenu_Option(Point windowSize, Mineral.Type collectionBonus)
         : this(windowSize, (int)Mineral.Type.All, (int)collectionBonus)
