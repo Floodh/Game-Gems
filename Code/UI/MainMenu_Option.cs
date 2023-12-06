@@ -58,7 +58,27 @@ class MainMenu_Option
     public MainMenu_Option(Point windowSize, GameArguments.CollectionBonus collectionBonus)
         : this(windowSize, (int)GameArguments.CollectionBonus.Length, (int)collectionBonus)
     {
-        this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, MainMenu.PATH_MAPDATA_PREVIEW + "Placeholder.jpg");    
+
+        if (collectionBonus == GameArguments.CollectionBonus.Blue)
+        {
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-blue4.png"); 
+        }
+        else if (collectionBonus == GameArguments.CollectionBonus.Green)
+        {
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-green4.png"); 
+        }
+        else if (collectionBonus == GameArguments.CollectionBonus.Purple)
+        {
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-purple4.png"); 
+        }         
+        else if (collectionBonus == GameArguments.CollectionBonus.Orange)
+        {
+            this.optionTexture = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/GemMines/gem-mine-orange4.png"); 
+        }  
+        else
+        {
+            throw new ArgumentException($"No texture for collectionbonus : {collectionBonus}");
+        }               
 
     }
 
@@ -97,6 +117,7 @@ class MainMenu_Option
 
     public void Draw()
     {
+        GameWindow.spriteBatchUi.Draw(GameWindow.whitePixelTexture, this.textureDrawArea, ColorConfig.pallet0[1]);
         GameWindow.spriteBatchUi.Draw(optionTexture, this.textureDrawArea, Color.White);
         GameWindow.spriteBatchUi.Draw(frameTexture, this.drawArea, Color.White);
     }

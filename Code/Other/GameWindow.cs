@@ -136,10 +136,11 @@ public class GameWindow : Game
         contextKeyboardState = Keyboard.GetState();
         contextMouseState = Mouse.GetState();
 
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+        if (this.mainMenu.shouldQuit)
         {
             Exit();
         }
+
 
         // TODO: Add your update logic here
         //Console.WriteLine($"Mouse coords: {contextMouseState.X}, {contextMouseState.Y}");
@@ -223,16 +224,6 @@ public class GameWindow : Game
                 }
             }
         }
-
-
-
-        // if (Building.grid.hasUpdated && this.map.RenderGrid)    //  this is ugly, but it works
-        // {
-        //     Building.grid.hasUpdated = false;
-        //     this.map.RenderGrid = true; //  force update
-        // }
-
-
 
         base.Update(gameTime);
     }

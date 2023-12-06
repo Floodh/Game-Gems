@@ -11,7 +11,7 @@ class MainMenu_Button
     private const double BufferPercantage = 0.025;
     private const double WidthPercentage = 0.455;
     private const double HeightPercentage = WidthPercentage / 2;
-    private const double InnerBufferPercentage = HeightPercentage / 8;
+    private const double InnerBufferPercentage = HeightPercentage / 64;
 
     private static Texture2D frameTexture;
 
@@ -28,8 +28,8 @@ class MainMenu_Button
 
     private string text;
 
-    private static readonly Color frameColor = ColorConfig.pallet0[0];
-    private static readonly Color fillColor = ColorConfig.pallet0[1];
+    private static readonly Color frameColor = ColorConfig.pallet0[2];
+    private static readonly Color fillColor = ColorConfig.pallet0[0];
     private static readonly Color textColor = Color.Black;
 
     
@@ -49,6 +49,7 @@ class MainMenu_Button
         int heightPxSize = (int)(windowSize.Y * HeightPercentage);
         int innerWidthBufferPxSize = (int)(windowSize.X * InnerBufferPercentage);
         int innerHeightBufferPxSize = (int)(windowSize.Y * InnerBufferPercentage);
+        int innerBufferPxSoze = innerWidthBufferPxSize > innerHeightBufferPxSize ? innerWidthBufferPxSize : innerHeightBufferPxSize;
 
         int combinedHeight = bufferPxSize * (numberOfOptions - 1) + heightPxSize * numberOfOptions;
         int startX = (windowSize.X - widthPxSize) / 2;
@@ -64,10 +65,10 @@ class MainMenu_Button
 
         this.textureDrawArea = new Rectangle
         (
-            drawArea.X + innerWidthBufferPxSize,
-            drawArea.Y + innerHeightBufferPxSize,
-            drawArea.Width - innerWidthBufferPxSize * 2,
-            drawArea.Height - innerHeightBufferPxSize * 2
+            drawArea.X + innerBufferPxSoze,
+            drawArea.Y + innerBufferPxSoze,
+            drawArea.Width - innerBufferPxSoze * 2,
+            drawArea.Height - innerBufferPxSoze * 2
         );
 
     }
