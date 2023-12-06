@@ -287,8 +287,9 @@ public class GameWindow : Game
 
     protected override void OnExiting(object sender, EventArgs args)
     {
+        if (this.level != null)
+            Save.WriteToFile();
         base.OnExiting(sender, args);
-        Save.WriteToFile();
     }
 
 

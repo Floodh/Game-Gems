@@ -71,7 +71,8 @@ abstract class Bar
         _position = centerVec - Size.ToVector2() / 2;
 
 
-        _numSections = MaxUnit() / 100; // fix
+        _numSections =  Math.Max(MaxUnit() / 100, 1); // fix
+
     }
 
     public void Draw()

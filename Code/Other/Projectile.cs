@@ -22,10 +22,30 @@ class Projectile
             //  this will make a projectile hit instantly
             if (projectile.MoveToTarget(projectile.speed))
             {
-                projectile.target.TakeDmg(projectile);
+                if (!projectile.target.IsDead)
+                {
+                    projectile.target.TakeDmg(projectile);
+                    if (projectile.onHit != null)
+                        projectile.onHit(projectile.position);
+                }
+                else
+                {
+                    foreach (Unit unit in Unit.allUnits)
+                    {
+                        if (unit.faction == projectile.target.faction)
+                        if (unit.TargetPosition == projectile.target.TargetPosition)
+                        {
+                            unit.TakeDmg(projectile);
+                            if (projectile.onHit != null)
+                                projectile.onHit(projectile.position); 
+                            break;                           
+                        }
+                    }
+
+                }
+
                 projectile.hasHit = true;
-                if (projectile.onHit != null)
-                    projectile.onHit(projectile.position);
+
             }
 
         }

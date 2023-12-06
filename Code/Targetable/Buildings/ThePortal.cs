@@ -34,7 +34,7 @@ class ThePortal : Building
 
 
     private int spawnCounter = 0;
-    private const int threshHold = 125;
+    private const int threshHold = 75;
 
     public override void Tick()
     {
@@ -79,7 +79,7 @@ class ThePortal : Building
 
     private Point[] EligibleSpawns()
     {
-        Rectangle outerShell = new Rectangle(this.GridArea.X - 1, this.GridArea.Y - 1, this.GridArea.Width + 2, this.GridArea.Height + 2);
+        Rectangle outerShell = new Rectangle(this.GridArea.X - 1, this.GridArea.Y - 1, this.GridArea.Width + 1, this.GridArea.Height + 1);
         Point[] results = new Point[outerShell.Width * outerShell.Height - this.GridArea.Width * this.GridArea.Height];
         int index = 0;
 

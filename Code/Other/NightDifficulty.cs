@@ -30,7 +30,8 @@ static class NightDifficulty
 
     public static DiffucultyModifier GetModifier(int n)
     {
-        if (n > night.Length)
+        n -= 1;
+        if (n >= night.Length)
         {
             int extraNights = n - night.Length;
             int multiplier = 1 <<  extraNights;

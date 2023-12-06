@@ -139,5 +139,6 @@ class Level
     {
         Save.HighscoreNight = Math.Max(Save.HighscoreNight, this.dayNightCycle.nightNumber);
         this.IsGameOver = true;
+        Save.WriteToFile();
     }
 }
