@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -79,25 +80,23 @@ class ThePortal : Building
 
     private Point[] EligibleSpawns()
     {
-        Rectangle outerShell = new Rectangle(this.GridArea.X - 1, this.GridArea.Y - 1, this.GridArea.Width + 1, this.GridArea.Height + 1);
-        Point[] results = new Point[outerShell.Width * outerShell.Height - this.GridArea.Width * this.GridArea.Height];
+        Rectangle outerShell = new Rectangle(this.GridArea.X - 1, this.GridArea.Y - 1, this.GridArea.Width + 2, this.GridArea.Height + 2);
+        List<Point> result = new List<Point>();
         int index = 0;
 
         for (int x = outerShell.Left; x < outerShell.Right; x++)
         {
-            results[index++] = new Point(x, outerShell.Top);
-            results[index++] = new Point(x, outerShell.Bottom);
+            result.Add( new Point(x, outerShell.Top) );
+            result.Add( new Point(x, outerShell.Bottom) );
         }
         for (int y = this.GridArea.Top; y < this.GridArea.Bottom; y++)
         {
-            results[index++] = new Point(outerShell.Left, y);
-            results[index++] = new Point(outerShell.Right, y);
+            result.Add(new Point(outerShell.Left, y));
+            result.Add(new Point(outerShell.Right, y));
         }
 
-        if (results.Length != index)
-            throw new Exception("Eligiable spawn location results array was not filled");
 
-        return results;
+        return result.ToArray();
 
 
     }
