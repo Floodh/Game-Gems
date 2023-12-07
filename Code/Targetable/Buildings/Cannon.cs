@@ -67,7 +67,7 @@ class Cannon : UpgradeableBuilding
 
     private EnergyBar energyBar;
     private Targetable target = null;
-    private readonly int range = 400;
+    private readonly int range = 1200;
 
     private int initative = 0;
 
