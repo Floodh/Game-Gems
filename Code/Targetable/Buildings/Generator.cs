@@ -70,7 +70,7 @@ class Generator : UpgradeableBuilding
     public override void Tick()
     {
         base.Tick();
-        if (this.target == null || this.target.Energy == this.target.MaxEnergy)
+        if (this.target == null || target.IsDead || this.target.Energy == this.target.MaxEnergy)
         {
             this.target = this.FindTarget(this, Faction.Player, false, true);
         }

@@ -82,8 +82,7 @@ class ThePortal : Building
     {
         Rectangle outerShell = new Rectangle(this.GridArea.X - 1, this.GridArea.Y - 1, this.GridArea.Width + 2, this.GridArea.Height + 2);
         List<Point> result = new List<Point>();
-        int index = 0;
-
+        
         for (int x = outerShell.Left; x < outerShell.Right; x++)
         {
             result.Add( new Point(x, outerShell.Top) );
