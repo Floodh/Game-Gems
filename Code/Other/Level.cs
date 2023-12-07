@@ -26,6 +26,7 @@ class Level
     {
 
         Enemy.NumberOfEnemies = 0;
+        Resources.SetStartingResources();
 
         Bitmap bitmap = new Bitmap(gameArguments.mapPath);
 
