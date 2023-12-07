@@ -25,6 +25,8 @@ class Level
     public Level(GameArguments gameArguments)
     {
 
+        Enemy.NumberOfEnemies = 0;
+
         Bitmap bitmap = new Bitmap(gameArguments.mapPath);
 
         this.r = new Random();

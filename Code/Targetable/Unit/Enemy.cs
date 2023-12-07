@@ -15,7 +15,7 @@ abstract class Enemy : Unit
     }
 
     protected const int sunDmg = 100;
-    public static int NumberOfEnemies { get; protected set; }
+    public static int NumberOfEnemies { get; set; }
     protected Texture2D baseTexture;
     protected int projectileTextureId;
     protected Targetable target = null;
