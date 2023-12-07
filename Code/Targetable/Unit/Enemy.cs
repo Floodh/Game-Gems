@@ -21,6 +21,8 @@ abstract class Enemy : Unit
     protected Targetable target = null;
     protected Weapon _weapon;
 
+    private static Random random = new();
+
     protected Enemy(Point spawnGridPosition, string Path_BaseTexture)
         : base(Faction.Enemy, spawnGridPosition)
     {
@@ -123,6 +125,23 @@ abstract class Enemy : Unit
 
     protected override void Die()
     {
+        Resources resources;
+        NumberAnimation numberAnimation;
+
+        int num = random.Next() % 4;
+        Rectangle area = this.DrawArea;
+
+        int amount = 1 << (Sunlight.dayNightCycle.nightNumber - 1);
+
+
+        resources = new(0,amount,0,0);
+        numberAnimation = new NumberAnimation(area, $"+{amount}", Color.Green); 
+
+        Resources.Gain(resources);
+        numberAnimation.Play();
+        
+  
+
         base.Die();
         NumberOfEnemies--;
     }

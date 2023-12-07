@@ -65,22 +65,22 @@ class Boulder : Building
         if (num == 0)
         {
             resources = new(16,0,0,0);
-            numberAnimation = new NumberAnimation(area, "16", Color.Blue); 
+            numberAnimation = new NumberAnimation(area, "+16", Color.Blue); 
         }
         else if (num == 1)
         {
             resources = new(0,16,0,0);
-            numberAnimation = new NumberAnimation(area, "16", Color.Green); 
+            numberAnimation = new NumberAnimation(area, "+16", Color.Green); 
         }
         else if (num == 2)
         {
             resources = new(0,0,16,0);
-            numberAnimation = new NumberAnimation(area, "16", Color.Purple); 
+            numberAnimation = new NumberAnimation(area, "+16", Color.Purple); 
         }
         else
         {
             resources = new(0,0,0,16);
-            numberAnimation = new NumberAnimation(area, "16", Color.Orange); 
+            numberAnimation = new NumberAnimation(area, "+16", Color.Orange); 
         }
 
         numberAnimation.Play();
