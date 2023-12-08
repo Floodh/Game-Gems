@@ -46,7 +46,7 @@ class Level
             if ((Map.TilesRGB)pixel.ToArgb() != Map.TilesRGB.Water)
                 playableTiles++;
         }
-        Console.WriteLine(playableTiles);
+        //Console.WriteLine(playableTiles);
 
 
         ThePortal thePortal = new ThePortal(dayNightCycle);

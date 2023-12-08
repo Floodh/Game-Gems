@@ -127,11 +127,11 @@ class BuildingOption
 
             this.root.SelectedItem = this;
             state.Highlight = true;
-            if (mouseState.LeftButton == ButtonState.Pressed)
-            {
-                Console.WriteLine($"Distance:{GetDistance(this.center.X, this.center.Y, mouseState.X, mouseState.Y)}, R:{this.Radius}");
-                Console.WriteLine(state.Colour.ToString());
-            }
+            // if (mouseState.LeftButton == ButtonState.Pressed)
+            // {
+            //     Console.WriteLine($"Distance:{GetDistance(this.center.X, this.center.Y, mouseState.X, mouseState.Y)}, R:{this.Radius}");
+            //     Console.WriteLine(state.Colour.ToString());
+            // }
         }
         else
         {

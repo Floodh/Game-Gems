@@ -9,7 +9,7 @@ static class EffectPlayer
     private const string Path_Plop = "Data/Audio/SoundEffects/Plop.wav";
 
 
-    private const int Instances_Plop = 32;
+    private const int Instances_Plop = 32 * 4;
 
 
     private static Instance[] data = new Instance[1];

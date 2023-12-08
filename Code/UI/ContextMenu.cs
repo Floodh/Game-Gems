@@ -94,7 +94,7 @@ class ContextMenu
 
     public void UpgradeBuilding(object sender, EventArgs e)
     {
-        Console.WriteLine("UpgradeBuilding");
+        //Console.WriteLine("UpgradeBuilding");
         var upgradableBuilding = this._building as UpgradeableBuilding;
         bool result = upgradableBuilding.TryUpgrade();
     }
@@ -106,7 +106,7 @@ class ContextMenu
 
     public void UpgradeAllGems(object sender, EventArgs e)
     {
-        Console.WriteLine("UpgradeAllGems");
+        //Console.WriteLine("UpgradeAllGems");
         Booster.TryUpgrade(Mineral.Type.All, _boosterBuilding);
     }
 
