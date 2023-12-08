@@ -54,6 +54,10 @@ class Grid
 
     public bool IsTileTaken(int x, int y)
     {
+        if (y >= isTaken.Length)
+            return true;
+        if (x >= isTaken[y].Length)
+            return true;
         return isTaken[y][x];
     }
     public bool IsTileTaken(Point point)

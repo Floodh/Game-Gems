@@ -130,6 +130,7 @@ public class GameWindow : Game
         ThemePlayer.Start_PlayTheme_MainMenu();
     }
 
+    private bool shouldLoadLevel = false;
     protected override void Update(GameTime gameTime)
     {
         Time = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -148,14 +149,15 @@ public class GameWindow : Game
 
         if (this.state == State.MainMenu)
         {
-            if (mainMenu.state == MainMenu.State.Loading)
+            if (shouldLoadLevel)
             {
+                shouldLoadLevel = false;
                 this.state = State.InGame;
                 GameArguments arguments = this.mainMenu.GetGameArguments();
                 this.map = new Map(arguments.mapPath);
                 Building.SetGrid(this.map.SourceImage);
                 this.level = new Level(arguments);
-                this.mainMenu.EnterState(MainMenu.State.InActive);
+                
 
                 // Camera setup
                 _camera.MapSize = this.map.MapSize;
@@ -164,8 +166,11 @@ public class GameWindow : Game
                 foreach (Unit unit in Unit.allUnits)
                     if (unit.faction == Faction.Player)
                         _camera.UpdateCenter(unit.TargetPosition.ToVector2());
-
+                if (Save.HighscoreNight < 3)
+                    Thread.Sleep(6000);
+                this.mainMenu.EnterState(MainMenu.State.InActive);
             }
+            shouldLoadLevel = (mainMenu.state == MainMenu.State.Loading);
             this.mainMenu.UpdateByMouse(contextMouseState);
             this.mainMenu.UpdateByKeyboard(contextKeyboardState);
 

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using FontStashSharp;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 class MainMenu
@@ -25,6 +26,7 @@ class MainMenu
     private readonly MainMenu_Option[][] mainMenu_Options = new MainMenu_Option[((int)State.Loading)][];
     private readonly MainMenu_Button startButton;
     private readonly MainMenu_Button exitButton;
+    private Texture2D loadingScreen;
 
     public bool shouldQuit = false;
 
@@ -33,6 +35,7 @@ class MainMenu
     public MainMenu(Point windowSize)
     {
         this.windowSize = windowSize;
+        this.loadingScreen = Texture2D.FromFile(GameWindow.graphicsDevice, "Data/Texture/LoadingScreenHelp.png");
 
         //
         startButton = new MainMenu_Button(windowSize, 0, "Play");
@@ -264,6 +267,13 @@ class MainMenu
                 this.startButton.Draw();
                 this.exitButton.Draw();
             }
+
+
+        }
+        else if (this.state == State.Loading)
+        {
+            Rectangle loadingScreenDrawArea = new Rectangle(windowSize.Y / 2, 0, windowSize.Y, windowSize.Y);
+            GameWindow.spriteBatchUi.Draw(this.loadingScreen, loadingScreenDrawArea, Color.White);
         }
     }
 
