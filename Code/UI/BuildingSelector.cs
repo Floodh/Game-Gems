@@ -70,6 +70,13 @@ class BuildingSelector
 
     }
 
+    public void ReSize(Size displaySize)
+    {
+        this.displaySize = displaySize;
+        this.center = new Point(this.displaySize.Width / 2, this.displaySize.Height / 2);
+        _buildingOptions.ToList().ForEach(n => n.ReSize());
+    }
+
     private void BuildingOption_OnOver(BuildingOption sender)
     {
         _hoverOverBuildingOption = sender;
