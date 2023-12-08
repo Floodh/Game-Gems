@@ -55,6 +55,13 @@ class BuildingOption
             this.fgTexture = Texture2D.FromFile(GameWindow.graphicsDevice, foregroundTexturePath);
     }
 
+    public void ReSize()
+    {
+        var vec = new Vector2((float)Math.Cos(this.fgAngle), (float)Math.Sin(this.fgAngle)) * 185;
+        this.center = root.Center + vec.ToPoint();
+    }
+
+
     public Texture2D PlacementTexture
     {
         get

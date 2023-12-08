@@ -40,6 +40,16 @@ class ResourcesUi
                 this.topLeftPoint.X + 2, this.topLeftPoint.Y + 2, ResourceTypeUi.textureSize.Width, ResourceTypeUi.textureSize.Height);
         }
 
+        public void ReSize(Point topLeftPoint)
+        {
+            this.topLeftPoint = topLeftPoint;
+            this.bgRect = new Rectangle(
+                this.topLeftPoint.X, this.topLeftPoint.Y, ResourceTypeUi.resourceSize.Width, ResourceTypeUi.resourceSize.Height);
+
+            this.gemRect = new Rectangle(
+                this.topLeftPoint.X + 2, this.topLeftPoint.Y + 2, ResourceTypeUi.textureSize.Width, ResourceTypeUi.textureSize.Height);
+        }
+
         public void Draw()
         {
             GameWindow.spriteBatchUi.Draw(
@@ -94,6 +104,21 @@ class ResourcesUi
             Resources.GetOrange,
             new Point(x, y)));
 
+    }
+
+    public void ReSize(Size displaySize)
+    {
+        this.displaySize = displaySize;
+        int x = this.TopLeftPoint.X;
+        int y = 0;
+
+        resourceList[0].ReSize(new Point(x, y));
+        x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding * 2;
+        resourceList[1].ReSize(new Point(x, y));
+        x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding * 2;
+        resourceList[2].ReSize(new Point(x, y));
+        x += ResourceTypeUi.ResourceSize.Width + ResourcesUi.padding * 2;
+        resourceList[3].ReSize(new Point(x, y));
     }
 
     public Point TopLeftPoint

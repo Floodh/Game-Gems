@@ -157,7 +157,7 @@ public class GameWindow : Game
                 this.map = new Map(arguments.mapPath);
                 Building.SetGrid(this.map.SourceImage);
                 this.level = new Level(arguments);
-                
+
 
                 // Camera setup
                 _camera.MapSize = this.map.MapSize;
@@ -278,7 +278,7 @@ public class GameWindow : Game
                 Vector2 textPos;
                 textPos.X = (-textSize.X + windowSize.X) / 2;
                 textPos.Y = windowSize.Y - textSize.Y - 40;
-                spriteBatchUi.DrawString(ResourcesUi.FontSystem.GetFont(40) ,"Hold \"Shift\" key to build", textPos, Color.Cyan);
+                spriteBatchUi.DrawString(ResourcesUi.FontSystem.GetFont(40), "Hold \"Shift\" key to build", textPos, Color.Cyan);
             }
         }
 
@@ -291,7 +291,6 @@ public class GameWindow : Game
 
     public void OnResize(Object sender, EventArgs e)
     {
-        
         Console.WriteLine("Updating");
         windowSize = this.Window.ClientBounds.Size;
         if (this.background != null)
@@ -299,7 +298,8 @@ public class GameWindow : Game
         this.level?.dayNightCycle.SetWindowSize(windowSize);
         this.mainMenu.OnResize(windowSize);
         this.gameOverScreen?.AdjustDrawArea(windowSize);
-
+        this.buildingSelector.ReSize(new Size(windowSize.X, windowSize.Y));
+        this.resourcesUi.ReSize(new Size(windowSize.X, windowSize.Y));
     }
 
     protected override void OnExiting(object sender, EventArgs args)
