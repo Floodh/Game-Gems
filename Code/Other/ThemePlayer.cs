@@ -161,7 +161,6 @@ static class ThemePlayer
         
         if (isDay != oldIsDayValue)
         {
-            Console.WriteLine($"Switching acording to value : {isDay}");
             oldIsDayValue = isDay;
             if (isDay)
             {
