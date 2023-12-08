@@ -2,3 +2,5 @@ obj
 bin
 EnemyValue.png
 test.png
+*.user
+.vs

@@ -258,7 +258,7 @@ static class TextureSource
             renderTargetIsAOffScreenBuffer.SaveAsPng(stream, width, height);
             result[i] = Texture2D.FromStream(GameWindow.graphicsDevice, stream); 
 
-            File.WriteAllBytes($"Cache/DirtTest{i}.png", stream.ToArray());
+            //File.WriteAllBytes($"Cache/DirtTest{i}.png", stream.ToArray());
         }
 
         GameWindow.graphicsDevice.SetRenderTarget(null);

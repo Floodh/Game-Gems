@@ -34,6 +34,12 @@
     </Content> 
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Save\HighscoreNight.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <Target Name="MakeMyDir" AfterTargets="Build">
     <MakeDir Directories="$(OutDir)Cache" />
   </Target>

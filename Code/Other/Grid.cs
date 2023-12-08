@@ -209,7 +209,7 @@ class Grid
             {
                 this.CalculateValue(x, y, 0, playerValue);
             }
-        PresentValue(this.enemyValue);
+        //PresentValue(this.enemyValue);
         this.Mark(playerPosition, true);
     }
 
@@ -222,10 +222,6 @@ class Grid
         {
             playerValue[gridDestination.Y][gridDestination.X] = int.MaxValue;
             this.CalculateValue(gridDestination.X, gridDestination.Y, 1, playerValue);
-        }
-        else
-        {
-            Console.WriteLine($"{gridDestination} is taken, value = {playerValue[gridDestination.X][gridDestination.Y]}");
         }
         this.Mark(playerPosition, true);
     }
