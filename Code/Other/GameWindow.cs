@@ -166,8 +166,6 @@ public class GameWindow : Game
                 foreach (Unit unit in Unit.allUnits)
                     if (unit.faction == Faction.Player)
                         _camera.UpdateCenter(unit.TargetPosition.ToVector2());
-                if (Save.HighscoreNight < 3)
-                    Thread.Sleep(6000);
                 this.mainMenu.EnterState(MainMenu.State.InActive);
             }
             shouldLoadLevel = (mainMenu.state == MainMenu.State.Loading);
